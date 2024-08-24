@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.26)
 
-project(QtProjectTemplate
+project(FLowD
         VERSION 1.0.0.0 # Set application version. For more details, see src/version.h.in
 )
 
