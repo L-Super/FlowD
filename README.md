@@ -1,22 +1,28 @@
-# Qt Project Template
+# FlowD - An Efficient Multi-threaded Download Manager
 
-[![build](https://github.com/L-Super/QtProjectTemplate/actions/workflows/build.yml/badge.svg)](https://github.com/L-Super/QtProjectTemplate/actions/workflows/build.yml)
+English | [中文](README-zh.md)
 
-This project template provides a Qt project setup with a CI/CD.
+## Introduction
+
+FlowD is a cross-platform, modern download manager developed with Qt that supports multi-threaded downloads, significantly increasing download speed and efficiency. FlowD is designed to provide users with a simple, fast, and easy-to-use download solution tool.
+
+It supports Windows, macOS, and Linux paltform.
 
 ## Features
-- CMake-based project configuration
-- GitHub Actions for CI on Linux, Windows and macOS
-- Unit tests template
 
-## Structure
-- `.github`: GitHub Actions configs
-- `src`: Project source code
-- `tests`(optional): Unit tests
-- `scripts`(optional): some tool scripts
+- **Multi-threaded Downloads**: Utilizing parallel processing, FlowD can fully leverage network bandwidth to accelerate the downloading process.
+- **User-friendly Interface**: An intuitive graphical user interface makes the management and monitoring of download tasks simple.
+- **Automatic Resume**: Supports automatic pause and resume during the download process to ensure reliability.
+- **Customizable Settings**: Users can adjust download parameters according to their needs, such as the number of threads and download speed limits.
 
-## TODO
+## Contributing
 
-- [ ] add translation function
+We welcome contributions from the community, including but not limited to code, documentation, design, and translations. If you are interested in contributing to the development of FlowD, please submit a Pull Request or create an Issue.
 
-- [ ] auto making installer package
+## License
+
+FlowD is open-source software, released under the [MIT License](LICENSE).
+
+---
+
+Thank you for using FlowD, and we look forward to your feedback and suggestions!
