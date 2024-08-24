@@ -14,37 +14,12 @@ on:
 
 jobs:
     linux-build:
-        runs-on: ${{ matrix.os }}
+        runs-on: ubuntu-latest
 
         strategy:
             # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations.
             # Consider changing this to true when your workflow is stable.
             fail-fast: false
-
-            # Set up a matrix to run the following 3 configurations:
-            # 1. <Windows, Release, latest MSVC compiler toolchain on the default runner image, default generator>
-            # 2. <Linux, Release, latest GCC compiler toolchain on the default runner image, default generator>
-            # 3. <Linux, Release, latest Clang compiler toolchain on the default runner image, default generator>
-            #
-            # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
-            matrix:
-                os: [ubuntu-latest]
-                build_type: [Release]
-                cpp_compiler: [g++, clang++]
-                include:
-                    - os: ubuntu-latest
-                      c_compiler: gcc
-                      cpp_compiler: g++
-                    - os: ubuntu-latest
-                      c_compiler: clang
-                      cpp_compiler: clang++
-                # exclude:
-                #   - os: windows-latest
-                #     c_compiler: gcc
-                #   - os: windows-latest
-                #     c_compiler: clang
-                #   - os: ubuntu-latest
-                #     c_compiler: cl
 
         steps:
             - name: Checkout Source code
@@ -64,13 +39,11 @@ jobs:
               # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
               run: >
                   cmake -B ${{github.workspace}}/build
-                  -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-                  -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
             - name: Build
               # Build your program with the given configuration.
               # Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-              run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build_type }}
+              run: cmake --build ${{github.workspace}}/build
 
             - name: Test
               working-directory: ${{github.workspace}}/build
@@ -80,11 +53,10 @@ jobs:
               run: ctest
 
     windows-build:
-        runs-on: ${{ matrix.os }}
+        runs-on: windows-latest
         strategy:
             fail-fast: false
             matrix:
-                os: [windows-latest]
                 qt_version: [5.15.2, 6.7.0]
                 build_type: [Release]
 
@@ -126,7 +98,6 @@ jobs:
               # macos-latest M1 arm architecture. macos-13 intel architecture
               os: [macos-latest, macos-13]
               qt_version: [5.15.2, 6.7.0]
-              build_type: [Release]
               include:
                   - os: macos-latest
                     qt_version: 6.7.0
@@ -151,7 +122,7 @@ jobs:
                 cache-key-prefix: 'Qt'
 
           - name: Configure CMake
-            run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+            run: cmake -B ${{github.workspace}}/build
 
           - name: Build
             run: cmake --build ${{github.workspace}}/build         
