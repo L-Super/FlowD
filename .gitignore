@@ -1,0 +1,32 @@
+# Qt-es
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*build-*
+
+# QtCreator CMake
+CMakeLists.txt.user*
+
+
+# CLion template
+
+# User-specific stuff
+.idea/
+
+# CMake
+cmake-build-*/
+build/
+
+# version file
+src/version.h
+
+# rc file
+src/resources/win/app.rc
+
+.DS_Store
