@@ -1,4 +1,4 @@
-#include "frmdownloaditem.h"
+#include "FrmDownloadItem.h"
 #include "ui_frmdownloaditem.h"
 
 FrmDownloadItem::FrmDownloadItem(QWidget* parent) : QWidget(parent), ui(new Ui::FrmDownloadItem)

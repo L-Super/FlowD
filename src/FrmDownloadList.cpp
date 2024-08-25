@@ -1,4 +1,4 @@
-#include "frmdownloadlist.h"
+#include "FrmDownloadList.h"
 #include "ui_frmdownloadlist.h"
 
 #include <QListWidgetItem>
