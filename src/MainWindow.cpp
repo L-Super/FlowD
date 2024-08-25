@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QStandardPaths>
 
+
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -42,6 +43,16 @@ void MainWindow::iniUi()
     tabMinimized=set.value("Common/MinimizeMainTab",false).toBool();
     minimizeMainTab(tabMinimized);
 
+    //添加QWidget到StackedWidget
+    frmDownloadList=new FrmDownloadList;
+    frmSettings=new FrmSettings;
+    frmHelp=new FrmHelp;
+
+    ui->stackedWidget->insertWidget(0,frmDownloadList);
+    ui->stackedWidget->insertWidget(1,frmSettings);
+    ui->stackedWidget->insertWidget(2,frmHelp);
+
+    ui->stackedWidget->setCurrentIndex(0);
 
 }
 
@@ -83,7 +94,7 @@ void MainWindow::onCheckableToolButtonsClicked(bool checked)
             if(!checked){
                 clickedToolButton->setChecked(true);
             }
-            //ui->stackedWidget->setCurrentIndex(i);
+            ui->stackedWidget->setCurrentIndex(i);
         }else{
             //未选中选项卡的则设置未选中
             checkableToolButtons[i]->setChecked(false);

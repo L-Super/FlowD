@@ -4,6 +4,10 @@
 #include <QToolButton>
 #include <QList>
 
+#include "frmdownloadlist.h"
+#include "frmsettings.h"
+#include "frmhelp.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;
@@ -22,6 +26,9 @@ protected   slots:
     void onToolMenuClicked();
 private:
     Ui::MainWindow* ui;
+    FrmDownloadList *frmDownloadList;
+    FrmSettings *frmSettings;
+    FrmHelp *frmHelp;
     QList<QToolButton*> checkableToolButtons;
 
     bool tabMinimized;  //主选项卡状态

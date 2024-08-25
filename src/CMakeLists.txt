@@ -61,6 +61,10 @@ add_executable(${PROJECT_NAME}
         main.cpp
         ${QRC_FILES}
         ${SRC_FILES}
+        frmdownloadlist.h frmdownloadlist.cpp frmdownloadlist.ui
+        frmdownloaditem.h frmdownloaditem.cpp frmdownloaditem.ui
+        frmsettings.h frmsettings.cpp frmsettings.ui
+        frmhelp.h frmhelp.cpp frmhelp.ui
 )
 
 if (WIN32)
