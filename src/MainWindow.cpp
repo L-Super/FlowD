@@ -5,18 +5,15 @@
 #include <QSettings>
 #include <QStandardPaths>
 
-
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
     connectSlots();
+
     //千万不能与上一行代码对调，否则会出现野指针
     iniUi();
-
-
 }
-
 
 void MainWindow::connectSlots()
 {
@@ -31,7 +28,6 @@ void MainWindow::connectSlots()
 
     //连接其他控件信号和槽
     connect(ui->toolMenu,&QToolButton::clicked,this,&MainWindow::onToolMenuClicked);
-
 }
 
 void MainWindow::iniUi()
@@ -55,7 +51,6 @@ void MainWindow::iniUi()
     //初次选中“下载列表”
     ui->stackedWidget->setCurrentIndex(0);
     checkableToolButtons[0]->setChecked(1);
-
 }
 
 //此函数设置主选项卡显示方式是仅有图标还是有图标和文字
@@ -82,7 +77,6 @@ void MainWindow::minimizeMainTab(bool minimize)
             QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QSettings set(cachePath+"config.ini");
     set.setValue("Common/MinimizeMainTab",minimize);
-
 }
 
 void MainWindow::onCheckableToolButtonsClicked(bool checked)

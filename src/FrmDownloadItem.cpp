@@ -12,7 +12,6 @@ void FrmDownloadItem::connectSlots()
     connect(ui->btnSuspend,&QPushButton::clicked,this,&FrmDownloadItem::onBtnSuspendClicked);
 }
 
-
 void FrmDownloadItem::onBtnSuspendClicked(bool checked)
 {
     if(checked){

@@ -14,6 +14,7 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+
 class MainWindow : public QWidget {
     Q_OBJECT
 

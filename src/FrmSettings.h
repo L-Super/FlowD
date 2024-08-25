@@ -8,6 +8,7 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+
 class FrmSettings : public QWidget {
     Q_OBJECT
 

@@ -19,8 +19,8 @@ QString getQss(){
         QMessageBox::critical(nullptr,"失败","获取样式表失败");
     }
     return styleSheet;
-
 }
+
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);

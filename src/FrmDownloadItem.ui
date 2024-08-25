@@ -43,7 +43,7 @@
            </size>
           </property>
           <property name="text">
-           <string>// 文件名称</string>
+           <string>//  文件名称</string>
           </property>
          </widget>
         </item>
