@@ -10,7 +10,7 @@ TEST_CASE("unit test1", "[test1]")
     SECTION("s2")
     {
         bool b = false;
-        REQUIRE(b== false);
+        REQUIRE(b == false);
 
     }
 }
@@ -25,7 +25,7 @@ TEST_CASE("unit test2", "[test2]")
     SECTION("s2")
     {
         bool b = false;
-        REQUIRE(b== false);
+        REQUIRE(b == false);
 
     }
 }
