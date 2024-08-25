@@ -1,5 +1,5 @@
 #include "FrmSettings.h"
-#include "ui_frmsettings.h"
+#include "ui_FrmSettings.h"
 
 FrmSettings::FrmSettings(QWidget* parent) : QWidget(parent), ui(new Ui::FrmSettings)
 {

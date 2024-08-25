@@ -1,9 +1,9 @@
 #include "FrmDownloadList.h"
-#include "ui_frmdownloadlist.h"
+#include "ui_FrmDownloadList.h"
 
 #include <QListWidgetItem>
 
-#include "frmdownloaditem.h"
+#include "FrmDownloadItem.h"
 
 FrmDownloadList::FrmDownloadList(QWidget* parent) : QWidget(parent), ui(new Ui::FrmDownloadList)
 {

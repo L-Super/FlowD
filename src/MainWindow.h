@@ -4,9 +4,9 @@
 #include <QToolButton>
 #include <QList>
 
-#include "frmdownloadlist.h"
-#include "frmsettings.h"
-#include "frmhelp.h"
+#include "FrmDownloadList.h"
+#include "FrmSettings.h"
+#include "FrmHelp.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

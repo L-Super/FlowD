@@ -24,7 +24,11 @@ message(STATUS "Qt deployment tool: ${QT_DEPLOY_EXECUTABLE}")
 
 qt_add_resources(QRC_FILES resources.qrc)
 
-set(SRC_FILES MainWindow.cpp MainWindow.h MainWindow.ui)
+set(SRC_FILES MainWindow.cpp MainWindow.h MainWindow.ui
+    FrmDownloadList.h FrmDownloadList.cpp FrmDownloadList.ui
+    FrmDownloadItem.h FrmDownloadItem.cpp FrmDownloadItem.ui
+    FrmSettings.h FrmSettings.cpp FrmSettings.ui
+    FrmHelp.h FrmHelp.cpp FrmHelp.ui)
 
 set(APP_DESCRIPTION "An Efficient Multi-threaded Download Manager")
 set(APP_COPYRIGHT "Copyright 2024-2077 The FlowD Ltd.")
@@ -61,10 +65,6 @@ add_executable(${PROJECT_NAME}
         main.cpp
         ${QRC_FILES}
         ${SRC_FILES}
-        FrmDownloadList.h FrmDownloadList.cpp FrmDownloadList.ui
-        FrmDownloadItem.h FrmDownloadItem.cpp FrmDownloadItem.ui
-        FrmSettings.h FrmSettings.cpp FrmSettings.ui
-        FrmHelp.h FrmHelp.cpp FrmHelp.ui
 )
 
 if (WIN32)
