@@ -4,23 +4,22 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-    class FrmDownloadItem;
+    class DownloadItemWidget;
 }
 QT_END_NAMESPACE
 
-
-class FrmDownloadItem : public QWidget {
+class DownloadItemWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit FrmDownloadItem(QWidget* parent = nullptr);
-    ~FrmDownloadItem() override;
+    explicit DownloadItemWidget(QWidget* parent = nullptr);
+    ~DownloadItemWidget() override;
 
 protected slots:
     void onBtnSuspendClicked(bool checked);
 
 private:
-    Ui::FrmDownloadItem* ui;
+    Ui::DownloadItemWidget* ui;
 
     void connectSlots();
 };

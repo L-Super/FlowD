@@ -25,10 +25,11 @@ message(STATUS "Qt deployment tool: ${QT_DEPLOY_EXECUTABLE}")
 qt_add_resources(QRC_FILES resources.qrc)
 
 set(SRC_FILES MainWindow.cpp MainWindow.h MainWindow.ui
-    FrmDownloadList.h FrmDownloadList.cpp FrmDownloadList.ui
-    FrmDownloadItem.h FrmDownloadItem.cpp FrmDownloadItem.ui
-    FrmSettings.h FrmSettings.cpp FrmSettings.ui
-    FrmHelp.h FrmHelp.cpp FrmHelp.ui)
+    DownloadListWidget.cpp DownloadListWidget.h DownloadListWidget.ui
+    DownloadItemWidget.cpp DownloadItemWidget.h DownloadItemWidget.ui
+    HelpWidget.cpp HelpWidget.h HelpWidget.ui
+    SettingsWidget.cpp SettingsWidget.h SettingsWidget.ui
+)
 
 set(APP_DESCRIPTION "An Efficient Multi-threaded Download Manager")
 set(APP_COPYRIGHT "Copyright 2024-2077 The FlowD Ltd.")

@@ -4,9 +4,7 @@
 #include <QToolButton>
 #include <QWidget>
 
-#include "FrmDownloadList.h"
-#include "FrmHelp.h"
-#include "FrmSettings.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -14,6 +12,9 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+class DownloadListWidget;
+class HelpWidget;
+class SettingsWidget;
 
 class MainWindow : public QWidget {
     Q_OBJECT
@@ -28,9 +29,9 @@ protected slots:
 
 private:
     Ui::MainWindow* ui;
-    FrmDownloadList* frmDownloadList;
-    FrmSettings* frmSettings;
-    FrmHelp* frmHelp;
+    DownloadListWidget* downloadListWidget;
+    SettingsWidget* settingsWidget;
+    HelpWidget* helpWidget;
     QList<QToolButton*> checkableToolButtons;//所有选项卡按钮
 
     bool tabMinimized;//主选项卡状态

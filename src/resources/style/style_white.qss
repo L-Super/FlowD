@@ -233,50 +233,48 @@ QProgressBar::chunk {
 }
 
 /*QFrame*/
-#FrmDownloadItem>QFrame{
+DownloadItemWidget>QFrame{
     border: 1px solid rgb(200, 200, 200);
     border-radius: 10px;
 }
 
 
-#FrmDownloadItem>QFrame>#btnDelete{
+DownloadItemWidget>QFrame>#btnDelete{
     background-color: rgb(167, 37, 37);
     color: white;
 }
 
-#FrmDownloadItem>QFrame>#btnDelete:hover{
+DownloadItemWidget>QFrame>#btnDelete:hover{
     background-color: rgb(133, 44, 44);
     color: white;
 }
 
-#FrmDownloadItem>QFrame>#btnDelete:pressed{
+DownloadItemWidget>QFrame>#btnDelete:pressed{
     background-color: rgb(107, 22, 22);
     color: white;
 }
 
 
-#FrmDownloadList #btnTabDownloading,#FrmDownloadList #btnTabStopped{
+DownloadListWidget #btnTabDownloading,#DownloadListWidget #btnTabStopped{
     color:black;
     background-color: white;
     border: none;
 }
 
-#FrmDownloadList #btnTabDownloading:hover,#FrmDownloadList #btnTabStopped:hover{
+DownloadListWidget #btnTabDownloading:hover,#DownloadListWidget #btnTabStopped:hover{
     color: rgb(0, 103, 192);
     
 }
 
-#FrmDownloadList #btnTabDownloading:checked,#FrmDownloadList #btnTabStopped:checked{
+DownloadListWidget #btnTabDownloading:checked,#DownloadListWidget #btnTabStopped:checked{
     color: rgb(0, 103, 192);
     border-bottom: 2px solid  rgb(0, 103, 192);
     border-radius: 0px;
 }
 
-#FrmDownloadList QScrollArea{
-    background-color: white;
-}
+
 
 QListWidget::item{
     min-height: 120px;
-    /* border: none; */
+    border: none;
 }

@@ -1,11 +1,11 @@
-#include "FrmDownloadList.h"
-#include "ui_FrmDownloadList.h"
+#include "DownloadListWidget.h"
+#include "ui_DownloadListWidget.h"
 
 #include <QListWidgetItem>
 
-#include "FrmDownloadItem.h"
+#include "DownloadItemWidget.h"
 
-FrmDownloadList::FrmDownloadList(QWidget* parent) : QWidget(parent), ui(new Ui::FrmDownloadList)
+DownloadListWidget::DownloadListWidget(QWidget* parent) : QWidget(parent), ui(new Ui::DownloadListWidget)
 {
     ui->setupUi(this);
 
@@ -13,7 +13,7 @@ FrmDownloadList::FrmDownloadList(QWidget* parent) : QWidget(parent), ui(new Ui::
     QListWidgetItem* pItem = new QListWidgetItem(ui->listWidget);
     ui->listWidget->addItem(pItem);
 
-    FrmDownloadItem* aCustomItem = new FrmDownloadItem;
+    DownloadItemWidget* aCustomItem = new DownloadItemWidget;
     ui->listWidget->setItemWidget(pItem, aCustomItem);
     ui->listWidget->setCurrentItem(pItem);
 
@@ -21,14 +21,14 @@ FrmDownloadList::FrmDownloadList(QWidget* parent) : QWidget(parent), ui(new Ui::
     connectSlots();
 }
 
-void FrmDownloadList::iniUi()
+void DownloadListWidget::iniUi()
 {
     //初次选中“下载中”
     ui->btnTabDownloading->setChecked(true);
     changeTab(0);
 }
 
-void FrmDownloadList::connectSlots()
+void DownloadListWidget::connectSlots()
 {
     connect(ui->btnTabDownloading, &QPushButton::clicked, this, [=](bool checked) {
         if (checked)
@@ -44,7 +44,7 @@ void FrmDownloadList::connectSlots()
     });
 }
 
-void FrmDownloadList::changeTab(int index)
+void DownloadListWidget::changeTab(int index)
 {
     if (index == 0) {
         ui->btnTabStopped->setChecked(false);
@@ -56,7 +56,7 @@ void FrmDownloadList::changeTab(int index)
     }
 }
 
-FrmDownloadList::~FrmDownloadList()
+DownloadListWidget::~DownloadListWidget()
 {
     delete ui;
 }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FrmSettings</class>
- <widget class="QWidget" name="FrmSettings">
+ <class>HelpWidget</class>
+ <widget class="QWidget" name="HelpWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>305</height>
+    <width>427</width>
+    <height>319</height>
    </rect>
   </property>
   <property name="windowTitle">

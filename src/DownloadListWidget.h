@@ -4,19 +4,19 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-    class FrmDownloadList;
+    class DownloadListWidget;
 }
 QT_END_NAMESPACE
 
-class FrmDownloadList : public QWidget {
+class DownloadListWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit FrmDownloadList(QWidget* parent = nullptr);
-    ~FrmDownloadList() override;
+    explicit DownloadListWidget(QWidget* parent = nullptr);
+    ~DownloadListWidget() override;
 
 private:
-    Ui::FrmDownloadList* ui;
+    Ui::DownloadListWidget* ui;
 
     void iniUi();
     void connectSlots();

@@ -4,6 +4,12 @@
 #include <QDebug>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QMessageBox>
+#include <QDir>
+
+#include "DownloadListWidget.h"
+#include "HelpWidget.h"
+#include "SettingsWidget.h"
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow)
 {
@@ -33,18 +39,20 @@ void MainWindow::iniUi()
 {
     //设置选项卡显示状态
     QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QSettings set(cachePath + "config.ini");
+    QDir cacheDir(cachePath);
+    if(!cacheDir.exists())  cacheDir.mkpath(cachePath);
+    QSettings set(cachePath + "/config.ini",QSettings::IniFormat);
     tabMinimized = set.value("Common/MinimizeMainTab", false).toBool();
     minimizeMainTab(tabMinimized);
 
     //添加QWidget到StackedWidget
-    frmDownloadList = new FrmDownloadList;
-    frmSettings = new FrmSettings;
-    frmHelp = new FrmHelp;
+    downloadListWidget = new DownloadListWidget;
+    settingsWidget = new SettingsWidget;
+    helpWidget = new HelpWidget;
 
-    ui->stackedWidget->insertWidget(0, frmDownloadList);
-    ui->stackedWidget->insertWidget(1, frmSettings);
-    ui->stackedWidget->insertWidget(2, frmHelp);
+    ui->stackedWidget->insertWidget(0, downloadListWidget);
+    ui->stackedWidget->insertWidget(1, settingsWidget);
+    ui->stackedWidget->insertWidget(2, helpWidget);
 
     //初次选中“下载列表”
     ui->stackedWidget->setCurrentIndex(0);
@@ -73,7 +81,9 @@ void MainWindow::minimizeMainTab(bool minimize)
 
     //将配置写入ini
     QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QSettings set(cachePath + "config.ini");
+    QDir cacheDir(cachePath);
+    if(!cacheDir.exists())  cacheDir.mkpath(cachePath);
+    QSettings set(cachePath + "/config.ini",QSettings::IniFormat);
     set.setValue("Common/MinimizeMainTab", minimize);
 }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FrmDownloadList</class>
- <widget class="QWidget" name="FrmDownloadList">
+ <class>DownloadListWidget</class>
+ <widget class="QWidget" name="DownloadListWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
