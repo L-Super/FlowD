@@ -14,6 +14,7 @@ message(STATUS "The application's version is ${CMAKE_PROJECT_VERSION}")
 add_subdirectory(src)
 
 if (BUILD_TEST)
+    message(STATUS "Building tests")
     enable_testing()
     add_subdirectory(tests)
 endif ()

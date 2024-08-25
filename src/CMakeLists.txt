@@ -62,6 +62,7 @@ add_executable(${PROJECT_NAME}
         ${QRC_FILES}
         ${SRC_FILES}
 )
+add_subdirectory(Logic)
 
 if (WIN32)
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
