@@ -15,6 +15,11 @@ public:
     explicit FrmDownloadItem(QWidget* parent = nullptr);
     ~FrmDownloadItem() override;
 
+protected slots:
+    void onBtnSuspendClicked(bool checked);
+
 private:
     Ui::FrmDownloadItem* ui;
+
+    void connectSlots();
 };

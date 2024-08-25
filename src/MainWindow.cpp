@@ -52,7 +52,9 @@ void MainWindow::iniUi()
     ui->stackedWidget->insertWidget(1,frmSettings);
     ui->stackedWidget->insertWidget(2,frmHelp);
 
+    //初次选中“下载列表”
     ui->stackedWidget->setCurrentIndex(0);
+    checkableToolButtons[0]->setChecked(1);
 
 }
 

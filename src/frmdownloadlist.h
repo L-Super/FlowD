@@ -15,6 +15,13 @@ public:
     explicit FrmDownloadList(QWidget* parent = nullptr);
     ~FrmDownloadList() override;
 
+protected slots:
+    // void onBtnTabDownloadingClicked(bool checked);
+    // void onBtnTabStoppedClicked(bool checked);
 private:
     Ui::FrmDownloadList* ui;
+
+    void iniUi();
+    void connectSlots();
+    void changeTab(int index);
 };

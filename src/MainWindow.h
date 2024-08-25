@@ -29,7 +29,7 @@ private:
     FrmDownloadList *frmDownloadList;
     FrmSettings *frmSettings;
     FrmHelp *frmHelp;
-    QList<QToolButton*> checkableToolButtons;
+    QList<QToolButton*> checkableToolButtons;   //所有选项卡按钮
 
     bool tabMinimized;  //主选项卡状态
 
