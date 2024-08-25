@@ -22,31 +22,29 @@ void MainWindow::connectSlots()
     checkableToolButtons.append(ui->toolSettings);
     checkableToolButtons.append(ui->toolHelp);
 
-    for(int i=0;i<checkableToolButtons.count();++i)
-        connect(checkableToolButtons[i],&QToolButton::clicked,this
-                ,&MainWindow::onCheckableToolButtonsClicked);
+    for (int i = 0; i < checkableToolButtons.count(); ++i)
+        connect(checkableToolButtons[i], &QToolButton::clicked, this, &MainWindow::onCheckableToolButtonsClicked);
 
     //连接其他控件信号和槽
-    connect(ui->toolMenu,&QToolButton::clicked,this,&MainWindow::onToolMenuClicked);
+    connect(ui->toolMenu, &QToolButton::clicked, this, &MainWindow::onToolMenuClicked);
 }
 
 void MainWindow::iniUi()
 {
     //设置选项卡显示状态
-    QString cachePath=
-            QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QSettings set(cachePath+"config.ini");
-    tabMinimized=set.value("Common/MinimizeMainTab",false).toBool();
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QSettings set(cachePath + "config.ini");
+    tabMinimized = set.value("Common/MinimizeMainTab", false).toBool();
     minimizeMainTab(tabMinimized);
 
     //添加QWidget到StackedWidget
-    frmDownloadList=new FrmDownloadList;
-    frmSettings=new FrmSettings;
-    frmHelp=new FrmHelp;
+    frmDownloadList = new FrmDownloadList;
+    frmSettings = new FrmSettings;
+    frmHelp = new FrmHelp;
 
-    ui->stackedWidget->insertWidget(0,frmDownloadList);
-    ui->stackedWidget->insertWidget(1,frmSettings);
-    ui->stackedWidget->insertWidget(2,frmHelp);
+    ui->stackedWidget->insertWidget(0, frmDownloadList);
+    ui->stackedWidget->insertWidget(1, frmSettings);
+    ui->stackedWidget->insertWidget(2, frmHelp);
 
     //初次选中“下载列表”
     ui->stackedWidget->setCurrentIndex(0);
@@ -56,15 +54,16 @@ void MainWindow::iniUi()
 //此函数设置主选项卡显示方式是仅有图标还是有图标和文字
 void MainWindow::minimizeMainTab(bool minimize)
 {
-    if(minimize){
-        for(int i=0;i<checkableToolButtons.length();++i){
+    if (minimize) {
+        for (int i = 0; i < checkableToolButtons.length(); ++i) {
             checkableToolButtons[i]->setToolButtonStyle(Qt::ToolButtonIconOnly);
             checkableToolButtons[i]->setFixedWidth(40);
         }
         ui->toolNewDownload->setToolButtonStyle(Qt::ToolButtonIconOnly);
         ui->toolNewDownload->setFixedWidth(40);
-    }else{
-        for(int i=0;i<checkableToolButtons.length();++i){
+    }
+    else {
+        for (int i = 0; i < checkableToolButtons.length(); ++i) {
             checkableToolButtons[i]->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
             checkableToolButtons[i]->setFixedWidth(200);
         }
@@ -73,25 +72,25 @@ void MainWindow::minimizeMainTab(bool minimize)
     }
 
     //将配置写入ini
-    QString cachePath=
-            QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QSettings set(cachePath+"config.ini");
-    set.setValue("Common/MinimizeMainTab",minimize);
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QSettings set(cachePath + "config.ini");
+    set.setValue("Common/MinimizeMainTab", minimize);
 }
 
 void MainWindow::onCheckableToolButtonsClicked(bool checked)
 {
-    QToolButton *clickedToolButton=qobject_cast<QToolButton*>(sender());
+    QToolButton* clickedToolButton = qobject_cast<QToolButton*>(sender());
 
     //寻找按下的按钮
-    for(int i=0;i<checkableToolButtons.count();++i){
-        if(clickedToolButton==checkableToolButtons[i]){
+    for (int i = 0; i < checkableToolButtons.count(); ++i) {
+        if (clickedToolButton == checkableToolButtons[i]) {
             //如果多次点击所在的选项卡，设置属性仍为选中
-            if(!checked){
+            if (!checked) {
                 clickedToolButton->setChecked(true);
             }
             ui->stackedWidget->setCurrentIndex(i);
-        }else{
+        }
+        else {
             //未选中选项卡的则设置未选中
             checkableToolButtons[i]->setChecked(false);
         }
@@ -100,7 +99,7 @@ void MainWindow::onCheckableToolButtonsClicked(bool checked)
 
 void MainWindow::onToolMenuClicked()
 {
-    tabMinimized=!tabMinimized; //切换状态
+    tabMinimized = !tabMinimized;//切换状态
     minimizeMainTab(tabMinimized);
 }
 

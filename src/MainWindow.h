@@ -1,12 +1,12 @@
 #pragma once
 
-#include <QWidget>
-#include <QToolButton>
 #include <QList>
+#include <QToolButton>
+#include <QWidget>
 
 #include "FrmDownloadList.h"
-#include "FrmSettings.h"
 #include "FrmHelp.h"
+#include "FrmSettings.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,21 +22,21 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow() override;
 
-protected   slots:
+protected slots:
     void onCheckableToolButtonsClicked(bool checked);
     void onToolMenuClicked();
+
 private:
     Ui::MainWindow* ui;
-    FrmDownloadList *frmDownloadList;
-    FrmSettings *frmSettings;
-    FrmHelp *frmHelp;
-    QList<QToolButton*> checkableToolButtons;   //所有选项卡按钮
+    FrmDownloadList* frmDownloadList;
+    FrmSettings* frmSettings;
+    FrmHelp* frmHelp;
+    QList<QToolButton*> checkableToolButtons;//所有选项卡按钮
 
-    bool tabMinimized;  //主选项卡状态
+    bool tabMinimized;//主选项卡状态
 
     void connectSlots();
     void iniUi();
 
     inline void minimizeMainTab(bool minimize);
 };
-
