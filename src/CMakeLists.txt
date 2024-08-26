@@ -66,6 +66,8 @@ add_executable(${PROJECT_NAME}
         main.cpp
         ${QRC_FILES}
         ${SRC_FILES}
+        SettingsBasicWidget.h SettingsBasicWidget.cpp SettingsBasicWidget.ui
+        SettingsAdvancedWidget.h SettingsAdvancedWidget.cpp SettingsAdvancedWidget.ui
 )
 add_subdirectory(Logic)
 

@@ -255,24 +255,29 @@ DownloadItemWidget>QFrame>#btnDelete:pressed{
 }
 
 
-DownloadListWidget #btnTabDownloading,#DownloadListWidget #btnTabStopped{
+DownloadListWidget #btnTabDownloading,DownloadListWidget #btnTabStopped,
+SettingsWidget #btnTabBasic,SettingsWidget #btnTabAdvanced{
     color:black;
     background-color: white;
     border: none;
 }
 
-DownloadListWidget #btnTabDownloading:hover,#DownloadListWidget #btnTabStopped:hover{
+DownloadListWidget #btnTabDownloading:hover,DownloadListWidget #btnTabStopped:hover,
+SettingsWidget #btnTabBasic:hover,SettingsWidget #btnTabAdvanced:hover{
     color: rgb(0, 103, 192);
     
 }
 
-DownloadListWidget #btnTabDownloading:checked,#DownloadListWidget #btnTabStopped:checked{
+DownloadListWidget #btnTabDownloading:checked,DownloadListWidget #btnTabStopped:checked,
+SettingsWidget #btnTabBasic:checked,SettingsWidget #btnTabAdvanced:checked{
     color: rgb(0, 103, 192);
     border-bottom: 2px solid  rgb(0, 103, 192);
     border-radius: 0px;
 }
 
-
+QWidget{
+    background-color: white;
+}
 
 QListWidget::item{
     min-height: 120px;
