@@ -10,6 +10,7 @@
 #include "DownloadListWidget.h"
 #include "HelpWidget.h"
 #include "SettingsWidget.h"
+#include "NewDownloadDialog.h"
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow)
 {
@@ -33,6 +34,11 @@ void MainWindow::connectSlots()
 
     //连接其他控件信号和槽
     connect(ui->toolMenu, &QToolButton::clicked, this, &MainWindow::onToolMenuClicked);
+    connect(ui->toolNewDownload,&QToolButton::clicked,this,[]{
+        auto newDownloadDialog=new NewDownloadDialog;
+        newDownloadDialog->exec();
+        //已经setAttribute(Qt::WA_DeleteOnClose);
+    });
 }
 
 void MainWindow::iniUi()
