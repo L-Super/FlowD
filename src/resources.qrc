@@ -2,4 +2,15 @@
     <qresource prefix="/">
         <file>resources/logo.svg</file>
     </qresource>
+    <qresource prefix="/qss">
+        <file>resources/style/style_black.qss</file>
+        <file>resources/style/style_white.qss</file>
+    </qresource>
+    <qresource prefix="/MainWindow">
+        <file>resources/icons/menu.svg</file>
+        <file>resources/icons/downloadlist.svg</file>
+        <file>resources/icons/help.svg</file>
+        <file>resources/icons/new.svg</file>
+        <file>resources/icons/settings.svg</file>
+    </qresource>
 </RCC>

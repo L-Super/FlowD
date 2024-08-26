@@ -1,0 +1,280 @@
+/*QPushButton*/
+QPushButton {  
+    border: 1px solid rgb(236,236,236); 
+	border-bottom-color: rgb(211, 211, 211);
+    border-radius: 4px;  
+    background-color: rgb(254, 254, 254); 
+	color:black;
+
+}  
+
+QPushButton:hover
+{
+	background-color:rgb(250, 250, 250);
+}
+
+QPushButton:pressed {  
+    background-color: rgb(250, 250, 250); 
+	border-bottom-color:rgb(236, 236, 236);
+	color:grey;
+}
+
+QPushButton[highlight="true"]{
+	color: white;
+	background-color: rgb(0,103,192);
+	border:1px solid rgb(20,115,197);
+	border-bottom: 2px solid rgb(0,62,115);
+}
+
+QPushButton[highlight="true"]:disabled{
+	background-color: rgb(3, 41, 74);
+}
+
+QPushButton[highlight="true"]:hover{
+	color: white;
+	background-color: rgb(25,117,197);
+	border:1px solid rgb(43,128,202);
+	border-bottom: 2px solid rgb(15,70,118);
+}
+
+QPushButton[highlight="true"]:pressed{
+	color: rgb(194,218,239);
+	background-color: rgb(25,117,197);
+	border: 0px ;
+}
+
+/*QLineEdit*/
+QLineEdit {  
+    border: 1px solid rgb(229,229,229); 
+	border-bottom-color: rgb(134,134, 134);
+    border-radius: 5px;  
+    background-color: rgb(251, 251, 251); 
+	color:black;
+
+}  
+
+QLineEdit:hover
+{
+	background-color:rgb(246,246,246);
+ }
+
+QLineEdit:focus{
+	border-bottom-width: 2px;
+	background-color: rgb(255, 255, 255);
+	border-bottom-color: rgb(0, 103, 192);
+
+}
+
+/*QScrollBar*/
+QScrollBar:vertical {  
+    border: none; /* 移除边框 */  
+    background: transparent; /* 背景透明 */  
+    width: 10px; /* 滚动条宽度 */  
+    margin: 0px 0px 0px 0px; /* 上下左右的外边距 */  
+}  
+  
+QScrollBar::handle:vertical {  
+    background: rgb(210,210,210); /* 滑块颜色 */  
+    min-height: 20px; /* 滑块最小高度 */  
+    border-radius: 5px; /* 圆角 */  
+}  
+  
+QScrollBar::add-line:vertical {  
+    background: transparent; /* 上下按钮背景 */  
+    height: 0px; /* 按钮高度 */  
+    subcontrol-position: bottom; /* 按钮位置 */  
+    subcontrol-origin: margin;  
+}  
+  
+QScrollBar::sub-line:vertical {  
+    background: transparent; /* 上下按钮背景 */  
+    height: 0px; /* 按钮高度 */  
+    subcontrol-position: top; /* 按钮位置 */  
+    subcontrol-origin: margin;  
+}  
+  
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {  
+    background: none; /* 滑动区域背景 */  
+}  
+  
+/* 横向滚动条样式 */  
+QScrollBar:horizontal {  
+    border: none;  
+    background: transparent;  
+    height: 10px;  
+    margin: 0px 0px 0px 0px;  
+}  
+  
+QScrollBar::handle:horizontal {  
+    background:rgb(210,210,210);  
+    min-width: 20px;  
+    border-radius: 5px;  
+}  
+  
+QScrollBar::add-line:horizontal {  
+    background: transparent;  
+    width: 0px;  
+    subcontrol-position: right;  
+    subcontrol-origin: margin;  
+}  
+  
+QScrollBar::sub-line:horizontal {  
+    background: transparent;  
+    width: 0px;  
+    subcontrol-position: left;  
+    subcontrol-origin: margin;  
+}  
+  
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {  
+    background: none;  
+}
+
+QScrollBar:vertical:hover {  
+    border: none; /* 移除边框 */  
+    background: transparent; /* 背景透明 */  
+    width: 10px; /* 滚动条宽度 */  
+    margin: 0px 0px 0px 0px; /* 上下左右的外边距 */  
+}  
+  
+QScrollBar::handle:vertical:hover {  
+    background:rgb(190,190,190); /* 滑块颜色 */  
+    min-height: 20px; /* 滑块最小高度 */  
+    border-radius: 5px; /* 圆角 */  
+}  
+  
+QScrollBar::add-line:vertical:hover {  
+    background: transparent; /* 上下按钮背景 */  
+    height: 0px; /* 按钮高度 */  
+    subcontrol-position: bottom; /* 按钮位置 */  
+    subcontrol-origin: margin;  
+}  
+  
+QScrollBar::sub-line:vertical:hover {  
+    background: transparent; /* 上下按钮背景 */  
+    height: 0px; /* 按钮高度 */  
+    subcontrol-position: top; /* 按钮位置 */  
+    subcontrol-origin: margin;  
+}  
+  
+QScrollBar::add-page:vertical:hover, QScrollBar::sub-page:vertical:hover {  
+    background: none; /* 滑动区域背景 */  
+}  
+  
+/* 横向滚动条样式 */  
+QScrollBar:horizontal:hover {  
+    border: none;  
+    background: transparent;  
+    height: 10px;  
+    margin: 0px 0px 0px 0px;  
+}  
+  
+QScrollBar::handle:horizontal:hover {  
+    background:rgb(190,190,190);  
+    min-width: 20px;  
+    border-radius: 5px;  
+}  
+  
+QScrollBar::add-line:horizontal:hover {  
+    background: transparent;  
+    width: 0px;  
+    subcontrol-position: right;  
+    subcontrol-origin: margin;  
+}  
+  
+QScrollBar::sub-line:horizontal:hover {  
+    background: transparent;  
+    width: 0px;  
+    subcontrol-position: left;  
+    subcontrol-origin: margin;  
+}  
+  
+QScrollBar::add-page:horizontal:hover, QScrollBar::sub-page:horizontal:hover {  
+    background: none;  
+}
+
+/*QProgressBar*/
+QProgressBar {  
+    background-color:  rgb(164,160,164); 
+    color: rgb(164,160,164); 
+    border: 1px solid rgb(164,164,164);
+    border-radius: 10px;
+    text-align: center; 
+}  
+QProgressBar::chunk {  
+    background-color:  rgb(0,120,212);
+    border: 1px solid rgb(0,120,212);
+    border-radius: 8px;
+    
+}
+
+/*MainWindow QToolButton*/
+#MainWindow QToolButton{
+    padding-left: 2px;
+    border-radius: 6px;
+    color:black;
+
+}
+#MainWindow QToolButton:hover{
+    background-color:rgb(234,234,234) ;
+}
+#MainWindow QToolButton:pressed{
+    background-color:rgb(237,237,237) ;
+
+}
+#MainWindow QToolButton:checked{
+    border-left: 2px solid qlineargradient(spread:reflect, x1:1, y1:0.517636, x2:1, y2:1, stop:0.631285 rgba(0, 103, 192, 255), stop:0.636872 rgba(243, 243, 243, 255));
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color:rgb(234,234,234) ;
+}
+
+#MainWindow{
+    background-color: white;
+}
+
+/*QFrame*/
+DownloadItemWidget>QFrame{
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 10px;
+}
+
+
+DownloadItemWidget>QFrame>#btnDelete{
+    background-color: rgb(167, 37, 37);
+    color: white;
+}
+
+DownloadItemWidget>QFrame>#btnDelete:hover{
+    background-color: rgb(133, 44, 44);
+    color: white;
+}
+
+DownloadItemWidget>QFrame>#btnDelete:pressed{
+    background-color: rgb(107, 22, 22);
+    color: white;
+}
+
+
+DownloadListWidget #btnTabDownloading,#DownloadListWidget #btnTabStopped{
+    color:black;
+    background-color: white;
+    border: none;
+}
+
+DownloadListWidget #btnTabDownloading:hover,#DownloadListWidget #btnTabStopped:hover{
+    color: rgb(0, 103, 192);
+    
+}
+
+DownloadListWidget #btnTabDownloading:checked,#DownloadListWidget #btnTabStopped:checked{
+    color: rgb(0, 103, 192);
+    border-bottom: 2px solid  rgb(0, 103, 192);
+    border-radius: 0px;
+}
+
+
+
+QListWidget::item{
+    min-height: 120px;
+    border: none;
+}
