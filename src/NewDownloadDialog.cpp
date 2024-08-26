@@ -11,15 +11,16 @@ NewDownloadDialog::NewDownloadDialog(QWidget* parent) : QDialog(parent), ui(new 
 
 void NewDownloadDialog::connectSlots()
 {
-    connect(ui->checkAdvanced,&QCheckBox::clicked,this,&NewDownloadDialog::resizeWidget);
+    connect(ui->checkAdvanced, &QCheckBox::clicked, this, &NewDownloadDialog::resizeWidget);
 }
 
 void NewDownloadDialog::resizeWidget(bool maxMode)
 {
-    if(maxMode){
+    if (maxMode) {
         ui->advancedWidget->show();
         setFixedHeight(623);
-    }else{
+    }
+    else {
         ui->advancedWidget->hide();
         setFixedHeight(310);
     }
@@ -29,5 +30,3 @@ NewDownloadDialog::~NewDownloadDialog()
 {
     delete ui;
 }
-
-
