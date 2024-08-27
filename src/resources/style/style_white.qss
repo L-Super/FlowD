@@ -207,6 +207,111 @@ QProgressBar::chunk {
     
 }
 
+/*QComboBox*/
+QComboBox::drop-down{
+	subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+	image: url(:/qss/icons/resources/icons/drop-down.png);
+}
+QComboBox {  
+    border: 1px solid rgb(236,236,236); 
+	border-bottom-color: rgb(211, 211, 211);
+    border-radius: 4px;  
+    background-color: rgb(254, 254, 254); 
+	color:black;
+
+}  
+
+QComboBox:hover
+{
+	background-color:rgb(250, 250, 250);
+ }
+
+ QComboBox:pressed {  
+    background-color: rgb(250, 250, 250); 
+	border-bottom-color:rgb(236, 236, 236);
+	color:grey;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid rgb(236,236,236); 
+	background-color: rgb(249,249,249);
+    border-radius: 6px;
+    padding: 1px 2px 1px 2px; 
+    min-width: 9em;   
+	outline:none;
+	
+}
+
+QComboBox QAbstractItemView::item {
+	border-radius: 6px;
+    height: 30px;  
+	color:black;
+	
+	background-color: rgb(249,249,249);
+
+}
+QComboBox QAbstractItemView::item:selected{
+	padding:3px;
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	border-left:2px solid rgb(0,103,192);
+
+} 
+
+QComboBox QAbstractItemView::item:hover {
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	border-left:none ;
+	background-color: rgb(240,240,240);
+	border-radius: 6px;
+
+
+	
+}
+QComboBox QAbstractItemView::item:pressed {
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	border-left:none ;
+	background-color: rgb(243,243,243);
+	border-radius: 6px;
+}
+
+
+QComboBox:disabled {  
+    border: 1px solid rgb(180,180,180); 
+	border-bottom-color: rgb(180, 180, 180);
+    border-radius: 4px;  
+    background-color:  rgb(180, 180, 180); 
+	color:black;
+
+}  
+
+/*QCheckBox*/
+QCheckBox::indicator:unchecked{
+    border: 1px solid grey;
+  border-radius:4px;
+  background-color:white;
+}
+QCheckBox::indicator:unchecked:hover{
+    border: 1px solid grey;
+  border-radius:4px;
+  background-color:rgb(227,227,227);
+}
+QCheckBox::indicator:checked{
+  border-image:url(:/qss/icons/resources/icons/tick.png);
+  background-color: rgb(23, 143, 255);
+  /*border: 2px solid grey;*/
+  border-radius:4px;
+}
+QCheckBox::indicator:checked:hover{
+  border-image:url(:/qss/icons/resources/icons/tick.png);
+  background-color: rgb(0,128,227);
+  /*border: 2px solid grey;*/
+  border-radius:4px;
+}
+
 /*MainWindow QToolButton*/
 #MainWindow QToolButton{
     padding-left: 2px;

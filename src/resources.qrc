@@ -15,4 +15,8 @@
         <file>resources/icons/new.svg</file>
         <file>resources/icons/settings.svg</file>
     </qresource>
+    <qresource prefix="/qss/icons">
+        <file>resources/icons/drop-down.png</file>
+        <file>resources/icons/tick.png</file>
+    </qresource>
 </RCC>
