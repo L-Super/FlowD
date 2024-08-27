@@ -9,13 +9,22 @@ DownloadListWidget::DownloadListWidget(QWidget* parent) : QWidget(parent), ui(ne
 {
     ui->setupUi(this);
 
-    //仅供测试
-    QListWidgetItem* pItem = new QListWidgetItem(ui->listWidget);
-    ui->listWidget->addItem(pItem);
+    //仅供测试（使用示例）
 
-    DownloadItemWidget* aCustomItem = new DownloadItemWidget;
-    ui->listWidget->setItemWidget(pItem, aCustomItem);
-    ui->listWidget->setCurrentItem(pItem);
+    listItems.append(new QListWidgetItem);
+    itemsHash.insert(listItems[0], new DownloadItemWidget);
+
+    ui->listWidget->addItem(listItems[0]);
+    ui->listWidget->setItemWidget(listItems[0], itemsHash[listItems[0]]);
+
+    /*下面示例展示如何获取listItem第一个元素（类型QListItemWidget实例）所对应的
+
+    DownloadItemWidget对象的指针，并进行一些操作：
+    DownloadItemWidget* itemWidget=itemsHash[listItems[0]];
+    itemWidget->setFileName("FlowD.exe");
+    itemWidget->setDownloadState(true);
+
+    这里你不用担心内存泄漏，我已经在析构函数里正确地释放了*/
 
     iniUi();
     connectSlots();
@@ -59,4 +68,14 @@ void DownloadListWidget::changeTab(int index)
 DownloadListWidget::~DownloadListWidget()
 {
     delete ui;
+
+    //释放QListWidgetItem类对象和DownloadItemWidget类对象的所有资源
+    QHash<QListWidgetItem*, DownloadItemWidget*>::iterator it = itemsHash.begin();
+    while (it != itemsHash.end()) {
+        QHash<QListWidgetItem*, DownloadItemWidget*>::iterator current = it;
+        ++it;
+        delete current.key();
+        delete current.value();
+        itemsHash.erase(current);
+    }
 }

@@ -8,6 +8,10 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+class QListWidgetItem;
+
+class DownloadItemWidget;
+
 class DownloadListWidget : public QWidget {
     Q_OBJECT
 
@@ -18,6 +22,9 @@ public:
 private:
     Ui::DownloadListWidget* ui;
 
+    //一个存储了列表条目和自定义条目映射关系的QHash
+    QHash<QListWidgetItem*, DownloadItemWidget*> itemsHash;
+    QList<QListWidgetItem*> listItems;
     void iniUi();
     void connectSlots();
     void changeTab(int index);
