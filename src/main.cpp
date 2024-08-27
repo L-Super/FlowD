@@ -26,13 +26,23 @@ QString getQss()
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
-    a.setWindowIcon(QIcon(":/resources/logo.svg"));
+
+    QString iconPath;//图标路径
+
+#if defined(Q_OS_WIN)
+    iconPath = ":/resources/win/logo.ico";
+#elif defined(Q_OS_MAC)
+    iconPath = ":/resources/mac/logo.icns";
+#else //linux或其它操作系统
+    iconPath = ":/resources/logo.png";
+#endif
+
+    a.setWindowIcon(QIcon(iconPath));
 
     qDebug() << QString("The version of this application is v%1").arg(VERSION_STR);
 
     //应用样式表
     a.setStyleSheet(getQss());
-
 
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));

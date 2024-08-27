@@ -2,13 +2,14 @@
 #include "ui_MainWindow.h"
 
 #include <QDebug>
+#include <QDir>
+#include <QMessageBox>
 #include <QSettings>
 #include <QStandardPaths>
-#include <QMessageBox>
-#include <QDir>
 
 #include "DownloadListWidget.h"
 #include "HelpWidget.h"
+#include "NewDownloadDialog.h"
 #include "SettingsWidget.h"
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow)
@@ -33,6 +34,11 @@ void MainWindow::connectSlots()
 
     //连接其他控件信号和槽
     connect(ui->toolMenu, &QToolButton::clicked, this, &MainWindow::onToolMenuClicked);
+    connect(ui->toolNewDownload, &QToolButton::clicked, this, [] {
+        auto newDownloadDialog = new NewDownloadDialog;
+        newDownloadDialog->exec();
+        //已经setAttribute(Qt::WA_DeleteOnClose);
+    });
 }
 
 void MainWindow::iniUi()
@@ -40,8 +46,9 @@ void MainWindow::iniUi()
     //设置选项卡显示状态
     QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir cacheDir(cachePath);
-    if(!cacheDir.exists())  cacheDir.mkpath(cachePath);
-    QSettings set(cachePath + "/config.ini",QSettings::IniFormat);
+    if (!cacheDir.exists())
+        cacheDir.mkpath(cachePath);
+    QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
     tabMinimized = set.value("Common/MinimizeMainTab", false).toBool();
     minimizeMainTab(tabMinimized);
 
@@ -82,8 +89,9 @@ void MainWindow::minimizeMainTab(bool minimize)
     //将配置写入ini
     QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir cacheDir(cachePath);
-    if(!cacheDir.exists())  cacheDir.mkpath(cachePath);
-    QSettings set(cachePath + "/config.ini",QSettings::IniFormat);
+    if (!cacheDir.exists())
+        cacheDir.mkpath(cachePath);
+    QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
     set.setValue("Common/MinimizeMainTab", minimize);
 }
 

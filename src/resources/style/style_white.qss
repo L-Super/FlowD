@@ -19,32 +19,32 @@ QPushButton:pressed {
 	color:grey;
 }
 
-QPushButton[highlight="true"]{
+QPushButton#btnOk,QPushButton#btnSelectPath{
 	color: white;
 	background-color: rgb(0,103,192);
 	border:1px solid rgb(20,115,197);
 	border-bottom: 2px solid rgb(0,62,115);
 }
 
-QPushButton[highlight="true"]:disabled{
+QPushButton#btnOk:disabled,QPushButton#btnSelectPath:disabled{
 	background-color: rgb(3, 41, 74);
 }
 
-QPushButton[highlight="true"]:hover{
+QPushButton#btnOk:hover,QPushButton#btnSelectPath:hover{
 	color: white;
 	background-color: rgb(25,117,197);
 	border:1px solid rgb(43,128,202);
 	border-bottom: 2px solid rgb(15,70,118);
 }
 
-QPushButton[highlight="true"]:pressed{
+QPushButton#btnOk:pressed,QPushButton#btnSelectPath:pressed{
 	color: rgb(194,218,239);
 	background-color: rgb(25,117,197);
 	border: 0px ;
 }
 
 /*QLineEdit*/
-QLineEdit {  
+QLineEdit,QPlainTextEdit{  
     border: 1px solid rgb(229,229,229); 
 	border-bottom-color: rgb(134,134, 134);
     border-radius: 5px;  
@@ -53,12 +53,12 @@ QLineEdit {
 
 }  
 
-QLineEdit:hover
+QLineEdit:hover,QPlainTextEdit:hover
 {
 	background-color:rgb(246,246,246);
  }
 
-QLineEdit:focus{
+QLineEdit:focus,QPlainTextEdit:focus{
 	border-bottom-width: 2px;
 	background-color: rgb(255, 255, 255);
 	border-bottom-color: rgb(0, 103, 192);
@@ -255,24 +255,33 @@ DownloadItemWidget>QFrame>#btnDelete:pressed{
 }
 
 
-DownloadListWidget #btnTabDownloading,#DownloadListWidget #btnTabStopped{
+DownloadListWidget #btnTabDownloading,DownloadListWidget #btnTabStopped,
+SettingsWidget #btnTabBasic,SettingsWidget #btnTabAdvanced,
+NewDownloadDialog #btnTabLinkMode{
     color:black;
     background-color: white;
     border: none;
 }
 
-DownloadListWidget #btnTabDownloading:hover,#DownloadListWidget #btnTabStopped:hover{
+DownloadListWidget #btnTabDownloading:hover,DownloadListWidget #btnTabStopped:hover,
+SettingsWidget #btnTabBasic:hover,SettingsWidget #btnTabAdvanced:hover,
+NewDownloadDialog #btnTabLinkMode:hover{
     color: rgb(0, 103, 192);
     
 }
 
-DownloadListWidget #btnTabDownloading:checked,#DownloadListWidget #btnTabStopped:checked{
+DownloadListWidget #btnTabDownloading:checked,DownloadListWidget #btnTabStopped:checked,
+SettingsWidget #btnTabBasic:checked,SettingsWidget #btnTabAdvanced:checked,
+NewDownloadDialog #btnTabLinkMode:checked
+{
     color: rgb(0, 103, 192);
     border-bottom: 2px solid  rgb(0, 103, 192);
     border-radius: 0px;
 }
 
-
+QWidget{
+    background-color: white;
+}
 
 QListWidget::item{
     min-height: 120px;
