@@ -7,6 +7,14 @@
 #include "MainWindow.h"
 #include "version.h"
 
+#if defined(_WIN32)
+#define PLATFORM_WINDOWS
+#elif defined(__APPLE__)
+#define PLATFORM_MAC
+#elif defined(__linux__)
+#define PLATFORM_LINUX
+#endif
+
 //获取样式表
 QString getQss()
 {
@@ -26,7 +34,18 @@ QString getQss()
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
-    a.setWindowIcon(QIcon(":/resources/logo.png"));
+
+    QString iconPath;//图标拓展名称
+
+#if defined(PLATFORM_WINDOWS)
+    iconPath = ":/resources/win/logo.ico";
+#elif defined(PLATFORM_MAC)
+    iconPath = ":/resources/mac/logo.icns";
+#else //linux或其它操作系统
+    icoPath = ":/resources/logo.png"
+#endif
+
+    a.setWindowIcon(QIcon(iconPath));
 
     qDebug() << QString("The version of this application is v%1").arg(VERSION_STR);
 

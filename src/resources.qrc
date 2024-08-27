@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>resources/logo.svg</file>
         <file>resources/logo.png</file>
+        <file>resources/win/logo.ico</file>
+        <file>resources/mac/logo.icns</file>
     </qresource>
     <qresource prefix="/qss">
         <file>resources/style/style_black.qss</file>
