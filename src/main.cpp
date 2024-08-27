@@ -7,9 +7,9 @@
 #include "MainWindow.h"
 #include "version.h"
 
-#if defined(_WIN32)
+#if defined(Q_OS_WIN)
 #define PLATFORM_WINDOWS
-#elif defined(__APPLE__)
+#elif defined(Q_OS_MAC)
 #define PLATFORM_MAC
 #endif
 
