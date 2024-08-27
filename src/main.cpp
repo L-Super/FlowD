@@ -11,8 +11,6 @@
 #define PLATFORM_WINDOWS
 #elif defined(__APPLE__)
 #define PLATFORM_MAC
-#elif defined(__linux__)
-#define PLATFORM_LINUX
 #endif
 
 //获取样式表
@@ -35,14 +33,14 @@ int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
-    QString iconPath;//图标拓展名称
+    QString iconPath;//图标路径
 
 #if defined(PLATFORM_WINDOWS)
     iconPath = ":/resources/win/logo.ico";
 #elif defined(PLATFORM_MAC)
     iconPath = ":/resources/mac/logo.icns";
 #else //linux或其它操作系统
-    icoPath = ":/resources/logo.png"
+    iconPath = ":/resources/logo.png";
 #endif
 
     a.setWindowIcon(QIcon(iconPath));
@@ -51,7 +49,6 @@ int main(int argc, char* argv[])
 
     //应用样式表
     a.setStyleSheet(getQss());
-
 
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));
