@@ -1,4 +1,15 @@
-# FlowD - 高效的多线程下载工具
+<p align="center"><img src="src/resources/logo.png" width="100" height="100"></p>
+<h1 align="center">FlowD</h1>
+<p align="center">
+<a href="https://github.com/L-Super/FlowD/stargazers" ><img src="https://img.shields.io/github/stars/L-Super/FlowD?logo=github&style=round-square" alt="GitHub stars"></a>
+<a href="https://github.com/L-Super/FlowD/issues" ><img src="https://img.shields.io/github/issues/L-Super/FlowD?logo=github&style=round-square" alt="GitHub issues"></a>
+<a href="https://github.com/L-Super/FlowD/pulls?q=is%3Apr+is%3Aclosed"><img src="https://img.shields.io/github/issues-search/L-Super/FlowD?style=flat&logo=github&label=Merged%20PRs&query=is%3Amerged" alt="GitHub Merged Prs"></a>
+<a href="https://github.com/L-Super/FlowD/blob/master/LICENSE" style="text-decoration:none"><img src="https://img.shields.io/github/license/L-Super/FlowD?style=round-square&logo=github" alt="GitHub License"></a>
+<a href="#" ><img src="https://img.shields.io/badge/Language-C++-blue.svg?" alt="Language"></a>
+<a href="#" style="text-decoration:none"><img src="https://img.shields.io/badge/Frame-Qt-purple.svg" alt="Frame"></a>
+</p>
+
+> 高效的多线程下载工具
 
 ## 简介
 
