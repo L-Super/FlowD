@@ -3,10 +3,10 @@
 //
 
 #pragma once
-#include <map>
 #include <memory>
 #include <string>
 #include <thread>
+#include <unordered_map>
 
 #include "Noncopyable.hpp"
 
@@ -19,16 +19,16 @@ public:
         return instance;
     }
 
-    void addTask(const std::string& url, const std::string& filePath,
-                 unsigned int threadNum = std::thread::hardware_concurrency());
-    void pauseTask(const std::string& taskID);
-    void resumeTask(const std::string& taskID);
-    void removeTask(const std::string& taskID);
+    [[nodiscard]] std::size_t addTask(const std::string& url, const std::string& filePath,
+                                      unsigned int threadNum = std::thread::hardware_concurrency());
+    void pauseTask(size_t taskID);
+    void resumeTask(size_t taskID);
+    void removeTask(size_t taskID);
 
 private:
     DownloadManager();
     ~DownloadManager();
 
 private:
-    std::map<std::string, std::unique_ptr<DownloadTask>> tasks_;
+    std::unordered_map<size_t, std::unique_ptr<DownloadTask>> tasks_;
 };

@@ -9,13 +9,15 @@ DownloadManager::DownloadManager() {}
 
 DownloadManager::~DownloadManager() {}
 
-void DownloadManager::addTask(const std::string& url, const std::string& filePath, unsigned int threadNum)
+size_t DownloadManager::addTask(const std::string& url, const std::string& filePath, unsigned int threadNum)
 {
-    tasks_[url] = std::make_unique<DownloadTask>(url, filePath, threadNum);
-    tasks_[url]->start();
+    auto urlHash = std::hash<std::string>{}(url);
+    tasks_[urlHash] = std::make_unique<DownloadTask>(url, filePath, threadNum);
+    tasks_[urlHash]->start();
+    return urlHash;
 }
 
-void DownloadManager::pauseTask(const std::string& taskID)
+void DownloadManager::pauseTask(size_t taskID)
 {
 
     if (tasks_.find(taskID) != tasks_.end()) {
@@ -23,7 +25,7 @@ void DownloadManager::pauseTask(const std::string& taskID)
     }
 }
 
-void DownloadManager::resumeTask(const std::string& taskID)
+void DownloadManager::resumeTask(size_t taskID)
 {
 
     if (tasks_.find(taskID) != tasks_.end()) {
@@ -31,9 +33,8 @@ void DownloadManager::resumeTask(const std::string& taskID)
     }
 }
 
-void DownloadManager::removeTask(const std::string& taskID)
+void DownloadManager::removeTask(size_t taskID)
 {
-
     if (tasks_.find(taskID) != tasks_.end()) {
         tasks_[taskID]->stop();
         tasks_.erase(taskID);
