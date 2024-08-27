@@ -7,12 +7,6 @@
 #include "MainWindow.h"
 #include "version.h"
 
-#if defined(Q_OS_WIN)
-#define PLATFORM_WINDOWS
-#elif defined(Q_OS_MAC)
-#define PLATFORM_MAC
-#endif
-
 //获取样式表
 QString getQss()
 {
@@ -35,9 +29,9 @@ int main(int argc, char* argv[])
 
     QString iconPath;//图标路径
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(Q_OS_WIN)
     iconPath = ":/resources/win/logo.ico";
-#elif defined(PLATFORM_MAC)
+#elif defined(Q_OS_MAC)
     iconPath = ":/resources/mac/logo.icns";
 #else //linux或其它操作系统
     iconPath = ":/resources/logo.png";

@@ -19,25 +19,25 @@ QPushButton:pressed {
 	color:grey;
 }
 
-#btnOk,#btnSelectPath{
+QPushButton#btnOk,QPushButton#btnSelectPath{
 	color: white;
 	background-color: rgb(0,103,192);
 	border:1px solid rgb(20,115,197);
 	border-bottom: 2px solid rgb(0,62,115);
 }
 
-#btnOk:disabled,#btnSelectPath:disabled{
+QPushButton#btnOk:disabled,QPushButton#btnSelectPath:disabled{
 	background-color: rgb(3, 41, 74);
 }
 
-#btnOk:hover,#btnOk:hover{
+QPushButton#btnOk:hover,QPushButton#btnSelectPath:hover{
 	color: white;
 	background-color: rgb(25,117,197);
 	border:1px solid rgb(43,128,202);
 	border-bottom: 2px solid rgb(15,70,118);
 }
 
-#btnOk:pressed{
+QPushButton#btnOk:pressed,QPushButton#btnSelectPath:pressed{
 	color: rgb(194,218,239);
 	background-color: rgb(25,117,197);
 	border: 0px ;
