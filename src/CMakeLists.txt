@@ -72,6 +72,7 @@ add_executable(${PROJECT_NAME}
 
 )
 add_subdirectory(Logic)
+add_subdirectory(Utils)
 
 if (WIN32)
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -120,6 +121,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         spdlog::spdlog_header_only
         nlohmann_json::nlohmann_json
         cpr::cpr
+        Utils
 )
 
 if (WIN32)
