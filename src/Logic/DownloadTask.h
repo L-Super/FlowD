@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -13,7 +14,7 @@
 
 class DownloadTask : private Noncopyable {
 public:
-    struct HeadInfo{
+    struct HeadInfo {
         size_t length{};
         bool supportRange{};
     };
@@ -22,6 +23,7 @@ public:
         RUNNING,
         PAUSE,
     };
+
 public:
     DownloadTask(std::string url, std::string filePath, unsigned int threadNum);
     ~DownloadTask();
@@ -44,8 +46,7 @@ private:
     std::string tmpFilePath_;
     unsigned int threadNum_;
     cpr::Session session_;
-    std::atomic<size_t> totalSize_;
-    std::atomic<size_t> downloadedSize_;
+    std::atomic<unsigned long> totalSize_;
+    std::atomic<unsigned long> downloadedSize_;
     Status status_;
-    std::mutex fileMutex_;
 };

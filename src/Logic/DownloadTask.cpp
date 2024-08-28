@@ -5,6 +5,8 @@
 #include "DownloadTask.h"
 #include "spdlog/spdlog.h"
 
+#include <filesystem>
+
 namespace {
     constexpr unsigned int KB = 1 * 1024 * 1024;
     constexpr unsigned int MB = 1 * 1024 * 1024 * 1024;
@@ -52,27 +54,33 @@ void DownloadTask::start()
         size_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
         cpr::ThreadPool threadPool;
         //TODO: thread pool
+        // How to check it download finish
         // threads_.emplace_back(&DownloadTask::downloadChunk, this, i, start, end);
     }
 }
 
 void DownloadTask::stop()
 {
+    spdlog::info("Download stop");
     status_ = Status::STOP;
 }
 
 void DownloadTask::pause()
 {
+    spdlog::info("Download pause");
     status_ = Status::PAUSE;
 }
 
 void DownloadTask::resume()
 {
+    spdlog::info("Download resume");
     status_ = Status::RUNNING;
 }
 
 DownloadTask::HeadInfo DownloadTask::fileSize()
 {
+    //TODO: Maybe use GetDownloadFileLength first
+    //see:https://github.com/libcpr/cpr/pull/599
     cpr::Response response = session_.Head();
     if (response.status_code != 200) {
         return {};
@@ -107,13 +115,17 @@ void DownloadTask::download()
     if (status_ != Status::RUNNING)
         return;
     //TODO: maybe add write callback
-    std::ofstream file(filePath_, std::ios::binary | std::ios::out);
+    std::ofstream file(tmpFilePath_, std::ios::binary | std::ios::out);
 
     session_.SetProgressCallback(cpr::ProgressCallback(
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             }));
-    session_.Download(file);
+    auto response = session_.Download(file);
+    if (response.downloaded_bytes == totalSize_) {
+        spdlog::info("{} download finish. file path:{}", __func__, filePath_);
+        std::filesystem::rename(tmpFilePath_, filePath_);
+    }
 
     status_ = Status::STOP;
 }
@@ -128,6 +140,8 @@ void DownloadTask::downloadChunk(size_t start, size_t end)
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             });
     cpr::WriteCallback writeCallbackFunc([this, start](const std::string_view& data, auto userdata) {
+        // Return true on success, or false to cancel the transfer.
+        //TODO: if return false, cancel download or pause?
         if (status_ != Status::RUNNING)
             return false;
         return writeCallback(data, userdata, start);
@@ -150,6 +164,7 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
     file.write(data.data(), data.size());
 
     downloadedSize_ += data.size();
+    spdlog::info("Write callback. start:{} downloaded size:{}", start, downloadedSize_.load());
 
     return false;
 }
