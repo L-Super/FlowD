@@ -18,6 +18,8 @@ DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int t
 {
     tmpFilePath_ = filePath_ + ".tmp";
     session_.SetUrl(cpr::Url(url_));
+    session_.SetHeader({{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
+                                       "Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"}});
 }
 
 DownloadTask::~DownloadTask() {}
@@ -45,10 +47,10 @@ void DownloadTask::start()
         return;
     }
 
-    // 分配每个线程下载的区间
+    // Allocate the compartment for each thread's download
     size_t part_size = totalSize_ / threadNum_;
 
-    // 启动线程池
+    // launch the thread pool
     for (int i = 0; i < threadNum_; ++i) {
         size_t start = i * part_size;
         size_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
@@ -83,6 +85,7 @@ DownloadTask::HeadInfo DownloadTask::fileSize()
     //see:https://github.com/libcpr/cpr/pull/599
     cpr::Response response = session_.Head();
     if (response.status_code != 200) {
+        spdlog::error("Request head failed.");
         return {};
     }
     HeadInfo info;
@@ -97,7 +100,7 @@ DownloadTask::HeadInfo DownloadTask::fileSize()
     else {
         info.supportRange = false;
     }
-
+    spdlog::info("Request head. Accept-Ranges support is {} file length:{}", info.supportRange, info.length);
     // auto length = session_.GetDownloadFileLength();
     return info;
 }
@@ -166,6 +169,12 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
     downloadedSize_ += data.size();
     spdlog::info("Write callback. start:{} downloaded size:{}", start, downloadedSize_.load());
 
+    // TODO:
+    if (progressCallback_) {
+        spdlog::info("execute progress callback");
+        progressCallback_(totalSize_.load(), downloadedSize_.load());
+    }
+
     return false;
 }
 
@@ -177,5 +186,11 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
     (void) userdata;
 
     spdlog::info("Download {}/{} bytes.", downloadNow, downloadTotal);
+
     return true;
+}
+
+void DownloadTask::setProgressCallback(ProgressCallback& cb)
+{
+    progressCallback_ = cb;
 }

@@ -8,12 +8,24 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <functional>
 
 #include "Noncopyable.hpp"
 #include "cpr/cpr.h"
 
 class DownloadTask : private Noncopyable {
 public:
+    DownloadTask(std::string url, std::string filePath, unsigned int threadNum);
+    ~DownloadTask();
+    void start();
+    void stop();
+    void pause();
+    void resume();
+
+    using ProgressCallback = std::function<void(long downloadTotal, long downloadNow)>;
+    void setProgressCallback(ProgressCallback& cb);
+
+protected:
     struct HeadInfo {
         size_t length{};
         bool supportRange{};
@@ -23,14 +35,6 @@ public:
         RUNNING,
         PAUSE,
     };
-
-public:
-    DownloadTask(std::string url, std::string filePath, unsigned int threadNum);
-    ~DownloadTask();
-    void start();
-    void stop();
-    void pause();
-    void resume();
 
 protected:
     HeadInfo fileSize();
@@ -49,4 +53,5 @@ private:
     std::atomic<unsigned long> totalSize_;
     std::atomic<unsigned long> downloadedSize_;
     Status status_;
+    ProgressCallback progressCallback_;
 };
