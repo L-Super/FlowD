@@ -3,10 +3,18 @@
 //
 
 #include "DownloadTask.h"
+#include "spdlog/spdlog.h"
+
+namespace {
+    constexpr unsigned int KB = 1 * 1024 * 1024;
+    constexpr unsigned int MB = 1 * 1024 * 1024 * 1024;
+}// namespace
 
 DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int threadNum)
-    : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{}
+    : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
+      status_(Status::STOP)
 {
+    tmpFilePath_ = filePath_ + ".tmp";
     session_.SetUrl(cpr::Url(url_));
 }
 
@@ -14,17 +22,26 @@ DownloadTask::~DownloadTask() {}
 
 void DownloadTask::start()
 {
-    // 获取文件大小
-    totalSize_ = fileSize();
+    // get file size
+    auto [totalSize, supportRange] = fileSize();
+    totalSize_ = totalSize;
     if (totalSize_ == 0) {
-        std::cerr << "Failed to get file size." << std::endl;
+        spdlog::error("Failed to get file size.");
         return;
     }
+    status_ = Status::RUNNING;
 
-    // TODO：判断文件大小，如果小于10MB，则不进行分片下载，同时判断是否支持Range，支持才进行分片
-
-    // 预分配文件大小
+    // Preallocate file size.
     preallocateFileSize(totalSize_);
+
+    // If the file is smaller than 10MB or does not support Range, download it directly.
+    if (totalSize_ < 10 * MB || !supportRange) {
+        // TODO：
+        auto future = std::async(std::launch::async, [&] {
+            download();
+        });
+        return;
+    }
 
     // 分配每个线程下载的区间
     size_t part_size = totalSize_ / threadNum_;
@@ -33,51 +50,117 @@ void DownloadTask::start()
     for (int i = 0; i < threadNum_; ++i) {
         size_t start = i * part_size;
         size_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
-        //TODO:线程池
+        cpr::ThreadPool threadPool;
+        //TODO: thread pool
         // threads_.emplace_back(&DownloadTask::downloadChunk, this, i, start, end);
     }
 }
 
-void DownloadTask::stop() {}
-
-void DownloadTask::pause() {}
-
-void DownloadTask::resume() {}
-
-size_t DownloadTask::fileSize()
+void DownloadTask::stop()
 {
-    //    cpr::Response response = session.Head();
-    //    if (response.status_code != 200) {
-    //        return 0;
-    //    }
-    //    auto length = std::stoull(response.header["Content-Length"]);
-    auto length = session_.GetDownloadFileLength();
-    return length;
+    status_ = Status::STOP;
+}
+
+void DownloadTask::pause()
+{
+    status_ = Status::PAUSE;
+}
+
+void DownloadTask::resume()
+{
+    status_ = Status::RUNNING;
+}
+
+DownloadTask::HeadInfo DownloadTask::fileSize()
+{
+    cpr::Response response = session_.Head();
+    if (response.status_code != 200) {
+        return {};
+    }
+    HeadInfo info;
+    auto length = std::stoull(response.header["Content-Length"]);
+    info.length = length;
+    auto acceptRange = response.header["Accept-Ranges"];
+    // not support Accept-Ranges:
+    // haven't Accept-Ranges header or value is none
+    if (acceptRange == "bytes") {
+        info.supportRange = true;
+    }
+    else {
+        info.supportRange = false;
+    }
+
+    // auto length = session_.GetDownloadFileLength();
+    return info;
 }
 
 void DownloadTask::preallocateFileSize(size_t fileSize)
 {
-    std::ofstream file(filePath_, std::ios::binary);
+    std::ofstream file(tmpFilePath_, std::ios::binary);
     file.seekp(fileSize - 1);
     file.write("", 1);
     file.close();
 }
 
+void DownloadTask::download()
+{
+    if (status_ != Status::RUNNING)
+        return;
+    //TODO: maybe add write callback
+    std::ofstream file(filePath_, std::ios::binary | std::ios::out);
+
+    session_.SetProgressCallback(cpr::ProgressCallback(
+            [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
+                return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
+            }));
+    session_.Download(file);
+
+    status_ = Status::STOP;
+}
+
 void DownloadTask::downloadChunk(size_t start, size_t end)
 {
-    cpr::Header headers = {{"Range", "bytes=" + std::to_string(start) + "-" + std::to_string(end)}};
-    cpr::Response response = cpr::Get(cpr::Url{url_}, headers);
+    if (status_ != Status::RUNNING)
+        return;
+    // cpr::Header headers = {{"Range", "bytes=" + std::to_string(start) + "-" + std::to_string(end)}};
+    cpr::ProgressCallback progressCallbackFunc(
+            [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
+                return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
+            });
+    cpr::WriteCallback writeCallbackFunc([this, start](const std::string_view& data, auto userdata) {
+        if (status_ != Status::RUNNING)
+            return false;
+        return writeCallback(data, userdata, start);
+    });
+    cpr::Response response = cpr::Get(cpr::Url{url_}, cpr::Range(start, end), progressCallbackFunc, writeCallbackFunc);
 
     if (response.status_code != 206) {
-        std::cerr << "Thread " << std::this_thread::get_id()
-                  << " failed to download part. Status code: " << response.status_code << std::endl;
+        std::ostringstream oss;
+        oss << std::this_thread::get_id();
+        spdlog::error("Thread {} failed to download part. Status code: {}", oss.str(), response.status_code);
         return;
     }
+    status_ = Status::STOP;
+}
 
-    std::lock_guard<std::mutex> lock(fileMutex_);
-    std::ofstream file(filePath_, std::ios::binary | std::ios::out);
-    file.seekp(start);
-    file.write(response.text.c_str(), response.text.size());
+bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata, size_t start)
+{
+    std::ofstream file(tmpFilePath_, std::ios::binary | std::ios::out);
+    file.seekp(static_cast<long long>(start));
+    file.write(data.data(), data.size());
 
-    downloadedSize_ += response.text.size();
+    downloadedSize_ += data.size();
+
+    return false;
+}
+
+bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long uploadTotal, long uploadNow,
+                                    intptr_t userdata)
+{
+    (void) uploadTotal;
+    (void) uploadNow;
+    (void) userdata;
+
+    spdlog::info("Download {}/{} bytes.", downloadNow, downloadTotal);
+    return true;
 }

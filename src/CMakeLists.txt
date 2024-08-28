@@ -100,6 +100,12 @@ elseif (APPLE)
             MACOSX_BUNDLE_INFO_PLIST ${MAC_RES_PATH}/Info.plist.in)
 endif ()
 
+message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+if(WIN32) # Install dlls in the same directory as the executable on Windows
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+endif()
+
 include(FetchContent)
 FetchContent_Declare(
         spdlog
