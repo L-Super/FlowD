@@ -76,11 +76,11 @@ double DownloadItemWidget::getDownloadSpeed()
 void DownloadItemWidget::onBtnSuspendClicked(bool checked)
 {
     if (checked) {
-        ui->btnSuspend->setText("继续");
+        ui->btnSuspend->setText(tr("Continue"));
         //TODO:暂停下载的逻辑
     }
     else {
-        ui->btnSuspend->setText("暂停");
+        ui->btnSuspend->setText(tr("Pause"));
         //TODO:开始下载的逻辑
     }
 }
