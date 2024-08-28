@@ -19,6 +19,9 @@ public:
     explicit DownloadListWidget(QWidget* parent = nullptr);
     ~DownloadListWidget() override;
 
+    int addDownloadItem(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes, qint64 downloadedBytes,
+                        bool isDownloading);
+
 private:
     Ui::DownloadListWidget* ui;
 

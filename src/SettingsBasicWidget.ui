@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Basic Settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_7">
    <item>
@@ -74,7 +74,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>外观：</string>
+                <string>Appereance:</string>
                </property>
               </widget>
              </item>
@@ -105,17 +105,17 @@
                </property>
                <item>
                 <property name="text">
-                 <string>跟随系统</string>
+                 <string>System Settings</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>浅色主题</string>
+                 <string>Light</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>深色主题</string>
+                 <string>Dark</string>
                 </property>
                </item>
               </widget>
@@ -144,7 +144,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>语言：</string>
+                <string>Language:</string>
                </property>
               </widget>
              </item>
@@ -163,7 +163,7 @@
                </property>
                <item>
                 <property name="text">
-                 <string>系统默认</string>
+                 <string>System Language</string>
                 </property>
                </item>
                <item>
@@ -209,7 +209,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>启动：</string>
+                  <string>Startup:</string>
                  </property>
                 </widget>
                </item>
@@ -253,7 +253,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>开机自启动</string>
+                  <string>Open at login</string>
                  </property>
                 </widget>
                </item>
@@ -277,7 +277,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>自启动后显示主界面</string>
+                  <string>Display main interface after automatic startup</string>
                  </property>
                 </widget>
                </item>
@@ -301,7 +301,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>自动开始未完成的任务</string>
+                  <string>Automatically resume all unfinished tasks</string>
                  </property>
                 </widget>
                </item>
@@ -331,7 +331,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>保存路径：</string>
+                <string>Default Path:</string>
                </property>
               </widget>
              </item>
@@ -360,7 +360,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>选择(&amp;S)</string>
+                <string>Select(&amp;S)</string>
                </property>
               </widget>
              </item>
@@ -380,7 +380,7 @@
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>91</width>
+                   <width>200</width>
                    <height>21</height>
                   </size>
                  </property>
@@ -390,7 +390,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>任务管理：</string>
+                  <string>Task Management:</string>
                  </property>
                 </widget>
                </item>
@@ -436,7 +436,7 @@
                     </font>
                    </property>
                    <property name="text">
-                    <string>下载分片数：</string>
+                    <string>Download Splits:</string>
                    </property>
                   </widget>
                  </item>
@@ -478,7 +478,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>新建任务后自动跳转到下载页面</string>
+                  <string>Automatically jump to the download page after creating a new task</string>
                  </property>
                 </widget>
                </item>
@@ -502,7 +502,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>下载完成后通知</string>
+                  <string>Notify after download completion</string>
                  </property>
                 </widget>
                </item>
@@ -526,7 +526,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>删除任务前无需确认</string>
+                  <string>No confirmation required before deleting tasks</string>
                  </property>
                 </widget>
                </item>
@@ -540,13 +540,13 @@
               <widget class="QLabel" name="label_7">
                <property name="minimumSize">
                 <size>
-                 <width>91</width>
+                 <width>100</width>
                  <height>21</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>91</width>
+                 <width>200</width>
                  <height>21</height>
                 </size>
                </property>
@@ -556,7 +556,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>自动升级：</string>
+                <string>Automatic upgrade:</string>
                </property>
               </widget>
              </item>
@@ -580,7 +580,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>开启</string>
+                <string>Enable</string>
                </property>
               </widget>
              </item>

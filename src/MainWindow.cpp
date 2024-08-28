@@ -18,13 +18,13 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow
 
     connectSlots();
 
-    //千万不能与上一行代码对调，否则会出现野指针
+    // Do not swap with the previous line of code, or it will result in Empty pointers.
     iniUi();
 }
 
 void MainWindow::connectSlots()
 {
-    //将侧边栏选项卡按钮指针添加至checkableToolButtons，方便后续控制
+    // Add the pointer of the sidebar tab button to checkableToolButtons for convenient subsequent control
     checkableToolButtons.append(ui->toolDownloadList);
     checkableToolButtons.append(ui->toolSettings);
     checkableToolButtons.append(ui->toolHelp);
@@ -32,18 +32,18 @@ void MainWindow::connectSlots()
     for (int i = 0; i < checkableToolButtons.count(); ++i)
         connect(checkableToolButtons[i], &QToolButton::clicked, this, &MainWindow::onCheckableToolButtonsClicked);
 
-    //连接其他控件信号和槽
+    // Connect signals and slots of other widgets
     connect(ui->toolMenu, &QToolButton::clicked, this, &MainWindow::onToolMenuClicked);
     connect(ui->toolNewDownload, &QToolButton::clicked, this, [] {
         auto newDownloadDialog = new NewDownloadDialog;
         newDownloadDialog->exec();
-        //已经setAttribute(Qt::WA_DeleteOnClose);
+        //I have already used setAttribute(Qt::WA_DeleteOnClose);
     });
 }
 
 void MainWindow::iniUi()
 {
-    //设置选项卡显示状态
+    // Set the display state of the tab
     QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir cacheDir(cachePath);
     if (!cacheDir.exists())
@@ -52,7 +52,7 @@ void MainWindow::iniUi()
     tabMinimized = set.value("Common/MinimizeMainTab", false).toBool();
     minimizeMainTab(tabMinimized);
 
-    //添加QWidget到StackedWidget
+    // Add  QWidget to the StackedWidget
     downloadListWidget = new DownloadListWidget;
     settingsWidget = new SettingsWidget;
     helpWidget = new HelpWidget;
@@ -61,12 +61,12 @@ void MainWindow::iniUi()
     ui->stackedWidget->insertWidget(1, settingsWidget);
     ui->stackedWidget->insertWidget(2, helpWidget);
 
-    //初次选中“下载列表”
+    // Initially select "Download List"
     ui->stackedWidget->setCurrentIndex(0);
     checkableToolButtons[0]->setChecked(1);
 }
 
-//此函数设置主选项卡显示方式是仅有图标还是有图标和文字
+// This function sets the display mode of the main tab to show only icons or both icons and text
 void MainWindow::minimizeMainTab(bool minimize)
 {
     if (minimize) {
@@ -86,7 +86,7 @@ void MainWindow::minimizeMainTab(bool minimize)
         ui->toolNewDownload->setFixedWidth(200);
     }
 
-    //将配置写入ini
+    // Save configuration to INI file
     QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir cacheDir(cachePath);
     if (!cacheDir.exists())
@@ -99,17 +99,17 @@ void MainWindow::onCheckableToolButtonsClicked(bool checked)
 {
     QToolButton* clickedToolButton = qobject_cast<QToolButton*>(sender());
 
-    //寻找按下的按钮
+    //Find pressed button
     for (int i = 0; i < checkableToolButtons.count(); ++i) {
         if (clickedToolButton == checkableToolButtons[i]) {
-            //如果多次点击所在的选项卡，设置属性仍为选中
+            // If the tab is clicked multiple times, maintain the selected property.
             if (!checked) {
                 clickedToolButton->setChecked(true);
             }
             ui->stackedWidget->setCurrentIndex(i);
         }
         else {
-            //未选中选项卡的则设置未选中
+            // Deselect tabs that are not selected
             checkableToolButtons[i]->setChecked(false);
         }
     }
@@ -117,7 +117,7 @@ void MainWindow::onCheckableToolButtonsClicked(bool checked)
 
 void MainWindow::onToolMenuClicked()
 {
-    tabMinimized = !tabMinimized;//切换状态
+    tabMinimized = !tabMinimized;//Change State
     minimizeMainTab(tabMinimized);
 }
 

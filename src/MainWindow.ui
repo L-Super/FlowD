@@ -91,7 +91,7 @@
         </font>
        </property>
        <property name="text">
-        <string>         新建下载</string>
+        <string>     New Download</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
@@ -134,7 +134,7 @@
         </font>
        </property>
        <property name="text">
-        <string>         下载列表</string>
+        <string>     Download List</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
@@ -190,7 +190,7 @@
         </font>
        </property>
        <property name="text">
-        <string>       设置</string>
+        <string>       Settings</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
@@ -233,7 +233,7 @@
         </font>
        </property>
        <property name="text">
-        <string>       帮助</string>
+        <string>       Help</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">

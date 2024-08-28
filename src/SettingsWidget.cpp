@@ -11,42 +11,43 @@ SettingsWidget::SettingsWidget(QWidget* parent) : QWidget(parent), ui(new Ui::Se
     connectSlots();
 }
 
-//该函数将该选项卡页面里的选项卡添加到tabsList，便于控制
+// This function adds the tabs within this tab page to tabsList for easy control
 void SettingsWidget::addToTabsList()
 {
-    //添加顺序不可调换
+    // The order of addition cannot be swapped
     tabsList.append(ui->btnTabBasic);
     tabsList.append(ui->btnTabAdvanced);
 }
 
-void SettingsWidget::iniUi() {
-    settingsBasicWidget=new SettingsBasicWidget;
-    settingsAdvancedWidget=new SettingsAdvancedWidget;
-    ui->stackedWidget->insertWidget(0,settingsBasicWidget);
-    ui->stackedWidget->insertWidget(1,settingsAdvancedWidget);
+void SettingsWidget::iniUi()
+{
+    settingsBasicWidget = new SettingsBasicWidget;
+    settingsAdvancedWidget = new SettingsAdvancedWidget;
+    ui->stackedWidget->insertWidget(0, settingsBasicWidget);
+    ui->stackedWidget->insertWidget(1, settingsAdvancedWidget);
 
     tabsList[0]->setChecked(true);
     ui->stackedWidget->setCurrentIndex(0);
-
 }
 
 void SettingsWidget::connectSlots()
 {
-    //连接tabList槽
+    // Connect the slot for tabList
     for (int i = 0; i < tabsList.count(); ++i)
-        connect(tabsList[i],&QPushButton::clicked,this,&SettingsWidget::onTabsClicked);
+        connect(tabsList[i], &QPushButton::clicked, this, &SettingsWidget::onTabsClicked);
 }
 
-void SettingsWidget::onTabsClicked() {
-    QPushButton* btnTabClicked= qobject_cast<QPushButton*>(sender());
-    //寻找按下的选项卡
-    for (int i = 0; i < tabsList.count(); ++i){
-        if (tabsList[i]==btnTabClicked ){
+void SettingsWidget::onTabsClicked()
+{
+    QPushButton* btnTabClicked = qobject_cast<QPushButton*>(sender());
+    // Find the pressed tab
+    for (int i = 0; i < tabsList.count(); ++i) {
+        if (tabsList[i] == btnTabClicked) {
             ui->stackedWidget->setCurrentIndex(i);
-            if(!tabsList[i]->isChecked())
+            if (!tabsList[i]->isChecked())
                 tabsList[i]->setChecked(true);
         }
-        else{
+        else {
             tabsList[i]->setChecked(false);
         }
     }
