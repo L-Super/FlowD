@@ -583,7 +583,7 @@
            </font>
           </property>
           <property name="text">
-           <string>跳转到下载页面</string>
+           <string>Jump to Download Page</string>
           </property>
          </widget>
         </item>

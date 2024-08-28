@@ -12,7 +12,8 @@ class DownloadItemWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit DownloadItemWidget(QWidget* parent = nullptr);
+    explicit DownloadItemWidget(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes,
+                                qint64 downloadedBytes, bool isDownloading, QWidget* parent = nullptr);
     ~DownloadItemWidget() override;
 
     void setFileName(QString fileName);
@@ -22,6 +23,8 @@ public:
     void setDownloadState(bool isDownloading);
     void setRemainTime(qint64 remainTime);
     void setDownloadSpeed(double downloadSpeed);
+
+    std::pair<double, QString> convertToReasonableUnit(double bytesToConvert);
 
     QString getFileName();
     QString getSavedFilePath();
@@ -54,5 +57,6 @@ private:
     QString savedFilePath;
 
 
+    void iniUi();
     void connectSlots();
 };
