@@ -27,7 +27,9 @@ public:
     void addHeader(const std::string &key,const std::string &value);
 
     using ProgressCallback = std::function<void(unsigned long downloadTotal, unsigned long downloadNow)>;
+    using DownloadCompleteCallback = std::function<void()>;
     void setProgressCallback(ProgressCallback& cb);
+    void setDownloadCompleteCallback(DownloadCompleteCallback& cb);
 
 protected:
     struct HeadInfo {
@@ -40,9 +42,14 @@ protected:
         RUNNING,
         PAUSE,
     };
+    struct File
+    {
+        int64_t read_len;  // file bytes
+        int64_t start;
+    };
 
 protected:
-    HeadInfo reqeustFileInfoFromHead();
+    HeadInfo requestFileInfoFromHead();
     HeadInfo fileSize(const cpr::Header& header);
     std::string fileName(const cpr::Response& response);
     void preallocateFileSize(size_t fileSize);
@@ -50,6 +57,7 @@ protected:
     void downloadChunk(size_t start, size_t end);
     bool writeCallback(const std::string_view& data, intptr_t userdata, size_t start);
     bool progressCallback(long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, intptr_t userdata);
+    bool isDownloadComplete();
 
 private:
     std::string url_;
@@ -63,4 +71,5 @@ private:
     std::atomic<unsigned long> downloadedSize_;
     Status status_;
     ProgressCallback progressCallback_;
+    DownloadCompleteCallback downloadCompleteCallback;
 };
