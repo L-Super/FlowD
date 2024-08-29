@@ -19,7 +19,6 @@ size_t DownloadManager::addTask(const std::string& url, const std::string& fileP
 
 void DownloadManager::pauseTask(size_t taskID)
 {
-
     if (tasks_.find(taskID) != tasks_.end()) {
         tasks_[taskID]->pause();
     }
