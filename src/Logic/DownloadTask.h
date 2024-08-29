@@ -22,13 +22,18 @@ public:
     void pause();
     void resume();
 
-    using ProgressCallback = std::function<void(long downloadTotal, long downloadNow)>;
+    std::map<std::string, std::string> header();
+    void setHeader(const std::map<std::string, std::string>& header);
+    void addHeader(const std::string &key,const std::string &value);
+
+    using ProgressCallback = std::function<void(unsigned long downloadTotal, unsigned long downloadNow)>;
     void setProgressCallback(ProgressCallback& cb);
 
 protected:
     struct HeadInfo {
-        size_t length{};
+        unsigned long length{};
         bool supportRange{};
+        std::string filename;
     };
     enum class Status {
         STOP,
@@ -37,7 +42,9 @@ protected:
     };
 
 protected:
-    HeadInfo fileSize();
+    HeadInfo reqeustFileInfoFromHead();
+    HeadInfo fileSize(const cpr::Header& header);
+    std::string fileName(const cpr::Response& response);
     void preallocateFileSize(size_t fileSize);
     void download();
     void downloadChunk(size_t start, size_t end);
@@ -46,10 +53,12 @@ protected:
 
 private:
     std::string url_;
-    std::string filePath_;
-    std::string tmpFilePath_;
+    std::string filePath_; // save the file path
+    std::string filename_; // file name, excluding the path.
+    std::string tmpFilenamePath_; // tmp file path
     unsigned int threadNum_;
     cpr::Session session_;
+    cpr::Header header_;
     std::atomic<unsigned long> totalSize_;
     std::atomic<unsigned long> downloadedSize_;
     Status status_;
