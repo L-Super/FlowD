@@ -8,8 +8,8 @@
 #include <filesystem>
 
 namespace {
-    constexpr unsigned int KB = 1 * 1024 * 1024;
-    constexpr unsigned int MB = 1 * 1024 * 1024 * 1024;
+    constexpr unsigned int KB = 1 * 1024;
+    constexpr unsigned int MB = 1 * 1024 * 1024;
 }// namespace
 
 namespace fs = std::filesystem;
@@ -43,11 +43,14 @@ void DownloadTask::start()
 
     // If the file is smaller than 10MB or does not support Range, download it directly.
     if (totalSize_ < 10 * MB || !supportRange) {
+        spdlog::info("Start single thread download");
         auto future = std::async(std::launch::async, [&] {
             download();
         });
         return;
     }
+
+    spdlog::info("Start mutil thread download");
 
     // Allocate the compartment for each thread's download
     size_t part_size = totalSize_ / threadNum_;
@@ -66,7 +69,7 @@ void DownloadTask::start()
             downloadChunk(start, end);
         });
     }
-    threadPool.Start();
+    threadPool.Start(threadNum_);
 }
 
 void DownloadTask::stop()
@@ -154,7 +157,7 @@ std::string DownloadTask::fileName(const cpr::Response& response)
 {
     auto headers = response.header;
     auto url = response.url.str();
-    // 首先尝试从 Content-Disposition 头获取
+    // First, try to get it from the Content-Disposition header.
     auto getFilenameFromHeader = [&headers]() -> std::string {
         if (auto it = headers.find("Content-Disposition"); it != headers.end()) {
             std::string header = it->second;
@@ -190,6 +193,8 @@ std::string DownloadTask::fileName(const cpr::Response& response)
 
 void DownloadTask::preallocateFileSize(size_t fileSize)
 {
+    // TODO: Check it whether the disk space is enough
+    spdlog::info("Preallocate file size {}KB", fileSize / KB);
     std::ofstream file(tmpFilenamePath_, std::ios::binary);
     file.seekp(fileSize - 1);
     file.write("", 1);
@@ -248,14 +253,14 @@ void DownloadTask::downloadChunk(size_t start, size_t end)
     cpr::Response response =
             cpr::Get(cpr::Url{url_}, header_, cpr::Range(start, end), progressCallbackFunc, writeCallbackFunc);
 
+    std::ostringstream oss;
+    oss << std::this_thread::get_id();
     if (response.status_code != 206) {
-        std::ostringstream oss;
-        oss << std::this_thread::get_id();
         spdlog::error("Thread {} failed to download part. Status code: {}", oss.str(), response.status_code);
         return;
     }
     else {
-        spdlog::info("Download range[{}:{}] file finished.", start, end);
+        spdlog::info("Thread {} download range[{}:{}] file finished.", oss.str(), start, end);
         //TODO: send chunk finish callback
     }
     status_ = Status::STOP;
@@ -263,6 +268,7 @@ void DownloadTask::downloadChunk(size_t start, size_t end)
 
 bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata, size_t start)
 {
+    // FIXME: write file wrong
     std::ofstream file(tmpFilenamePath_, std::ios::binary | std::ios::out);
     file.seekp(static_cast<long long>(start));
     file.write(data.data(), data.size());
