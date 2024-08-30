@@ -52,10 +52,10 @@ protected:
     HeadInfo requestFileInfoFromHead();
     HeadInfo fileSize(const cpr::Header& header);
     std::string fileName(const cpr::Response& response);
-    void preallocateFileSize(size_t fileSize);
+    void preallocateFileSize(uint64_t fileSize);
     void download();
-    void downloadChunk(size_t start, size_t end);
-    bool writeCallback(const std::string_view& data, intptr_t userdata, size_t start);
+    void downloadChunk(uint64_t start, uint64_t end);
+    bool writeCallback(const std::string_view& data, intptr_t userdata);
     bool progressCallback(long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, intptr_t userdata);
     bool isDownloadComplete();
 

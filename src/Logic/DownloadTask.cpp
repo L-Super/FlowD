@@ -23,8 +23,9 @@ DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int t
                               "Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"}};
 #elif defined(MAC_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
-                      "Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0"}};
+                              "Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0"}};
 #elif defined(LINUX_OS)
+    header_ = {{"user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0"}};
 #endif
 
     session_.SetUrl(cpr::Url(url_));
@@ -39,7 +40,8 @@ void DownloadTask::start()
     totalSize_ = totalSize;
     if (totalSize_ == 0) {
         spdlog::error("Failed to get file size.");
-        return;
+        // Unable to get file size, can try downloading
+        // return;
     }
     filename_ = filename;
     tmpFilenamePath_ = filePath_ + "/" + filename + ".tmp";
@@ -66,15 +68,15 @@ void DownloadTask::start()
     spdlog::info("Start mutil thread download");
 
     // Allocate the compartment for each thread's download
-    size_t part_size = totalSize_ / threadNum_;
+    uint64_t part_size = totalSize_ / threadNum_;
 
     // launch the thread pool
     threadPool.SetMinThreadNum(threadNum_);
     //    threadPool.SetMaxThreadNum(threadNum_);
     threadPool.Start();
     for (int i = 0; i < threadNum_; ++i) {
-        size_t start = i * part_size;
-        size_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
+        uint64_t start = i * part_size;
+        uint64_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
 
         //TODO:
         // How to check it download finish and resume
@@ -136,6 +138,7 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
 {
     session_.SetHeader(header_);
     //TODO: Maybe use GetDownloadFileLength first
+    // Head 404 sometimes, should be get filename by Get
     //see:https://github.com/libcpr/cpr/pull/599
     cpr::Response response = session_.Head();
     if (response.status_code != 200) {
@@ -210,7 +213,7 @@ std::string DownloadTask::fileName(const cpr::Response& response)
     return filename;
 }
 
-void DownloadTask::preallocateFileSize(size_t fileSize)
+void DownloadTask::preallocateFileSize(uint64_t fileSize)
 {
     // TODO: Check it whether the disk space is enough
     spdlog::info("Preallocate file size {}KB", fileSize / KB);
@@ -233,23 +236,24 @@ void DownloadTask::download()
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             }));
     auto response = session_.Download(file);
-    if (response.downloaded_bytes == totalSize_) {
+    if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
         fs::path tempPath(tmpFilenamePath_);
         // remove .tmp suffix
         fs::path finalPath = tempPath.parent_path() / tempPath.stem();
         std::filesystem::rename(tempPath, finalPath);
-        spdlog::info("Download small file finish. file path:{}", finalPath.string());
         status_ = Status::STOP;
         if (downloadCompleteCallback) {
             downloadCompleteCallback();
         }
+
+        spdlog::info("Download small file finish. file path:{}", finalPath.string());
     }
     else {
         spdlog::error("Download small file failed. code:{} error reason: {}", response.status_code, response.reason);
     }
 }
 
-void DownloadTask::downloadChunk(size_t start, size_t end)
+void DownloadTask::downloadChunk(uint64_t start, uint64_t end)
 {
     if (status_ != Status::RUNNING)
         return;
@@ -263,13 +267,13 @@ void DownloadTask::downloadChunk(size_t start, size_t end)
     f.read_len = start;
     f.start = start;
     cpr::WriteCallback writeCallbackFunc(
-            [this, start](const std::string_view& data, intptr_t userdata) {
+            [this](const std::string_view& data, intptr_t userdata) {
                 // Return true on success, or false to cancel the transfer.
                 if (status_ != Status::RUNNING) {
                     // TODO:return false will cancel download. try to pause
                     return false;
                 }
-                return writeCallback(data, userdata, start);
+                return writeCallback(data, userdata);
             },
             reinterpret_cast<intptr_t>(&f));
 
@@ -289,7 +293,6 @@ void DownloadTask::downloadChunk(size_t start, size_t end)
             fs::path tempPath(tmpFilenamePath_);
             // remove .tmp suffix
             fs::path finalPath = tempPath.parent_path() / tempPath.stem();
-            std::lock_guard<std::mutex> lg(statsMutex_);
             std::filesystem::rename(tempPath, finalPath);
             status_ = Status::STOP;
         }
@@ -299,7 +302,7 @@ void DownloadTask::downloadChunk(size_t start, size_t end)
     }
 }
 
-bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata, size_t start)
+bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata)
 {
     // FIXME: write file wrong
     File* pf = reinterpret_cast<File*>(userdata);
@@ -317,7 +320,7 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
         spdlog::error("Write file failed. Exception:{}", e.what());
     }
 
-    spdlog::info("Write callback. start:{} read len:{} downloaded size:{}", start, pf->read_len,
+    spdlog::info("Write callback. start:{} read len:{} downloaded size:{}", pf->start, pf->read_len,
                  downloadedSize_.load());
 
     return true;
