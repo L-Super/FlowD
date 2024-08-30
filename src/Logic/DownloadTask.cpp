@@ -18,13 +18,13 @@ DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int t
     : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
       status_(Status::STOP)
 {
-#if defined(PLATFORM_WINDOWS)
+#if defined(WINDOWS_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
                               "Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"}};
-#elif defined(PLATFORM_MAC)
+#elif defined(MAC_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0"}};
-#elif defined(PLATFORM_LINUX)
+#elif defined(LINUX_OS)
 #endif
 
     session_.SetUrl(cpr::Url(url_));
