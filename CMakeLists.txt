@@ -11,6 +11,14 @@ option(BUILD_TEST "Build the test" OFF)
 message(STATUS "CMake build type is ${CMAKE_BUILD_TYPE}")
 message(STATUS "The application's version is ${CMAKE_PROJECT_VERSION}")
 
+if(WIN32)
+    add_compile_definitions(PLATFORM_WINDOWS)
+elseif(APPLE)
+    add_compile_definitions(PLATFORM_MAC)
+elseif(UNIX AND NOT APPLE)
+    add_compile_definitions(PLATFORM_LINUX)
+endif()
+
 add_subdirectory(src)
 
 if (BUILD_TEST)

@@ -5,10 +5,11 @@
 #pragma once
 
 #include <atomic>
+#include <functional>
 #include <iostream>
+#include <mutex>
 #include <string>
 #include <thread>
-#include <functional>
 
 #include "Noncopyable.hpp"
 #include "cpr/cpr.h"
@@ -24,7 +25,7 @@ public:
 
     std::map<std::string, std::string> header();
     void setHeader(const std::map<std::string, std::string>& header);
-    void addHeader(const std::string &key,const std::string &value);
+    void addHeader(const std::string& key, const std::string& value);
 
     using ProgressCallback = std::function<void(unsigned long downloadTotal, unsigned long downloadNow)>;
     using DownloadCompleteCallback = std::function<void()>;
@@ -42,9 +43,8 @@ protected:
         RUNNING,
         PAUSE,
     };
-    struct File
-    {
-        int64_t read_len;  // file bytes
+    struct File {
+        int64_t read_len;// file bytes
         int64_t start;
     };
 
@@ -61,15 +61,17 @@ protected:
 
 private:
     std::string url_;
-    std::string filePath_; // save the file path
-    std::string filename_; // file name, excluding the path.
-    std::string tmpFilenamePath_; // tmp file path
+    std::string filePath_;       // save the file path
+    std::string filename_;       // file name, excluding the path.
+    std::string tmpFilenamePath_;// tmp file path
     unsigned int threadNum_;
     cpr::Session session_;
     cpr::Header header_;
+    cpr::ThreadPool threadPool;
     std::atomic<unsigned long> totalSize_;
     std::atomic<unsigned long> downloadedSize_;
     Status status_;
+    std::mutex statsMutex_;
     ProgressCallback progressCallback_;
     DownloadCompleteCallback downloadCompleteCallback;
 };

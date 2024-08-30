@@ -18,8 +18,15 @@ DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int t
     : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
       status_(Status::STOP)
 {
+#if defined(PLATFORM_WINDOWS)
     header_ = {{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
                               "Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"}};
+#elif defined(PLATFORM_MAC)
+    header_ = {{"user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0"}};
+#elif defined(PLATFORM_LINUX)
+#endif
+
     session_.SetUrl(cpr::Url(url_));
 }
 
@@ -62,9 +69,9 @@ void DownloadTask::start()
     size_t part_size = totalSize_ / threadNum_;
 
     // launch the thread pool
-    cpr::ThreadPool threadPool;
-    threadPool.SetMaxThreadNum(threadNum_);
-
+    threadPool.SetMinThreadNum(threadNum_);
+    //    threadPool.SetMaxThreadNum(threadNum_);
+    threadPool.Start();
     for (int i = 0; i < threadNum_; ++i) {
         size_t start = i * part_size;
         size_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
@@ -75,25 +82,31 @@ void DownloadTask::start()
             downloadChunk(start, end);
         });
     }
-    threadPool.Start(threadNum_);
+    threadPool.Wait();
 }
 
 void DownloadTask::stop()
 {
     spdlog::info("Download stop");
+    std::lock_guard<std::mutex> lg(statsMutex_);
     status_ = Status::STOP;
+    threadPool.Stop();
 }
 
 void DownloadTask::pause()
 {
     spdlog::info("Download pause");
+    std::lock_guard<std::mutex> lg(statsMutex_);
     status_ = Status::PAUSE;
+    threadPool.Pause();
 }
 
 void DownloadTask::resume()
 {
     spdlog::info("Download resume");
+    std::lock_guard<std::mutex> lg(statsMutex_);
     status_ = Status::RUNNING;
+    threadPool.Resume();
 }
 
 std::map<std::string, std::string> DownloadTask::header()
@@ -222,7 +235,8 @@ void DownloadTask::download()
     auto response = session_.Download(file);
     if (response.downloaded_bytes == totalSize_) {
         fs::path tempPath(tmpFilenamePath_);
-        fs::path finalPath = tempPath.parent_path() / tempPath.stem();// remove .tmp suffix
+        // remove .tmp suffix
+        fs::path finalPath = tempPath.parent_path() / tempPath.stem();
         std::filesystem::rename(tempPath, finalPath);
         spdlog::info("Download small file finish. file path:{}", finalPath.string());
         status_ = Status::STOP;
@@ -259,9 +273,8 @@ void DownloadTask::downloadChunk(size_t start, size_t end)
             },
             reinterpret_cast<intptr_t>(&f));
 
-    cpr::Header header = header_;
     cpr::Response response =
-            cpr::Get(cpr::Url{url_}, header, cpr::Range(start, end), progressCallbackFunc, writeCallbackFunc);
+            cpr::Get(cpr::Url{url_}, header_, cpr::Range(start, end), progressCallbackFunc, writeCallbackFunc);
 
     std::ostringstream oss;
     oss << std::this_thread::get_id();
@@ -272,11 +285,18 @@ void DownloadTask::downloadChunk(size_t start, size_t end)
     else {
         spdlog::info("Thread {} download range[{}:{}] file finished.", oss.str(), start, end);
 
-        if (isDownloadComplete() && downloadCompleteCallback) {
+        if (isDownloadComplete()) {
+            fs::path tempPath(tmpFilenamePath_);
+            // remove .tmp suffix
+            fs::path finalPath = tempPath.parent_path() / tempPath.stem();
+            std::lock_guard<std::mutex> lg(statsMutex_);
+            std::filesystem::rename(tempPath, finalPath);
+            status_ = Status::STOP;
+        }
+        if (downloadCompleteCallback) {
             downloadCompleteCallback();
         }
     }
-    status_ = Status::STOP;
 }
 
 bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata, size_t start)
@@ -284,13 +304,18 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
     // FIXME: write file wrong
     File* pf = reinterpret_cast<File*>(userdata);
 
-    std::ofstream file(tmpFilenamePath_, std::ios::binary | std::ios::out);
+    try {
+        std::ofstream file(tmpFilenamePath_, std::ios::binary | std::ios::out);
 
-    file.seekp(static_cast<long long>(pf->read_len));
-    file.write(data.data(), data.size());
+        file.seekp(static_cast<long long>(pf->read_len));
+        file.write(data.data(), data.size());
 
-    downloadedSize_ += data.size();
-    pf->read_len += data.size();
+        downloadedSize_ += data.size();
+        pf->read_len += data.size();
+    }
+    catch (const std::exception& e) {
+        spdlog::error("Write file failed. Exception:{}", e.what());
+    }
 
     spdlog::info("Write callback. start:{} read len:{} downloaded size:{}", start, pf->read_len,
                  downloadedSize_.load());
