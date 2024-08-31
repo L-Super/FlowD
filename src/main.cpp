@@ -6,7 +6,7 @@
 
 #include "MainWindow.h"
 #include "version.h"
-
+#include <Logger.hpp>
 //获取样式表
 QString getQss()
 {
@@ -18,6 +18,7 @@ QString getQss()
     }
     else {
         //TODO:写入日志
+        Logger::logError("Get Style Sheet failled!","main");
         QMessageBox::critical(nullptr, "失败", "获取样式表失败");
     }
     return styleSheet;
@@ -47,5 +48,8 @@ int main(int argc, char* argv[])
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));
     w.show();
+
+    Logger::logInfo("Appiction started,version {}",VERSION_STR);
+
     return QApplication::exec();
 }
