@@ -44,9 +44,12 @@ protected:
         RUNNING,
         PAUSE,
     };
-    struct File {
-        int64_t read_len;// file bytes
-        int64_t start;
+    struct ChunkFile {
+        uint64_t readLen;// file bytes
+        uint64_t start;
+        uint64_t end;
+        std::string data;
+        std::string chunkFilename;
     };
 
 protected:
@@ -55,10 +58,11 @@ protected:
     std::string fileName(const cpr::Response& response);
     void preallocateFileSize(uint64_t fileSize);
     void download();
-    void downloadChunk(uint64_t start, uint64_t end);
+    void downloadChunk(int part, uint64_t start, uint64_t end);
     bool writeCallback(const std::string_view& data, intptr_t userdata);
     bool progressCallback(long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, intptr_t userdata);
     bool isDownloadComplete();
+    void mergeChunkFiles();
 
 private:
     std::string url_;

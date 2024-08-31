@@ -49,14 +49,14 @@ void DownloadTask::start()
     tmpFilenamePath_ = filePath_ + "/" + filename + ".tmp";
     status_ = Status::RUNNING;
 
-    fs::path dirPath = fs::path(tmpFilenamePath_).parent_path();
+    fs::path dirPath = fs::path(filePath_);
     // If the directory does not exist, create it
     if (!dirPath.empty() && !fs::exists(dirPath)) {
         fs::create_directories(dirPath);
     }
 
     // Preallocate file size.
-    preallocateFileSize(totalSize_);
+    //    preallocateFileSize(totalSize_);
 
     // If the file is smaller than 10MB or does not support Range, download it directly.
     if (totalSize_ < 10 * MB || !supportRange) {
@@ -166,11 +166,11 @@ DownloadTask::HeadInfo DownloadTask::fileSize(const cpr::Header& header)
         // haven't Accept-Ranges header or value is none
         if (acceptRange == "bytes") {
             info.length = length;
-            info.supportRange  = true;
+            info.supportRange = true;
         }
         else {
             info.length = length;
-            info.supportRange  = false;
+            info.supportRange = false;
         }
     }
 
@@ -233,31 +233,27 @@ void DownloadTask::download()
     if (status_ != Status::RUNNING)
         return;
 
-    std::ofstream file(tmpFilenamePath_, std::ios::binary | std::ios::out);
-
+    fs::path filename = filePath_ + "/" + filename_;
+    std::ofstream file(filename, std::ios::binary | std::ios::out);
     session_.SetProgressCallback(cpr::ProgressCallback(
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             }));
     auto response = session_.Download(file);
     if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
-        fs::path tempPath(tmpFilenamePath_);
-        // remove .tmp suffix
-        fs::path finalPath = tempPath.parent_path() / tempPath.stem();
-        std::filesystem::rename(tempPath, finalPath);
         status_ = Status::STOP;
         if (downloadCompleteCallback) {
             downloadCompleteCallback();
         }
 
-        spdlog::info("Download small file finish. file path:{}", finalPath.string());
+        spdlog::info("Download small file finish. file path:{}", filename.string());
     }
     else {
         spdlog::error("Download small file failed. code:{} error reason: {}", response.status_code, response.reason);
     }
 }
 
-void DownloadTask::downloadChunk(uint64_t start, uint64_t end)
+void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
 {
     if (status_ != Status::RUNNING)
         return;
@@ -267,9 +263,12 @@ void DownloadTask::downloadChunk(uint64_t start, uint64_t end)
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             });
 
-    File f;
-    f.read_len = start;
+    ChunkFile f;
+    f.readLen = 0;
     f.start = start;
+    f.end = end;
+    f.chunkFilename = filePath_ + "/" + filename_ + ".part" + std::to_string(part);
+
     cpr::WriteCallback writeCallbackFunc(
             [this](const std::string_view& data, intptr_t userdata) {
                 // Return true on success, or false to cancel the transfer.
@@ -284,22 +283,20 @@ void DownloadTask::downloadChunk(uint64_t start, uint64_t end)
     cpr::Response response =
             cpr::Get(cpr::Url{url_}, header_, cpr::Range(start, end), progressCallbackFunc, writeCallbackFunc);
 
-    std::ostringstream oss;
-    oss << std::this_thread::get_id();
     if (response.status_code != 206) {
-        spdlog::error("Thread {} failed to download part. Status code: {}", oss.str(), response.status_code);
+        spdlog::error("Thread failed to download part. Status code: {}", response.status_code);
         return;
     }
     else {
-        spdlog::info("Thread {} download range[{}:{}] file finished.", oss.str(), start, end);
+        spdlog::info("Thread download range[{}:{}] file finished.", start, end);
 
         if (isDownloadComplete()) {
-            fs::path tempPath(tmpFilenamePath_);
-            // remove .tmp suffix
-            fs::path finalPath = tempPath.parent_path() / tempPath.stem();
-            std::filesystem::rename(tempPath, finalPath);
+            spdlog::info("All thread download complete, start merge files");
+
+            mergeChunkFiles();
             status_ = Status::STOP;
         }
+
         if (downloadCompleteCallback) {
             downloadCompleteCallback();
         }
@@ -309,23 +306,27 @@ void DownloadTask::downloadChunk(uint64_t start, uint64_t end)
 bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata)
 {
     // FIXME: write file wrong
-    File* pf = reinterpret_cast<File*>(userdata);
+    ChunkFile* pf = reinterpret_cast<ChunkFile*>(userdata);
+    pf->readLen += data.size();
+    pf->data.append(data);
+    spdlog::debug("ChunkFile read_len:{} data size:{} start:{} end:{}", pf->readLen, pf->data.size(), pf->start,
+                  pf->end);
 
-    try {
-        std::ofstream file(tmpFilenamePath_, std::ios::binary | std::ios::out);
-
-        file.seekp(static_cast<long long>(pf->read_len));
-        file.write(data.data(), data.size());
-
-        downloadedSize_ += data.size();
-        pf->read_len += data.size();
+    if (pf->readLen == pf->end - pf->start + 1) {
+        try {
+            std::ofstream file(pf->chunkFilename, std::ios::binary | std::ios::out);
+            if (!file.is_open()) {
+                spdlog::error("File is not open.");
+            }
+            file.write(pf->data.c_str(), pf->data.size());
+            downloadedSize_ += pf->data.size();
+        }
+        catch (const std::exception& e) {
+            spdlog::error("Write file failed. Exception:{}", e.what());
+        }
+        spdlog::info("Write callback. start:{} read len:{} downloaded size:{}", pf->start, pf->readLen,
+                     downloadedSize_.load());
     }
-    catch (const std::exception& e) {
-        spdlog::error("Write file failed. Exception:{}", e.what());
-    }
-
-    spdlog::info("Write callback. start:{} read len:{} downloaded size:{}", pf->start, pf->read_len,
-                 downloadedSize_.load());
 
     return true;
 }
@@ -362,4 +363,22 @@ bool DownloadTask::isDownloadComplete()
     if (totalSize_ == downloadedSize_)
         return true;
     return false;
+}
+
+void DownloadTask::mergeChunkFiles()
+{
+    fs::path filepath(filePath_);
+    filepath.append(filename_);
+    std::ofstream outputFile(filepath, std::ios::binary);
+
+    for (int i = 0; i < threadNum_; ++i) {
+        std::string partFilename = filePath_ + "/" + filename_ + ".part" + std::to_string(i);
+        std::ifstream partFile(partFilename, std::ios::binary);
+        outputFile << partFile.rdbuf();
+        partFile.close();
+        // delete tmp chunk file
+        fs::remove(partFilename);
+    }
+
+    outputFile.close();
 }
