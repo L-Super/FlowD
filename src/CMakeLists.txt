@@ -74,6 +74,10 @@ add_executable(${PROJECT_NAME}
 add_subdirectory(Logic)
 add_subdirectory(Utils)
 
+if (MINGW)
+    target_compile_options(${PROJECT_NAME} PRIVATE "-Wa,-mbig-obj")
+endif()
+
 if (WIN32)
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         message(STATUS "Running ${CMAKE_BUILD_TYPE} mode")
@@ -135,7 +139,7 @@ if (WIN32)
             POST_BUILD
             # Deploy the Qt Application
             COMMAND ${QT_DEPLOY_EXECUTABLE}
-            # --no-translations
+             --no-translations
             "$<TARGET_FILE:${PROJECT_NAME}>"
     )
 elseif (APPLE)

@@ -16,7 +16,7 @@ namespace fs = std::filesystem;
 
 DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int threadNum)
     : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
-      status_(Status::STOP)
+      status_(Status::STOP), pool(threadNum)
 {
 #if defined(WINDOWS_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
@@ -29,6 +29,8 @@ DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int t
 #endif
 
     session_.SetUrl(cpr::Url(url_));
+    std::string format{R"([%Y-%m-%d %T.%e] [%^%l%$] [thread %t] %@ %v)"};
+    spdlog::set_pattern(format);
 }
 
 DownloadTask::~DownloadTask() {}
@@ -71,20 +73,16 @@ void DownloadTask::start()
     uint64_t part_size = totalSize_ / threadNum_;
 
     // launch the thread pool
-    threadPool.SetMinThreadNum(threadNum_);
-    //    threadPool.SetMaxThreadNum(threadNum_);
-    threadPool.Start();
+    std::vector<std::future<void>> results;
     for (int i = 0; i < threadNum_; ++i) {
         uint64_t start = i * part_size;
         uint64_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
 
-        //TODO:
-        // How to check it download finish and resume
-        threadPool.Submit([&] {
-            downloadChunk(start, end);
-        });
+        results.emplace_back(pool.enqueue([this, i, start, end] {
+            downloadChunk(i, start, end);
+        }));
     }
-    threadPool.Wait();
+    // for (auto&& result: results) { result.get(); }
 }
 
 void DownloadTask::stop()
@@ -92,7 +90,6 @@ void DownloadTask::stop()
     spdlog::info("Download stop");
     std::lock_guard<std::mutex> lg(statsMutex_);
     status_ = Status::STOP;
-    threadPool.Stop();
 }
 
 void DownloadTask::pause()
@@ -100,7 +97,6 @@ void DownloadTask::pause()
     spdlog::info("Download pause");
     std::lock_guard<std::mutex> lg(statsMutex_);
     status_ = Status::PAUSE;
-    threadPool.Pause();
 }
 
 void DownloadTask::resume()
@@ -108,7 +104,6 @@ void DownloadTask::resume()
     spdlog::info("Download resume");
     std::lock_guard<std::mutex> lg(statsMutex_);
     status_ = Status::RUNNING;
-    threadPool.Resume();
 }
 
 std::map<std::string, std::string> DownloadTask::header()
@@ -141,9 +136,10 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
     // Head 404 sometimes, should be get filename by Get
     //see:https://github.com/libcpr/cpr/pull/599
     cpr::Response response = session_.Head();
+
+
     if (response.status_code != 200) {
-        spdlog::error("Request head failed.");
-        return {};
+        spdlog::warn("Request head failed.");
     }
     HeadInfo fileInfo = fileSize(response.header);
     fileInfo.filename = fileName(response);
@@ -159,20 +155,26 @@ DownloadTask::HeadInfo DownloadTask::fileSize(const cpr::Header& header)
     if (auto search = header.find("Content-Length"); search != header.end()) {
         length = std::stoul(search->second);
     }
+    if (length <= 0) {
+        length = session_.GetDownloadFileLength();
+    }
 
+    HeadInfo info;
     if (auto search = header.find("Accept-Ranges"); search != header.end()) {
         auto acceptRange = search->second;
         // not support Accept-Ranges:
         // haven't Accept-Ranges header or value is none
         if (acceptRange == "bytes") {
-            return {length, true};
+            info.length = length;
+            info.supportRange  = true;
         }
         else {
-            return {length, false};
+            info.length = length;
+            info.supportRange  = false;
         }
     }
-    // auto length = session_.GetDownloadFileLength();
-    return {};
+
+    return info;
 }
 
 std::string DownloadTask::fileName(const cpr::Response& response)
@@ -187,15 +189,17 @@ std::string DownloadTask::fileName(const cpr::Response& response)
             if (filenamePos != std::string::npos) {
                 size_t start = filenamePos + 9;// length of "filename="
                 size_t end = header.find('"', start + 1);
-                return header.substr(start + 1, end - start - 1);
+                auto name = header.substr(start + 1, end - start - 1);
+                return cpr::util::urlDecode(name);
             }
         }
         return {};
     };
     auto getFilenameFromUrl = [&url]() -> std::string {
+        //TODO: maybe not correct
         size_t pos = url.find_last_of('/');
         if (pos != std::string::npos) {
-            return url.substr(pos + 1);
+            return cpr::util::urlDecode(url.substr(pos + 1));
         }
         return {};
     };

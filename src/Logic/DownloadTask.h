@@ -12,6 +12,7 @@
 #include <thread>
 
 #include "Noncopyable.hpp"
+#include "ThreadPool.hpp"
 #include "cpr/cpr.h"
 
 class DownloadTask : private Noncopyable {
@@ -67,11 +68,11 @@ private:
     unsigned int threadNum_;
     cpr::Session session_;
     cpr::Header header_;
-    cpr::ThreadPool threadPool;
-    std::atomic<unsigned long> totalSize_;
-    std::atomic<unsigned long> downloadedSize_;
+    std::atomic<uint64_t> totalSize_;
+    std::atomic<uint64_t> downloadedSize_;
     Status status_;
     std::mutex statsMutex_;
     ProgressCallback progressCallback_;
     DownloadCompleteCallback downloadCompleteCallback;
+    ThreadPool pool;
 };
