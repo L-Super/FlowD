@@ -69,6 +69,7 @@ add_executable(${PROJECT_NAME}
         SettingsBasicWidget.h SettingsBasicWidget.cpp SettingsBasicWidget.ui
         SettingsAdvancedWidget.h SettingsAdvancedWidget.cpp SettingsAdvancedWidget.ui
         NewDownloadDialog.h NewDownloadDialog.cpp NewDownloadDialog.ui
+        UserAgentConfigDialog.h UserAgentConfigDialog.cpp UserAgentConfigDialog.ui
 
 )
 add_subdirectory(Logic)

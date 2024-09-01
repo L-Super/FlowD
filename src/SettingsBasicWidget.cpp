@@ -66,6 +66,14 @@ void SettingsBasicWidget::iniSettings()
     //Get whether upgrade should automatically perform
     bool autoUpdate = set.value("Basic/AutoUpdate", true).toBool();
     ui->checkAutoUp->setChecked(autoUpdate);
+
+    //Get whether jumping to download list interface is needed on a new task created
+    bool jump = set.value("Basic/JumpOnNewTask", true).toBool();
+    ui->checkJumpOnNewTask->setChecked(jump);
+
+    //Get the count of download threads
+    int count = set.value("Basic/ThreadCount", 8).toInt();
+    ui->spinThreadCount->setValue(count);
 }
 
 void SettingsBasicWidget::connectSlots()
@@ -195,5 +203,16 @@ void SettingsBasicWidget::connectSlots()
         QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
 
         set.setValue("Basic/SavePath", text);
+    });
+
+    connect(ui->spinThreadCount, &QSpinBox::valueChanged, [=](int count) {
+        //Get cache path
+        QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+        QDir cacheDir(cachePath);
+        if (!cacheDir.exists())
+            cacheDir.mkpath(cachePath);
+        QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
+
+        set.setValue("Basic/ThreadCount", count);
     });
 }
