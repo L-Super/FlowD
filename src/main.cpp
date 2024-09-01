@@ -1,8 +1,12 @@
 #include <QApplication>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QIcon>
 #include <QMessageBox>
+#include <QStandardPaths>
+
+#include "Logger.hpp"
 
 #include "MainWindow.h"
 #include "version.h"
@@ -23,9 +27,22 @@ QString getQss()
     return styleSheet;
 }
 
+void initLogger()
+{
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/logs";
+    QDir cacheDir(cachePath);
+    if (!cacheDir.exists())
+        cacheDir.mkpath(cachePath);
+
+    std::string filepath = cachePath.toStdString() + "/flowd.log";
+    Log::instance("FlowD", filepath);
+    Log::setLevel(1);
+}
+
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
+    initLogger();
 
     QString iconPath;//图标路径
 
