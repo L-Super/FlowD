@@ -88,7 +88,7 @@ void SettingsBasicWidget::connectSlots()
         set.setValue("Basic/DisplayStyle", index);
     });
 
-    connect(ui->comboLanguage, &QComboBox::currentIndexChanged, this, [=](int index) {
+    connect(ui->comboLanguage, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
         //Get cache path
         QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
         QDir cacheDir(cachePath);
@@ -205,7 +205,7 @@ void SettingsBasicWidget::connectSlots()
         set.setValue("Basic/SavePath", text);
     });
 
-    connect(ui->spinThreadCount, &QSpinBox::valueChanged, this, [=](int count) {
+    connect(ui->spinThreadCount, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int count) {
         //Get cache path
         QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
         QDir cacheDir(cachePath);
