@@ -42,11 +42,11 @@ QString UserAgentConfigDialog::getUserAgent()
 
 void UserAgentConfigDialog::connectSlots()
 {
-    connect(ui->btnOk, &QPushButton::clicked, [&]() {
+    connect(ui->btnOk, &QPushButton::clicked, this, [&] {
         isAccepted = true;
         close();
     });
-    connect(ui->btnCancel, &QPushButton::clicked, [&] {
+    connect(ui->btnCancel, &QPushButton::clicked, this, [&] {
         isAccepted = false;
         close();
     });

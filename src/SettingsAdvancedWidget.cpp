@@ -15,7 +15,7 @@ SettingsAdvancedWidget::SettingsAdvancedWidget(QWidget* parent) : QWidget(parent
 
 void SettingsAdvancedWidget::connectSlots()
 {
-    connect(ui->btnUserAgent, &QPushButton::clicked, [] {
+    connect(ui->btnUserAgent, &QPushButton::clicked, this, [] {
         UserAgentConfigDialog userconfigDialog;
         QString userAgent = userconfigDialog.getUserAgent();
         //Get cache path

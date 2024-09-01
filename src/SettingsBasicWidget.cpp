@@ -78,13 +78,13 @@ void SettingsBasicWidget::iniSettings()
 
 void SettingsBasicWidget::connectSlots()
 {
+    //Get cache path
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir cacheDir(cachePath);
+    if (!cacheDir.exists())
+        cacheDir.mkpath(cachePath);
+    QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
     connect(ui->comboStyle, &QComboBox::currentIndexChanged, this, [=](int index) {
-        //Get cache path
-        QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-        QDir cacheDir(cachePath);
-        if (!cacheDir.exists())
-            cacheDir.mkpath(cachePath);
-        QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
         set.setValue("Basic/DisplayStyle", index);
     });
 
@@ -205,7 +205,7 @@ void SettingsBasicWidget::connectSlots()
         set.setValue("Basic/SavePath", text);
     });
 
-    connect(ui->spinThreadCount, &QSpinBox::valueChanged, [=](int count) {
+    connect(ui->spinThreadCount, &QSpinBox::valueChanged, this, [=](int count) {
         //Get cache path
         QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
         QDir cacheDir(cachePath);
