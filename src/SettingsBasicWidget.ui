@@ -561,7 +561,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_7">
+              <widget class="QCheckBox" name="checkAutoUp">
                <property name="minimumSize">
                 <size>
                  <width>371</width>
