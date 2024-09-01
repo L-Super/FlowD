@@ -53,9 +53,9 @@ void DownloadItemWidget::setDownloadState(bool isDownloading)
 {
     this->isDownloading = isDownloading;
 }
-void DownloadItemWidget::setRemainTime(qint64 remainTime)
+void DownloadItemWidget::setRemainTime()
 {
-    this->qint64_remainTime = remainTime;
+
 }
 void DownloadItemWidget::setDownloadSpeed(double downloadSpeed)
 {
@@ -84,6 +84,30 @@ std::pair<double, QString> DownloadItemWidget::convertToReasonableUnit(double by
         unit = "B";
     }
     return {bytesToConvert, unit};
+}
+
+QString DownloadItemWidget::convertToReasonableTimeUnit(qint64 sec,qint64 min,qint64 hour,qint64 day)
+{
+    min += sec / 60;
+    sec = sec % 60;
+
+    hour += min / 60;
+    min = min % 60;
+
+    day += hour / 24;
+    hour = hour % 24;
+
+    QString result;
+    if (day != 0) {
+        result = QObject::tr("%1 Day %2 Hours %3 Minutes %4 Seconds").arg(day).arg(hour).arg(min).arg(sec);
+    } else if (hour != 0) {
+        result = QObject::tr("%1 Hours %2 Minutes %3 Seconds").arg(hour).arg(min).arg(sec);
+    } else if (min != 0) {
+        result = QObject::tr("%1 Minutes %2 Seconds").arg(min).arg(sec);
+    } else {
+        result = QObject::tr("%1 Seconds").arg(sec);
+    }
+    return result;
 }
 
 QString DownloadItemWidget::getFileName()
