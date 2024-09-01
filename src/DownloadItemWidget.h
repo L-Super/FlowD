@@ -21,10 +21,11 @@ public:
     void setFileUrl(QString fileUrl);
     void setFileDownloadProgress(qint64 totalBytes, qint64 downloadedBytes);
     void setDownloadState(bool isDownloading);
-    void setRemainTime(qint64 remainTime);
+    void setRemainTime();
     void setDownloadSpeed(double downloadSpeed);
 
     std::pair<double, QString> convertToReasonableUnit(double bytesToConvert);
+    QString convertToReasonableTimeUnit(qint64 sec,qint64 min=0,qint64 hour=0,qint64 day=0);
 
     QString getFileName();
     QString getSavedFilePath();
