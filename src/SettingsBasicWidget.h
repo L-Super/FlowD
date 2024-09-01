@@ -8,6 +8,7 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+class QSettings;
 
 class SettingsBasicWidget : public QWidget {
     Q_OBJECT
@@ -21,6 +22,7 @@ public:
 private:
     Ui::SettingsBasicWidget* ui;
     QHash<QString,QVariant> changedSettings;
+    QSettings* set;
 
     void iniSettings();
     void connectSlots();

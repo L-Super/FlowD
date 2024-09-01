@@ -343,6 +343,11 @@
                  <height>31</height>
                 </size>
                </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
               </widget>
              </item>
              <item>
@@ -453,6 +458,12 @@
                      <width>16777215</width>
                      <height>21</height>
                     </size>
+                   </property>
+                   <property name="maximum">
+                    <number>512</number>
+                   </property>
+                   <property name="singleStep">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
