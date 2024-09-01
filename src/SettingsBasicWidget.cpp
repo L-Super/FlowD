@@ -78,7 +78,7 @@ void SettingsBasicWidget::iniSettings()
 
 void SettingsBasicWidget::connectSlots()
 {
-    connect(ui->comboStyle, &QComboBox::currentIndexChanged, this, [=](int index) {
+    connect(ui->comboStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
         //Get cache path
         QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
         QDir cacheDir(cachePath);
