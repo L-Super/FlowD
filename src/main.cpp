@@ -1,75 +1,27 @@
 #include <QApplication>
-#include <QBuffer>
-#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QIcon>
-#include <QMessageBox>
-#include <QPalette>
-#include <QSettings>
-#include <QSharedMemory>
-#include <QStandardPaths>
-#include <QTimer>
-
-#include "SingleApplication"
+#include <SingleApplication>
 
 #include "Logger.hpp"
-
 #include "MainWindow.h"
+#include "Path.h"
 #include "version.h"
 
-//Get StyleSheet String
-QString getQss(SingleApplication& a)
+void loadQssStyle()
 {
-    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QDir cacheDir(cachePath);
-    if (!cacheDir.exists())
-        cacheDir.mkpath(cachePath);
-    QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
-    int index = set.value("Basic/DisplayStyle", 0).toInt();
-    QFile qssFile;
-    QPalette systemPalette = a.palette();
-    QColor color = systemPalette.color(QPalette::Window);
-    switch (index) {
-        case 0:                           //Follow System Theme
-            if (color.lightness() < 128) {//Determine System Color Theme
-                qssFile.setFileName(":/qss/Resources/style/style_black.qss");
-            }
-            else {
-                qssFile.setFileName(":/qss/Resources/style/style_white.qss");
-            }
-            break;
-        case 1://Light Theme
-            qssFile.setFileName(":/qss/Resources/style/style_white.qss");
-            break;
-        case 2://Dark Theme
-            qssFile.setFileName(":/qss/Resources/style/style_black.qss");
-            break;
-        default:
-            set.setValue("Basic/DisplayStyle", 0);
-            return getQss(a);
-            break;
-    }
-    QString styleSheet;
+    // TODO:检测设置或系统颜色主题，应用对应样式表
+    QFile qssFile(":/qss/resources/style/style_white.qss");
     if (qssFile.open(QIODevice::ReadOnly)) {
-        styleSheet = QString::fromLatin1(qssFile.readAll());
-    }
-    else {
-        ERROR("Failed in getting stylesheet!");
-        QMessageBox::critical(nullptr, QObject::tr("Error"), QObject::tr("Failed in getting style sheet!"));
+        qApp->setStyleSheet(qssFile.readAll());
     }
     qssFile.close();
-    return styleSheet;
 }
 
 void initLogger()
 {
-    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/logs";
-    QDir cacheDir(cachePath);
-    if (!cacheDir.exists())
-        cacheDir.mkpath(cachePath);
-
-    std::string filepath = cachePath.toStdString() + "/flowd.log";
+    std::string filepath = utils::Path::logPath().append("/flowd.log").toStdString();
     Log::instance("FlowD", filepath);
     Log::setLevel(1);
 }
@@ -77,27 +29,17 @@ void initLogger()
 int main(int argc, char* argv[])
 {
     SingleApplication a(argc, argv);
-    // QApplication a(argc, argv);
-    initLogger();
 
-    QString iconPath;//icon path
+    initLogger();
+    loadQssStyle();
 
 #if defined(Q_OS_WIN)
-    iconPath = ":/Resources/win/logo.ico";
+    a.setWindowIcon(QIcon(":/resources/win/logo.ico"));
 #elif defined(Q_OS_MAC)
-    iconPath = ":/Resources/mac/logo.icns";
-#else//linux or other OS
-    iconPath = ":/Resources/logo.png";
+    a.setWindowIcon(QIcon(":/resources/mac/logo.icns"));
+#else
+    a.setWindowIcon(QIcon(":/resources/logo.png"));
 #endif
-
-    a.setWindowIcon(QIcon(iconPath));
-
-    QApplication::setQuitOnLastWindowClosed(false);
-
-    qDebug() << QString("The version of this application is v%1").arg(VERSION_STR);
-
-
-    a.setStyleSheet(getQss(a));
 
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));
@@ -105,6 +47,5 @@ int main(int argc, char* argv[])
 
     QObject::connect(&a, &SingleApplication::instanceStarted, &w, &MainWindow::show);
 
-    INFO("Application started,Version {}.", VERSION_STR);
     return QApplication::exec();
 }
