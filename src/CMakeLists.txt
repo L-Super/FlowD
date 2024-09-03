@@ -139,12 +139,12 @@ FetchContent_Declare(
 FetchContent_Declare(json
         URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 
-FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
+FetchContent_Declare(cpr
+        GIT_REPOSITORY https://github.com/libcpr/cpr.git
         GIT_TAG aa581c9d8060b2502707ad96a04f4829cc524fcb)
 
-FetchContent_Declare(
-            SingleApplication
-            URL https://github.com/itay-grudev/SingleApplication/archive/refs/tags/v3.5.1.zip)
+FetchContent_Declare(SingleApplication
+        GIT_REPOSITORY https://github.com/itay-grudev/SingleApplication.git)
 
 FetchContent_MakeAvailable(spdlog json cpr SingleApplication)
 
