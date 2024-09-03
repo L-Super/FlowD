@@ -29,6 +29,10 @@ set(SRC_FILES MainWindow.cpp MainWindow.h MainWindow.ui
     DownloadItemWidget.cpp DownloadItemWidget.h DownloadItemWidget.ui
     HelpWidget.cpp HelpWidget.h HelpWidget.ui
     SettingsWidget.cpp SettingsWidget.h SettingsWidget.ui
+    SettingsBasicWidget.cpp SettingsBasicWidget.h SettingsBasicWidget.ui
+    SettingsAdvancedWidget.cpp SettingsAdvancedWidget.h SettingsAdvancedWidget.ui
+    NewDownloadDialog.cpp NewDownloadDialog.h NewDownloadDialog.ui
+    UserAgentConfigDialog.cpp UserAgentConfigDialog.h UserAgentConfigDialog.ui
 )
 
 set(APP_DESCRIPTION "An Efficient Multi-threaded Download Manager")
@@ -51,26 +55,38 @@ if (WIN32)
     set(LEGAL_COPYRIGHT ${APP_COPYRIGHT})
     set(PRODUCT_NAME "FlowD")
 
-    set(WIN_RES_PATH ${CMAKE_CURRENT_SOURCE_DIR}/resources/win)
+    set(WIN_RES_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Resources/win)
     configure_file(${WIN_RES_PATH}/app.rc.in ${WIN_RES_PATH}/app.rc @ONLY)
 
     set(QRC_FILES ${QRC_FILES} ${WIN_RES_PATH}/app.rc)
 
 elseif (APPLE)
-    set(MAC_RES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/resources/mac")
+    set(MAC_RES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Resources/mac")
     # It needs to be added to add_executable to display the bundle icon on macOS
     set(QRC_FILES ${QRC_FILES} ${MAC_RES_PATH}/logo.icns)
 endif ()
 
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS LinguistTools)
+set(TS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resources/i18N/FlowD_zh-CN.ts
+        ${CMAKE_CURRENT_SOURCE_DIR}/Resources/i18N/FlowD_en-US.ts
+)
+set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_LIST_DIR}/Resources/i18N")
+
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
+    qt_add_translation(QM_FILES ${TS_FILES})
+else()
+    qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES}
+            #        OPTIONS -no-obsolete -locations none
+    )
+    qt5_add_translation(QM_FILES ${TS_FILES})
+endif()
+
 add_executable(${PROJECT_NAME}
         main.cpp
+        ${QM_FILES}
         ${QRC_FILES}
         ${SRC_FILES}
-        SettingsBasicWidget.h SettingsBasicWidget.cpp SettingsBasicWidget.ui
-        SettingsAdvancedWidget.h SettingsAdvancedWidget.cpp SettingsAdvancedWidget.ui
-        NewDownloadDialog.h NewDownloadDialog.cpp NewDownloadDialog.ui
-        UserAgentConfigDialog.h UserAgentConfigDialog.cpp UserAgentConfigDialog.ui
-
 )
 add_subdirectory(Logic)
 add_subdirectory(Utils)

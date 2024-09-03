@@ -27,6 +27,9 @@ build/
 src/version.h
 
 # rc file
-src/resources/win/app.rc
+src/Resources/win/app.rc
+
+# qm file
+src/Resources/i18N/*.qm
 
 .DS_Store
