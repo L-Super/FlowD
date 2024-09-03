@@ -198,7 +198,7 @@ void DownloadItemWidget::onBtnOpenClicked()
                               tr("Failed in opening %1 !\nPlease check whether the file exists and the "
                                  "application can access the file.")
                                       .arg(QDir::toNativeSeparators(savedFilePathName)));
-        ERROR("Failed in opening {} !", QDir::toNativeSeparators(savedFilePathName).toStdString().c_str());
+        spdlog::error("Failed in opening {} !", QDir::toNativeSeparators(savedFilePathName));
     }
 }
 

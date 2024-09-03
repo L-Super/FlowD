@@ -180,7 +180,7 @@ void MainWindow::onSystemStyleChanged(QPalette palette)
             qssFile.close();
         }
         else {
-            ERROR("Failed in getting stylesheet!");
+            spdlog::error("Failed in getting stylesheet!");
             QMessageBox::critical(nullptr, QObject::tr("Error"), QObject::tr("Failed in getting style sheet!"));
         }
     }

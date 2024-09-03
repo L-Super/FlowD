@@ -43,7 +43,7 @@ void FileInformationWidget::connectSlots()
                                   tr("Failed in opening %1 !\nPlease check whether the folder exists and the "
                                      "application can access the folder.")
                                           .arg(QDir::toNativeSeparators(savedFilePath)));
-            ERROR("Failed in opening {} !", QDir::toNativeSeparators(savedFilePath).toStdString().c_str());
+            spdlog::error("Failed in opening {} !", QDir::toNativeSeparators(savedFilePath));
         }
     });
     connect(ui->btnOpen, &QPushButton::clicked, this, [&] {
@@ -55,7 +55,7 @@ void FileInformationWidget::connectSlots()
                                   tr("Failed in opening %1 !\nPlease check whether the file exists and the "
                                      "application can access the file.")
                                           .arg(QDir::toNativeSeparators(savedFilePathName)));
-            ERROR("Failed in opening {} !", QDir::toNativeSeparators(savedFilePathName).toStdString().c_str());
+            spdlog::error("Failed in opening {} !", QDir::toNativeSeparators(savedFilePathName));
         }
     });
     connect(ui->btnDelete, &QPushButton::clicked, this, [&] {
@@ -65,7 +65,7 @@ void FileInformationWidget::connectSlots()
         QClipboard* systemClipboard = QApplication::clipboard();
         systemClipboard->setText(url);
         QMessageBox::information(this, tr("Information"), tr("Url %1 copied!").arg(url));
-        INFO("Url {} copied!", url.toStdString().c_str());
+        spdlog::info("Url {} copied!", url);
     });
     connect(ui->btnRestart, &QPushButton::clicked, this, [&] {
         //TODO:Add the logic of restart the task
