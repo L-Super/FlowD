@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../../DownloadItemWidget.ui" line="92"/>
-        <location filename="../../DownloadItemWidget.cpp" line="176"/>
+        <location filename="../../DownloadItemWidget.cpp" line="177"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
@@ -45,28 +45,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="63"/>
-        <location filename="../../DownloadItemWidget.cpp" line="216"/>
+        <location filename="../../DownloadItemWidget.cpp" line="64"/>
+        <location filename="../../DownloadItemWidget.cpp" line="217"/>
         <source>File Size: %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="90"/>
+        <location filename="../../DownloadItemWidget.cpp" line="91"/>
         <source>Speed: %1 %2/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="172"/>
+        <location filename="../../DownloadItemWidget.cpp" line="173"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="196"/>
+        <location filename="../../DownloadItemWidget.cpp" line="197"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="197"/>
+        <location filename="../../DownloadItemWidget.cpp" line="198"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation type="unfinished"></translation>
@@ -153,50 +153,50 @@ Please check whether the file exists and the application can access the file.</s
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="31"/>
+        <location filename="../../FileInformationWidget.cpp" line="32"/>
         <source>Save to: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="32"/>
+        <location filename="../../FileInformationWidget.cpp" line="33"/>
         <source>Task Name: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="33"/>
+        <location filename="../../FileInformationWidget.cpp" line="34"/>
         <source>URL: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="34"/>
+        <location filename="../../FileInformationWidget.cpp" line="35"/>
         <source>File Size: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="41"/>
-        <location filename="../../FileInformationWidget.cpp" line="53"/>
+        <location filename="../../FileInformationWidget.cpp" line="42"/>
+        <location filename="../../FileInformationWidget.cpp" line="54"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="42"/>
+        <location filename="../../FileInformationWidget.cpp" line="43"/>
         <source>Failed in opening %1 !
 Please check whether the folder exists and the application can access the folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="54"/>
+        <location filename="../../FileInformationWidget.cpp" line="55"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="66"/>
+        <location filename="../../FileInformationWidget.cpp" line="67"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FileInformationWidget.cpp" line="66"/>
+        <location filename="../../FileInformationWidget.cpp" line="67"/>
         <source>Url %1 copied!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -318,22 +318,22 @@ Please check whether the file exists and the application can access the file.</s
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="127"/>
+        <location filename="../../DownloadItemWidget.cpp" line="128"/>
         <source>%1 Day %2 Hours %3 Minutes %4 Seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="129"/>
+        <location filename="../../DownloadItemWidget.cpp" line="130"/>
         <source>%1 Hours %2 Minutes %3 Seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="131"/>
+        <location filename="../../DownloadItemWidget.cpp" line="132"/>
         <source>%1 Minutes %2 Seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="133"/>
+        <location filename="../../DownloadItemWidget.cpp" line="134"/>
         <source>%1 Seconds</source>
         <translation type="unfinished"></translation>
     </message>

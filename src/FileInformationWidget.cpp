@@ -5,6 +5,7 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
+#include <QUrl>
 
 #include "Logger.hpp"
 

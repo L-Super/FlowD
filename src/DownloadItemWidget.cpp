@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QUrl>
 
 #include "Logger.hpp"
 
