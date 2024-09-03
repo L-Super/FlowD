@@ -1,10 +1,7 @@
 #pragma once
 
 #include <QList>
-#include <QToolButton>
 #include <QWidget>
-
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -12,6 +9,7 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+class QToolButton;
 class DownloadListWidget;
 class HelpWidget;
 class SettingsWidget;
@@ -28,23 +26,18 @@ protected slots:
     void onToolMenuClicked();
 
 private:
+    void minimizeMainTab(bool minimize);
+    void setIconTheme(QPalette palette = QPalette());
+    void setBlackIcon();
+    void setWhiteIcon();
+    void onSystemStyleChanged(QPalette palette);
+
+private:
     Ui::MainWindow* ui;
     DownloadListWidget* downloadListWidget;
     SettingsWidget* settingsWidget;
     HelpWidget* helpWidget;
     QList<QToolButton*> checkableToolButtons;//所有选项卡按钮
-    // QTimer* timer;
 
     bool tabMinimized;//主选项卡状态
-
-    void connectSlots();
-    void iniUi();
-
-    inline void minimizeMainTab(bool minimize);
-
-    void setIconTheme(QPalette palette = QPalette());
-    void setBlackIcon();
-    void setWhiteIcon();
-
-    void onSystemStyleChanged(QPalette palette);
 };

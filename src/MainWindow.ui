@@ -25,7 +25,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QToolButton" name="toolMenu">
+        <widget class="QToolButton" name="menuToolButton">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -72,7 +72,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QToolButton" name="toolNewDownload">
+      <widget class="QToolButton" name="newDownloadToolButton">
        <property name="minimumSize">
         <size>
          <width>200</width>
@@ -115,7 +115,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolDownloadList">
+      <widget class="QToolButton" name="downloadListToolButton">
        <property name="minimumSize">
         <size>
          <width>200</width>
@@ -171,7 +171,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QToolButton" name="toolSettings">
+      <widget class="QToolButton" name="settingsToolButton">
        <property name="minimumSize">
         <size>
          <width>200</width>
@@ -214,7 +214,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolHelp">
+      <widget class="QToolButton" name="helpToolButton">
        <property name="minimumSize">
         <size>
          <width>200</width>
