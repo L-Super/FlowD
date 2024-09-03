@@ -32,6 +32,7 @@ jobs:
               with:
                 cache: true
                 cache-key-prefix: 'Qt'
+                version: '6.7.0'
 
             - name: Configure CMake
               # Configure CMake in a 'build' subdirectory.
@@ -57,7 +58,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                qt_version: [5.15.2, 6.7.0]
+                qt_version: [6.7.0]
                 build_type: [Release]
 
         steps:
