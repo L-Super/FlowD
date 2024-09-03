@@ -33,10 +33,12 @@ set(SRC_FILES MainWindow.cpp MainWindow.h MainWindow.ui
     SettingsAdvancedWidget.cpp SettingsAdvancedWidget.h SettingsAdvancedWidget.ui
     NewDownloadDialog.cpp NewDownloadDialog.h NewDownloadDialog.ui
     UserAgentConfigDialog.cpp UserAgentConfigDialog.h UserAgentConfigDialog.ui
+    FileInformationWidget.h FileInformationWidget.cpp FileInformationWidget.ui
 )
 
 set(APP_DESCRIPTION "An Efficient Multi-threaded Download Manager")
 set(APP_COPYRIGHT "Copyright 2024-2077 The FlowD Ltd.")
+set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
 
 if (WIN32)
     if (MSVC)
@@ -127,6 +129,7 @@ if(WIN32) # Install dlls in the same directory as the executable on Windows
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
 endif()
 
+
 include(FetchContent)
 FetchContent_Declare(
         spdlog
@@ -139,7 +142,11 @@ FetchContent_Declare(json
 FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
         GIT_TAG aa581c9d8060b2502707ad96a04f4829cc524fcb)
 
-FetchContent_MakeAvailable(spdlog json cpr)
+FetchContent_Declare(
+            SingleApplication
+            URL https://github.com/itay-grudev/SingleApplication/archive/refs/heads/master.zip)
+
+FetchContent_MakeAvailable(spdlog json cpr SingleApplication)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         Qt${QT_VERSION_MAJOR}::Core
@@ -148,6 +155,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         spdlog::spdlog_header_only
         nlohmann_json::nlohmann_json
         cpr::cpr
+        SingleApplication::SingleApplication
         Utils
 )
 

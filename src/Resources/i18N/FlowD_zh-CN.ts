@@ -4,68 +4,200 @@
 <context>
     <name>DownloadItemWidget</name>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="46"/>
+        <location filename="../../DownloadItemWidget.ui" line="52"/>
         <source>//  File Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="86"/>
-        <location filename="../../DownloadItemWidget.cpp" line="151"/>
+        <location filename="../../DownloadItemWidget.ui" line="92"/>
+        <location filename="../../DownloadItemWidget.cpp" line="176"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="111"/>
+        <location filename="../../DownloadItemWidget.ui" line="117"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="136"/>
+        <location filename="../../DownloadItemWidget.ui" line="139"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="164"/>
+        <source>More</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="192"/>
         <source>File Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="155"/>
+        <location filename="../../DownloadItemWidget.ui" line="211"/>
         <source>Remaining time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="174"/>
+        <location filename="../../DownloadItemWidget.ui" line="230"/>
         <source>Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="49"/>
-        <location filename="../../DownloadItemWidget.cpp" line="164"/>
+        <location filename="../../DownloadItemWidget.cpp" line="63"/>
+        <location filename="../../DownloadItemWidget.cpp" line="216"/>
         <source>File Size: %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="65"/>
+        <location filename="../../DownloadItemWidget.cpp" line="90"/>
         <source>Speed: %1 %2/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="147"/>
+        <location filename="../../DownloadItemWidget.cpp" line="172"/>
         <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.cpp" line="196"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.cpp" line="197"/>
+        <source>Failed in opening %1 !
+Please check whether the file exists and the application can access the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DownloadListWidget</name>
     <message>
-        <location filename="../../DownloadListWidget.ui" line="14"/>
+        <location filename="../../DownloadListWidget.ui" line="20"/>
         <source>Download List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadListWidget.ui" line="42"/>
+        <location filename="../../DownloadListWidget.ui" line="48"/>
         <source>Downloading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadListWidget.ui" line="66"/>
+        <location filename="../../DownloadListWidget.ui" line="72"/>
         <source>Stoppped</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileInformationWidget</name>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="37"/>
+        <source>Task Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="63"/>
+        <source>Task Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="89"/>
+        <source>Save to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="108"/>
+        <source>Open Folder(&amp;F)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="134"/>
+        <source>File Size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="158"/>
+        <source>Status:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="182"/>
+        <source>URL:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="218"/>
+        <source>Restart(&amp;R)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="237"/>
+        <source>Open(&amp;O)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="256"/>
+        <source>Delete(&amp;D)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.ui" line="275"/>
+        <source>Copy Link(&amp;C)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="31"/>
+        <source>Save to: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="32"/>
+        <source>Task Name: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="33"/>
+        <source>URL: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="34"/>
+        <source>File Size: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="41"/>
+        <location filename="../../FileInformationWidget.cpp" line="53"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="42"/>
+        <source>Failed in opening %1 !
+Please check whether the folder exists and the application can access the folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="54"/>
+        <source>Failed in opening %1 !
+Please check whether the file exists and the application can access the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="66"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FileInformationWidget.cpp" line="66"/>
+        <source>Url %1 copied!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -186,23 +318,37 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="102"/>
+        <location filename="../../DownloadItemWidget.cpp" line="127"/>
         <source>%1 Day %2 Hours %3 Minutes %4 Seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="104"/>
+        <location filename="../../DownloadItemWidget.cpp" line="129"/>
         <source>%1 Hours %2 Minutes %3 Seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="106"/>
+        <location filename="../../DownloadItemWidget.cpp" line="131"/>
         <source>%1 Minutes %2 Seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="108"/>
+        <location filename="../../DownloadItemWidget.cpp" line="133"/>
         <source>%1 Seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../main.cpp" line="59"/>
+        <location filename="../../MainWindow.cpp" line="184"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="185"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../main.cpp" line="59"/>
+        <location filename="../../MainWindow.cpp" line="184"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="185"/>
+        <source>Failed in getting style sheet!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -342,7 +488,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="93"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="99"/>
         <source>Select a folder for file saving</source>
         <translation type="unfinished"></translation>
     </message>
@@ -350,17 +496,17 @@
 <context>
     <name>SettingsWidget</name>
     <message>
-        <location filename="../../SettingsWidget.ui" line="14"/>
+        <location filename="../../SettingsWidget.ui" line="20"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SettingsWidget.ui" line="42"/>
+        <location filename="../../SettingsWidget.ui" line="48"/>
         <source>Basic Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SettingsWidget.ui" line="66"/>
+        <location filename="../../SettingsWidget.ui" line="72"/>
         <source>Advanced Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -368,22 +514,22 @@
 <context>
     <name>UserAgentConfigDialog</name>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="14"/>
+        <location filename="../../UserAgentConfigDialog.ui" line="20"/>
         <source>Config User-Agent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="43"/>
+        <location filename="../../UserAgentConfigDialog.ui" line="49"/>
         <source>User-Agent：</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="125"/>
+        <location filename="../../UserAgentConfigDialog.ui" line="131"/>
         <source>OK(&amp;O)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="144"/>
+        <location filename="../../UserAgentConfigDialog.ui" line="150"/>
         <source>Cancel(&amp;C)</source>
         <translation type="unfinished"></translation>
     </message>

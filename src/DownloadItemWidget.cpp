@@ -1,8 +1,18 @@
 #include "DownloadItemWidget.h"
 #include "ui_DownloadItemWidget.h"
+
+#include <QDesktopServices>
+#include <QDir>
+#include <QFileInfo>
+#include <QListWidgetItem>
+#include <QMessageBox>
+
+#include "Logger.hpp"
+
 //TODO:Calculate remaining downloading time and download speed(perhaps)
 DownloadItemWidget::DownloadItemWidget(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes,
-                                       qint64 downloadedBytes, bool isDownloading, QWidget* parent)
+                                       qint64 downloadedBytes, bool isDownloading, QListWidgetItem* listItem,
+                                       QWidget* parent)
     : QWidget(parent), ui(new Ui::DownloadItemWidget)
 {
     this->fileUrl = URL;
@@ -11,6 +21,7 @@ DownloadItemWidget::DownloadItemWidget(QString URL, QString fileName, QString fi
     this->isDownloading = isDownloading;
     this->qint64_totalBytes = totalBytes;
     this->qint64_downloadedBytes = downloadedBytes;
+    this->listItem = listItem;
 
     ui->setupUi(this);
     iniUi();
@@ -20,6 +31,9 @@ DownloadItemWidget::DownloadItemWidget(QString URL, QString fileName, QString fi
 void DownloadItemWidget::connectSlots()
 {
     connect(ui->btnSuspend, &QPushButton::clicked, this, &DownloadItemWidget::onBtnSuspendClicked);
+    connect(ui->btnDelete, &QPushButton::clicked, this, &DownloadItemWidget::onBtnDeleteClicked);
+    connect(ui->btnO, &QPushButton::clicked, this, &DownloadItemWidget::onBtnOpenClicked);
+    connect(ui->btnMore, &QPushButton::clicked, this, &DownloadItemWidget::onBtnMoreClicked);
 }
 
 void DownloadItemWidget::setFileName(QString fileName)
@@ -51,7 +65,18 @@ void DownloadItemWidget::setFileDownloadProgress(qint64 totalBytes, qint64 downl
 }
 void DownloadItemWidget::setDownloadState(bool isDownloading)
 {
+    //Update State
     this->isDownloading = isDownloading;
+
+    //Update UI
+    if (isDownloading) {
+        ui->btnSuspend->show();
+        ui->btnO->hide();
+    }
+    else {
+        ui->btnSuspend->hide();
+        ui->btnO->show();
+    }
 }
 void DownloadItemWidget::setRemainTime()
 {
@@ -62,7 +87,7 @@ void DownloadItemWidget::setDownloadSpeed(double downloadSpeed)
     this->double_downloadSpeed = downloadSpeed;
 
     std::pair<double, QString> result = convertToReasonableUnit(this->double_downloadSpeed);
-    ui->labSpeed->setText(tr("Speed: %1 %2/s").arg(result.first).arg(result.second));
+    ui->labSpeed->setText(tr("Speed: %1 %2/s").arg(result.first, 0, 'f', 2).arg(result.second));
 }
 //This function converts byte sizes to more readable units.
 std::pair<double, QString> DownloadItemWidget::convertToReasonableUnit(double bytesToConvert)
@@ -153,11 +178,38 @@ void DownloadItemWidget::onBtnSuspendClicked(bool checked)
     }
 }
 
+void DownloadItemWidget::onBtnDeleteClicked()
+{
+    //TODO:Add Logic to terminate the download
+    this->isDownloading = false;
+
+    emit removeFromWidgetRequested(this->listItem);//Request the ListWidget to remove this
+}
+
+void DownloadItemWidget::onBtnOpenClicked()
+{
+    //Open the downloaded file
+    QFileInfo fileInfo(savedFilePath, fileName);
+    QString savedFilePathName = fileInfo.absoluteFilePath();
+    QUrl fileUrl = QUrl::fromLocalFile(savedFilePathName);
+    if (!QDesktopServices::openUrl(fileUrl)) {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Failed in opening %1 !\nPlease check whether the file exists and the "
+                                 "application can access the file.")
+                                      .arg(QDir::toNativeSeparators(savedFilePathName)));
+        ERROR("Failed in opening {} !", QDir::toNativeSeparators(savedFilePathName).toStdString().c_str());
+    }
+}
+
+void DownloadItemWidget::onBtnMoreClicked() {}
+
 void DownloadItemWidget::iniUi()
 {
+    //set progress bar ui
     ui->progressBar->setMaximum(qint64_totalBytes);
     ui->progressBar->setValue(qint64_downloadedBytes);
 
+    //display filename
     ui->labFileName->setText(fileName);
 
     std::pair<double, QString> resultTotal = convertToReasonableUnit(qint64_totalBytes);

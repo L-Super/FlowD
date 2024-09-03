@@ -8,12 +8,15 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+class QListWidgetItem;
+
 class DownloadItemWidget : public QWidget {
     Q_OBJECT
 
 public:
     explicit DownloadItemWidget(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes,
-                                qint64 downloadedBytes, bool isDownloading, QWidget* parent = nullptr);
+                                qint64 downloadedBytes, bool isDownloading, QListWidgetItem* listItem,
+                                QWidget* parent = nullptr);
     ~DownloadItemWidget() override;
 
     void setFileName(QString fileName);
@@ -42,8 +45,16 @@ public:
 protected slots:
     void onBtnSuspendClicked(bool checked);
 
+    void onBtnDeleteClicked();
+
+    void onBtnOpenClicked();
+
+    void onBtnMoreClicked();
+
 private:
     Ui::DownloadItemWidget* ui;
+
+    QListWidgetItem* listItem;
 
     bool isDownloading;
 
@@ -60,4 +71,7 @@ private:
 
     void iniUi();
     void connectSlots();
+
+signals:
+    void removeFromWidgetRequested(QListWidgetItem* item);
 };

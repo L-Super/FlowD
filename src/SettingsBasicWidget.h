@@ -27,4 +27,5 @@ private:
     void iniSettings();
     void connectSlots();
 
+    void setApplictionTheme(int choice);
 };

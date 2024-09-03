@@ -4,17 +4,26 @@
         <file>Resources/win/logo.ico</file>
         <file>Resources/mac/logo.icns</file>
     </qresource>
-
     <qresource prefix="/qss">
         <file>Resources/style/style_black.qss</file>
         <file>Resources/style/style_white.qss</file>
     </qresource>
     <qresource prefix="/MainWindow">
-        <file>Resources/icons/menu.svg</file>
-        <file>Resources/icons/downloadlist.svg</file>
-        <file>Resources/icons/help.svg</file>
-        <file>Resources/icons/new.svg</file>
-        <file>Resources/icons/settings.svg</file>
+        <file>Resources/icons/black/delete.svg</file>
+        <file>Resources/icons/black/downloadlist.svg</file>
+        <file>Resources/icons/black/help.svg</file>
+        <file>Resources/icons/black/menu.svg</file>
+        <file>Resources/icons/black/new.svg</file>
+        <file>Resources/icons/black/openfolder.svg</file>
+        <file>Resources/icons/black/settings.svg</file>
+        <file>Resources/icons/black/start.svg</file>
+        <file>Resources/icons/white/downloadlist.svg</file>
+        <file>Resources/icons/white/help.svg</file>
+        <file>Resources/icons/white/menu.svg</file>
+        <file>Resources/icons/white/new.svg</file>
+        <file>Resources/icons/white/settings.svg</file>
+        <file>Resources/icons/white/start.svg</file>
+        <file>Resources/icons/white/suspend.svg</file>
     </qresource>
     <qresource prefix="/qss/icons">
         <file>Resources/icons/drop-down.png</file>

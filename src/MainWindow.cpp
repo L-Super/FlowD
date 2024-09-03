@@ -6,11 +6,14 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QTimer>
 
 #include "DownloadListWidget.h"
 #include "HelpWidget.h"
 #include "NewDownloadDialog.h"
 #include "SettingsWidget.h"
+
+#include "Logger.hpp"
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow)
 {
@@ -33,6 +36,11 @@ void MainWindow::connectSlots()
         connect(checkableToolButtons[i], &QToolButton::clicked, this, &MainWindow::onCheckableToolButtonsClicked);
 
     // Connect signals and slots of other widgets
+    QApplication* qapp = qobject_cast<QApplication*>(QApplication::instance());
+
+    //  Detect whether system theme has changed
+    connect(qapp, &QApplication::paletteChanged, this, &MainWindow::setIconTheme);
+    connect(qapp, &QApplication::paletteChanged, this, &MainWindow::onSystemStyleChanged);
     connect(ui->toolMenu, &QToolButton::clicked, this, &MainWindow::onToolMenuClicked);
     connect(ui->toolNewDownload, &QToolButton::clicked, this, [] {
         auto newDownloadDialog = new NewDownloadDialog;
@@ -64,6 +72,8 @@ void MainWindow::iniUi()
     // Initially select "Download List"
     ui->stackedWidget->setCurrentIndex(0);
     checkableToolButtons[0]->setChecked(1);
+
+    setIconTheme();
 }
 
 // This function sets the display mode of the main tab to show only icons or both icons and text
@@ -93,6 +103,87 @@ void MainWindow::minimizeMainTab(bool minimize)
         cacheDir.mkpath(cachePath);
     QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
     set.setValue("Common/MinimizeMainTab", minimize);
+}
+
+void MainWindow::setIconTheme(QPalette palette)
+{
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir cacheDir(cachePath);
+    if (!cacheDir.exists())
+        cacheDir.mkpath(cachePath);
+    QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
+    int index = set.value("Basic/DisplayStyle", 0).toInt();
+    QColor color = palette.color(QPalette::Window);
+    switch (index) {
+        case 0:                           //Follow System Theme
+            if (color.lightness() < 128) {//Determine System Color Theme
+                setWhiteIcon();
+            }
+            else {
+                setBlackIcon();
+            }
+            break;
+        case 1://Light Theme
+            setBlackIcon();
+            break;
+        case 2://Dark Theme
+            setWhiteIcon();
+            break;
+        default:
+            set.setValue("Basic/DisplayStyle", 0);
+            setIconTheme(palette);
+            break;
+    }
+}
+
+void MainWindow::setBlackIcon()
+{
+    ui->toolMenu->setIcon(QIcon(":/MainWindow/Resources/icons/white/menu.svg"));
+    ui->toolNewDownload->setIcon(QIcon(":/MainWindow/Resources/icons/white/new.svg"));
+    ui->toolDownloadList->setIcon(QIcon(":/MainWindow/Resources/icons/white/downloadlist.svg"));
+    ui->toolSettings->setIcon(QIcon(":/MainWindow/Resources/icons/white/settings.svg"));
+    ui->toolHelp->setIcon(QIcon(":/MainWindow/Resources/icons/white/help.svg"));
+}
+
+void MainWindow::setWhiteIcon()
+{
+    ui->toolMenu->setIcon(QIcon(":/MainWindow/Resources/icons/black/menu.svg"));
+    ui->toolNewDownload->setIcon(QIcon(":/MainWindow/Resources/icons/black/new.svg"));
+    ui->toolDownloadList->setIcon(QIcon(":/MainWindow/Resources/icons/black/downloadlist.svg"));
+    ui->toolSettings->setIcon(QIcon(":/MainWindow/Resources/icons/black/settings.svg"));
+    ui->toolHelp->setIcon(QIcon(":/MainWindow/Resources/icons/black/help.svg"));
+}
+
+void MainWindow::onSystemStyleChanged(QPalette palette)
+{
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir cacheDir(cachePath);
+    if (!cacheDir.exists())
+        cacheDir.mkpath(cachePath);
+    QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
+    int index = set.value("Basic/DisplayStyle", 0).toInt();
+    QFile qssFile;
+    QApplication* a = qobject_cast<QApplication*>(QApplication::instance());
+    QColor color = palette.color(QPalette::Window);
+    //Follow System Theme
+    if (index == 0) {
+        if (color.lightness() < 128) {//Determine System Color Theme
+            qssFile.setFileName(":/qss/Resources/style/style_black.qss");
+        }
+        else {
+            qssFile.setFileName(":/qss/Resources/style/style_white.qss");
+        }
+        QString styleSheet;
+        if (qssFile.open(QIODevice::ReadOnly)) {
+            styleSheet = QString::fromLatin1(qssFile.readAll());
+            a->setStyleSheet(styleSheet);
+            qssFile.close();
+        }
+        else {
+            ERROR("Failed in getting stylesheet!");
+            QMessageBox::critical(nullptr, QObject::tr("Error"), QObject::tr("Failed in getting style sheet!"));
+        }
+    }
 }
 
 void MainWindow::onCheckableToolButtonsClicked(bool checked)

@@ -1,29 +1,64 @@
 #include <QApplication>
+#include <QBuffer>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QIcon>
 #include <QMessageBox>
+#include <QPalette>
+#include <QSettings>
+#include <QSharedMemory>
 #include <QStandardPaths>
+#include <QTimer>
+
+#include "SingleApplication"
 
 #include "Logger.hpp"
 
 #include "MainWindow.h"
 #include "version.h"
 
-//获取样式表
-QString getQss()
+//Get StyleSheet String
+QString getQss(SingleApplication& a)
 {
-    //TODO:检测设置或系统颜色主题，应用对应样式表
-    QFile qssFile(":/qss/resources/style/style_white.qss");
+    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir cacheDir(cachePath);
+    if (!cacheDir.exists())
+        cacheDir.mkpath(cachePath);
+    QSettings set(cachePath + "/config.ini", QSettings::IniFormat);
+    int index = set.value("Basic/DisplayStyle", 0).toInt();
+    QFile qssFile;
+    QPalette systemPalette = a.palette();
+    QColor color = systemPalette.color(QPalette::Window);
+    switch (index) {
+        case 0:                           //Follow System Theme
+            if (color.lightness() < 128) {//Determine System Color Theme
+                qssFile.setFileName(":/qss/Resources/style/style_black.qss");
+            }
+            else {
+                qssFile.setFileName(":/qss/Resources/style/style_white.qss");
+            }
+            break;
+        case 1://Light Theme
+            qssFile.setFileName(":/qss/Resources/style/style_white.qss");
+            break;
+        case 2://Dark Theme
+            qssFile.setFileName(":/qss/Resources/style/style_black.qss");
+            break;
+        default:
+            set.setValue("Basic/DisplayStyle", 0);
+            return getQss(a);
+            break;
+    }
     QString styleSheet;
     if (qssFile.open(QIODevice::ReadOnly)) {
         styleSheet = QString::fromLatin1(qssFile.readAll());
     }
     else {
-        //TODO:写入日志
-        QMessageBox::critical(nullptr, "失败", "获取样式表失败");
+        ERROR("Failed in getting stylesheet!");
+        QMessageBox::critical(nullptr, QObject::tr("Error"), QObject::tr("Failed in getting style sheet!"));
     }
+    qssFile.close();
     return styleSheet;
 }
 
@@ -41,28 +76,35 @@ void initLogger()
 
 int main(int argc, char* argv[])
 {
-    QApplication a(argc, argv);
+    SingleApplication a(argc, argv);
+    // QApplication a(argc, argv);
     initLogger();
 
-    QString iconPath;//图标路径
+    QString iconPath;//icon path
 
 #if defined(Q_OS_WIN)
-    iconPath = ":/resources/win/logo.ico";
+    iconPath = ":/Resources/win/logo.ico";
 #elif defined(Q_OS_MAC)
-    iconPath = ":/resources/mac/logo.icns";
-#else //linux或其它操作系统
-    iconPath = ":/resources/logo.png";
+    iconPath = ":/Resources/mac/logo.icns";
+#else//linux or other OS
+    iconPath = ":/Resources/logo.png";
 #endif
 
     a.setWindowIcon(QIcon(iconPath));
 
+    QApplication::setQuitOnLastWindowClosed(false);
+
     qDebug() << QString("The version of this application is v%1").arg(VERSION_STR);
 
-    //应用样式表
-    a.setStyleSheet(getQss());
+
+    a.setStyleSheet(getQss(a));
 
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));
     w.show();
+
+    QObject::connect(&a, &SingleApplication::instanceStarted, &w, &MainWindow::show);
+
+    INFO("Application started,Version {}.", VERSION_STR);
     return QApplication::exec();
 }
