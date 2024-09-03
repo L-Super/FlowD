@@ -14,39 +14,26 @@
 #include <iostream>
 #include <type_traits>
 
-/**
- * level value:
- * TRACE 0
- * DEBUG 1
- * INFO 2
- * WARN 3
- * ERROR 4
- * CRITICAL 5
- * LEVEL_OFF 6
- */
+template <>
+struct fmt::formatter<QString> : formatter<string_view> {
+    template <typename FormatContext>
+    auto format(QString str, FormatContext& ctx) {
+        return formatter<string_view>::format(str.toStdString(), ctx);
+    }
+};
 
-#define TRACE SPDLOG_TRACE
-#define DEBUG SPDLOG_DEBUG
-#define INFO SPDLOG_INFO
-#define WARN SPDLOG_WARN
-#define ERROR SPDLOG_ERROR
-#define CRITICAL SPDLOG_CRITICAL
-
+template <>
+struct fmt::formatter<QByteArray> : formatter<string_view> {
+    template <typename FormatContext>
+    auto format(QByteArray str, FormatContext& ctx) {
+        return formatter<string_view>::format(str.toStdString(), ctx);
+    }
+};
 
 template <typename T>
 std::ostream &operator<<(typename std::enable_if<std::is_enum<T>::value, std::ostream>::type &stream, const T &e)
 {
     return stream << static_cast<typename std::underlying_type<T>::type>(e);
-}
-
-static std::ostream &operator<<(std::ostream &os, const QString &str)
-{
-    return os << str.toStdString();
-}
-
-static std::ostream &operator<<(std::ostream &os, const QByteArray &str)
-{
-    return os << str.toStdString();
 }
 
 class Log
