@@ -144,7 +144,7 @@ FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
 
 FetchContent_Declare(
             SingleApplication
-            URL https://github.com/itay-grudev/SingleApplication/archive/refs/heads/master.zip)
+            URL https://github.com/itay-grudev/SingleApplication/archive/refs/tags/v3.5.1.zip)
 
 FetchContent_MakeAvailable(spdlog json cpr SingleApplication)
 

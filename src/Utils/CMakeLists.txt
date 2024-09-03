@@ -1,4 +1,4 @@
-add_library(Utils
+add_library(Utils STATIC
         Noncopyable.hpp
         DiskSpaceHelper.hpp
         ThreadPool.hpp
