@@ -2,8 +2,13 @@
 #include "ui_SettingsBasicWidget.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QPalette>
 #include <QSettings>
 #include <QStandardPaths>
+
+#include "Logger.hpp"
+
 SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(new Ui::SettingsBasicWidget)
 {
     //Get cache path
@@ -80,6 +85,7 @@ void SettingsBasicWidget::connectSlots()
 {
     connect(ui->comboStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
         set->setValue("Basic/DisplayStyle", index);
+        setApplictionTheme(index);
     });
 
     connect(ui->comboLanguage, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [=](int index) {
@@ -133,4 +139,50 @@ void SettingsBasicWidget::connectSlots()
     connect(ui->spinThreadCount, QOverload<int>::of(&QSpinBox::valueChanged), this, [=](int count) {
         set->setValue("Basic/ThreadCount", count);
     });
+}
+
+void SettingsBasicWidget::setApplictionTheme(int choice)
+{
+    QFile qssFile;
+    QApplication* qapp = qobject_cast<QApplication*>(QApplication::instance());
+    QPalette systemPalette = qapp->palette();
+    QColor color = systemPalette.color(QPalette::Window);
+    QPalette palette;
+    switch (choice) {
+        case 0:                           //Follow System Theme
+            if (color.lightness() < 128) {//Determine System Color Theme
+                qssFile.setFileName(":/qss/Resources/style/style_black.qss");
+
+                palette.setColor(QPalette::Text, QColor(255, 255, 255));
+            }
+            else {
+                qssFile.setFileName(":/qss/Resources/style/style_white.qss");
+
+                palette.setColor(QPalette::Text, QColor(0, 0, 0));
+            }
+            qapp->setPalette(palette);
+            break;
+        case 1://Light Theme
+            qssFile.setFileName(":/qss/Resources/style/style_white.qss");
+
+            palette.setColor(QPalette::Text, QColor(0, 0, 0));
+            qapp->setPalette(palette);
+            break;
+        case 2://Dark Theme
+            qssFile.setFileName(":/qss/Resources/style/style_black.qss");
+
+            palette.setColor(QPalette::Text, QColor(255, 255, 255));
+            qapp->setPalette(palette);
+            break;
+    }
+    QString styleSheet;
+    if (qssFile.open(QIODevice::ReadOnly)) {
+        styleSheet = QString::fromLatin1(qssFile.readAll());
+        qssFile.close();
+    }
+    else {
+        ERROR("Failed in getting stylesheet!");
+        QMessageBox::critical(nullptr, QObject::tr("Error"), QObject::tr("Failed in getting style sheet!"));
+    }
+    qapp->setStyleSheet(styleSheet);
 }

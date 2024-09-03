@@ -19,15 +19,14 @@ public:
     explicit DownloadListWidget(QWidget* parent = nullptr);
     ~DownloadListWidget() override;
 
-    int addDownloadItem(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes, qint64 downloadedBytes,
-                        bool isDownloading);
+    DownloadItemWidget* addDownloadItem(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes,
+                                        qint64 downloadedBytes, bool isDownloading);
+protected slots:
+    void onRemoveFromWidgetRequested(QListWidgetItem* itemToRemove);
 
 private:
     Ui::DownloadListWidget* ui;
 
-    //一个存储了列表条目和自定义条目映射关系的QHash
-    QHash<QListWidgetItem*, DownloadItemWidget*> itemsHash;
-    QList<QListWidgetItem*> listItems;
     void iniUi();
     void connectSlots();
     void changeTab(int index);

@@ -43,7 +43,7 @@
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/MainWindow/resources/icons/menu.svg</normaloff>:/MainWindow/resources/icons/menu.svg</iconset>
+           <normaloff>:/MainWindow/Resources/icons/white/menu.svg</normaloff>:/MainWindow/Resources/icons/white/menu.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -95,7 +95,7 @@
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/MainWindow/resources/icons/new.svg</normaloff>:/MainWindow/resources/icons/new.svg</iconset>
+         <normaloff>:/MainWindow/Resources/icons/white/new.svg</normaloff>:/MainWindow/Resources/icons/white/new.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -138,7 +138,7 @@
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/MainWindow/resources/icons/downloadlist.svg</normaloff>:/MainWindow/resources/icons/downloadlist.svg</iconset>
+         <normaloff>:/MainWindow/Resources/icons/white/downloadlist.svg</normaloff>:/MainWindow/Resources/icons/white/downloadlist.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -194,7 +194,7 @@
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/MainWindow/resources/icons/settings.svg</normaloff>:/MainWindow/resources/icons/settings.svg</iconset>
+         <normaloff>:/MainWindow/Resources/icons/white/settings.svg</normaloff>:/MainWindow/Resources/icons/white/settings.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -237,7 +237,7 @@
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/MainWindow/resources/icons/help.svg</normaloff>:/MainWindow/resources/icons/help.svg</iconset>
+         <normaloff>:/MainWindow/Resources/icons/white/help.svg</normaloff>:/MainWindow/Resources/icons/white/help.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -262,7 +262,7 @@
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="minimumSize">
       <size>
-       <width>657</width>
+       <width>400</width>
        <height>571</height>
       </size>
      </property>

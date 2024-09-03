@@ -11,15 +11,26 @@ DownloadListWidget::DownloadListWidget(QWidget* parent) : QWidget(parent), ui(ne
 
     //For testing purposes only (usage example)
 
-    int index = addDownloadItem("http://pinsoftstd.cn/FlowD.deb", "FlowD.deb", "./Download/", 102400000, 0, true);
-    /* The following example demonstrates how to create a new item and obtain a pointer
-     *  to a DownloadItemWidget object corresponding to the item and perform some operations on it:
+    DownloadItemWidget* item = addDownloadItem("http://pinsoftstd.cn/FlowD.exe", "FlowD.exe",
+                                               "D:/Users/Administrator/Download/", 10240000, 0, true);
 
-    int index=addDownloadItem("http://pinsoftstd.cn/FlowD.exe","FlowD.exe","./Download/",
-                                10240000,0,true);
-    itemsHash[listItems[item]].setDownloadProgress(1000,12);
+    item->setDownloadSpeed(100000000);
+    item->setDownloadState(false);
 
-    */
+    connect(item, &DownloadItemWidget::removeFromWidgetRequested, this,
+            &DownloadListWidget::onRemoveFromWidgetRequested);
+
+    item = addDownloadItem("http://pinsoftstd.cn/FlowD.exe", "FlowD.exe", "D:/Users/Administrator/Download/", 10240000,
+                           0, true);
+
+    item->setDownloadSpeed(100000000);
+    item->setDownloadState(false);
+
+
+    connect(item, &DownloadItemWidget::removeFromWidgetRequested, this,
+            &DownloadListWidget::onRemoveFromWidgetRequested);
+
+
     iniUi();
     connectSlots();
 }
@@ -55,56 +66,54 @@ void DownloadListWidget::changeTab(int index)
         ui->btnTabStopped->setChecked(false);
         //Filter download entries
         for (int i = 0; i < nums; ++i) {
-            DownloadItemWidget* itemWidget = itemsHash[listItems[i]];
+            DownloadItemWidget* itemWidget =
+                    qobject_cast<DownloadItemWidget*>(ui->listWidget->itemWidget(ui->listWidget->item(i)));
             if (itemWidget->getDownloadState() == true) {
                 //If it is downloading
-                itemWidget->show();
+                ui->listWidget->item(i)->setHidden(0);
             }
             else {
-                itemWidget->hide();
+                ui->listWidget->item(i)->setHidden(1);
             }
         }
     }
     else if (index == 1) {
         ui->btnTabDownloading->setChecked(false);
         for (int i = 0; i < nums; ++i) {
-            DownloadItemWidget* itemWidget = itemsHash[listItems[i]];
+            DownloadItemWidget* itemWidget =
+                    qobject_cast<DownloadItemWidget*>(ui->listWidget->itemWidget(ui->listWidget->item(i)));
             if (itemWidget->getDownloadState() == false) {
                 //If downloading has stopped
-                itemWidget->show();
+                ui->listWidget->item(i)->setHidden(0);
             }
             else {
-                itemWidget->hide();
+                ui->listWidget->item(i)->setHidden(1);
             }
         }
     }
 }
 
-int DownloadListWidget::addDownloadItem(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes,
-                                        qint64 downloadedBytes, bool isDownloading)
+DownloadItemWidget* DownloadListWidget::addDownloadItem(QString URL, QString fileName, QString fileSavedPath,
+                                                        qint64 totalBytes, qint64 downloadedBytes, bool isDownloading)
 {
-    listItems.append(new QListWidgetItem);
-    int itemIndex = listItems.count() - 1;
-    itemsHash.insert(listItems[itemIndex],
-                     new DownloadItemWidget(URL, fileName, fileSavedPath, totalBytes, downloadedBytes, isDownloading));
-    /*You don't need to worry about memory leaks here,
-    as I have properly handled the deallocation in the destructor. */
-    ui->listWidget->addItem(listItems[itemIndex]);
-    ui->listWidget->setItemWidget(listItems[itemIndex], itemsHash[listItems[itemIndex]]);
-    return itemIndex;
+    QListWidgetItem* item = new QListWidgetItem();
+    DownloadItemWidget* customItem = new DownloadItemWidget(URL, fileName, fileSavedPath, totalBytes, downloadedBytes,
+                                                            isDownloading, item, this);
+
+    item->setSizeHint(QSize(600, 120));
+
+    ui->listWidget->addItem(item);
+    ui->listWidget->setItemWidget(item, customItem);
+    return customItem;
+}
+
+void DownloadListWidget::onRemoveFromWidgetRequested(QListWidgetItem* itemToRemove)
+{
+    ui->listWidget->removeItemWidget(itemToRemove);
+    delete itemToRemove;
 }
 
 DownloadListWidget::~DownloadListWidget()
 {
     delete ui;
-
-    // Release all resources associated with QListWidgetItem objects and DownloadItemWidget objects
-    QHash<QListWidgetItem*, DownloadItemWidget*>::iterator it = itemsHash.begin();
-    while (it != itemsHash.end()) {
-        QHash<QListWidgetItem*, DownloadItemWidget*>::iterator current = it;
-        ++it;
-        delete current.key();
-        delete current.value();
-        itemsHash.erase(current);
-    }
 }
