@@ -41,10 +41,6 @@
          <property name="text">
           <string/>
          </property>
-         <property name="icon">
-          <iconset resource="resources.qrc">
-           <normaloff>:/MainWindow/Resources/icons/white/menu.svg</normaloff>:/MainWindow/Resources/icons/white/menu.svg</iconset>
-         </property>
          <property name="iconSize">
           <size>
            <width>20</width>
@@ -93,10 +89,6 @@
        <property name="text">
         <string>     New Download</string>
        </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/MainWindow/Resources/icons/white/new.svg</normaloff>:/MainWindow/Resources/icons/white/new.svg</iconset>
-       </property>
        <property name="iconSize">
         <size>
          <width>30</width>
@@ -135,10 +127,6 @@
        </property>
        <property name="text">
         <string>     Download List</string>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/MainWindow/Resources/icons/white/downloadlist.svg</normaloff>:/MainWindow/Resources/icons/white/downloadlist.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -192,10 +180,6 @@
        <property name="text">
         <string>       Settings</string>
        </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/MainWindow/Resources/icons/white/settings.svg</normaloff>:/MainWindow/Resources/icons/white/settings.svg</iconset>
-       </property>
        <property name="iconSize">
         <size>
          <width>30</width>
@@ -234,10 +218,6 @@
        </property>
        <property name="text">
         <string>       Help</string>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/MainWindow/Resources/icons/white/help.svg</normaloff>:/MainWindow/Resources/icons/white/help.svg</iconset>
        </property>
        <property name="iconSize">
         <size>

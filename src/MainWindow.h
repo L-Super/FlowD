@@ -9,6 +9,7 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+class QButtonGroup;
 class QToolButton;
 class DownloadListWidget;
 class HelpWidget;
@@ -22,15 +23,11 @@ public:
     ~MainWindow() override;
 
 protected slots:
-    void onCheckableToolButtonsClicked(bool checked);
     void onToolMenuClicked();
+    void toolButtonClicked(int index);
 
 private:
     void minimizeMainTab(bool minimize);
-    void setIconTheme(QPalette palette = QPalette());
-    void setBlackIcon();
-    void setWhiteIcon();
-    void onSystemStyleChanged(QPalette palette);
 
 private:
     Ui::MainWindow* ui;
@@ -40,4 +37,5 @@ private:
     QList<QToolButton*> checkableToolButtons;//所有选项卡按钮
 
     bool tabMinimized;//主选项卡状态
+    QButtonGroup * buttonGroup;
 };
