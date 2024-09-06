@@ -21,7 +21,7 @@ void loadQssStyle()
 
 void initLogger()
 {
-    std::string filepath = utils::Path::logPath().append("/flowd.log").toStdString();
+    std::string filepath = QString(utils::Path::instance().logPath() + "/flowd.log").toStdString();
     Log::instance("FlowD", filepath);
     Log::setLevel(1);
 }
@@ -29,6 +29,7 @@ void initLogger()
 int main(int argc, char* argv[])
 {
     SingleApplication a(argc, argv);
+    a.setApplicationName("FlowD");
 
     initLogger();
     loadQssStyle();
@@ -40,6 +41,8 @@ int main(int argc, char* argv[])
 #else
     a.setWindowIcon(QIcon(":/resources/logo.png"));
 #endif
+
+    spdlog::info("App launched. Version:{}", VERSION_STR);
 
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));

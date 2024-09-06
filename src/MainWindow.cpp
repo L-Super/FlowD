@@ -19,9 +19,6 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow
 {
     ui->setupUi(this);
 
-    // Set the display state of the tab
-    QSettings set(utils::Path::cachePath() + "/config.ini", QSettings::IniFormat);
-    tabMinimized = set.value("Common/MinimizeMainTab", false).toBool();
     minimizeMainTab(tabMinimized);
 
     // Add QWidget to the StackedWidget
