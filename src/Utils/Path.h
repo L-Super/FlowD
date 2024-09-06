@@ -8,8 +8,8 @@
 namespace utils {
     class Path {
     public:
-        static QString cachePath();
-        static QString logPath();
+        const QString& cachePath();
+        const QString& logPath();
 
     public:
         static Path& instance()
@@ -23,7 +23,12 @@ namespace utils {
         Path& operator=(Path&&) = delete;
 
     private:
-        Path() = default;
+        Path();
         ~Path() = default;
+        void createDir(const QString& dir);
+
+    private:
+        QString cachePath_;
+        QString logPath_;
     };
 }// namespace utils

@@ -7,24 +7,29 @@
 #include <QStandardPaths>
 
 namespace utils {
-    QString utils::Path::cachePath()
+    Path::Path()
     {
-        auto cachePath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-        QDir dir(cachePath);
-        if (!dir.exists()) {
-            dir.mkdir(cachePath);
-        }
-        return cachePath;
+        cachePath_ = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+        createDir(cachePath_);
+        logPath_ = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/logs";
+        createDir(logPath_);
     }
 
-    QString Path::logPath()
+    const QString& utils::Path::cachePath()
     {
-        auto logPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/logs";
-        QDir dir(logPath);
-        if (!dir.exists()) {
-            dir.mkdir(logPath);
-        }
-        return logPath;
+        return cachePath_;
     }
 
+    const QString& Path::logPath()
+    {
+        return logPath_;
+    }
+
+    void Path::createDir(const QString& path)
+    {
+        QDir dir(path);
+        if (!dir.exists()) {
+            dir.mkpath(".");
+        }
+    }
 }// namespace utils
