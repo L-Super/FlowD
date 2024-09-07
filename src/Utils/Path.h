@@ -10,6 +10,7 @@ namespace utils {
     public:
         const QString& cachePath();
         const QString& logPath();
+        QString configFilepath();
 
     public:
         static Path& instance()

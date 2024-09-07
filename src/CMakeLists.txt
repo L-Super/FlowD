@@ -135,6 +135,9 @@ FetchContent_Declare(spdlog
         URL https://github.com/gabime/spdlog/archive/refs/tags/v1.14.1.zip
 )
 
+FetchContent_Declare(json
+        URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+
 FetchContent_Declare(cpr
         GIT_REPOSITORY https://github.com/libcpr/cpr.git
         GIT_TAG aa581c9d8060b2502707ad96a04f4829cc524fcb)
@@ -142,18 +145,14 @@ FetchContent_Declare(cpr
 FetchContent_Declare(SingleApplication
         GIT_REPOSITORY https://github.com/itay-grudev/SingleApplication.git)
 
-FetchContent_Declare(tomlplusplus
-        GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
-        GIT_TAG v3.4.0
-)
-
-FetchContent_MakeAvailable(spdlog cpr SingleApplication tomlplusplus)
+FetchContent_MakeAvailable(spdlog json cpr SingleApplication)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         Qt${QT_VERSION_MAJOR}::Core
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Widgets
         spdlog::spdlog_header_only
+        nlohmann_json::nlohmann_json
         cpr::cpr
         SingleApplication::SingleApplication
         Utils

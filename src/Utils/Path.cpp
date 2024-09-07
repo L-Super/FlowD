@@ -5,10 +5,12 @@
 #include "Path.h"
 #include <QDir>
 #include <QStandardPaths>
+#include <QCoreApplication>
 
 namespace utils {
     Path::Path()
     {
+        QCoreApplication::setApplicationName("FlowD");
         cachePath_ = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
         createDir(cachePath_);
         logPath_ = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/logs";
@@ -23,6 +25,11 @@ namespace utils {
     const QString& Path::logPath()
     {
         return logPath_;
+    }
+
+    QString Path::configFilepath()
+    {
+        return cachePath_ + "/settings.json";
     }
 
     void Path::createDir(const QString& path)
