@@ -43,10 +43,9 @@ public:
     template<typename T>
     std::optional<T> getBasic(const std::string& key)
     {
-        if (!data_.contains("basic"))
-            return std::nullopt;
-        if (data_["basic"].find(key) != data_.end()) {
-            return data_[key].get<T>();
+        if (data_.contains("basic") && data_["basic"].contains(key))
+        {
+            return data_["basic"][key].get<T>();
         }
         return std::nullopt;
     }
@@ -61,10 +60,9 @@ public:
     template<typename T>
     std::optional<T> getAdvance(const std::string& key)
     {
-        if (!data_.contains("advance"))
-            return std::nullopt;
-        if (data_["advance"].find(key) != data_.end()) {
-            return data_[key].get<T>();
+        if (data_.contains("advance") && data_["advance"].contains(key))
+        {
+            return data_["advance"][key].get<T>();
         }
         return std::nullopt;
     }

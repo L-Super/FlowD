@@ -42,5 +42,5 @@ void AppConfig::save()
     if (!file.is_open()) {
         spdlog::critical("Failed to open file: {}", filepath);
     }
-    file << data_;
+    file << std::setw(2) << data_;
 }
