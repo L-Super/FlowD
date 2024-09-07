@@ -88,7 +88,11 @@ private:
 
         spdlog::set_default_logger(logger);
 
-        std::string format{R"([%Y-%m-%d %T.%e] [%^%l%$] [%n] [thread %t] %@ %v)"};
+#if defined(QT_DEBUG)
+        std::string format{R"([%Y-%m-%d %T.%e] [%^%l%$] [%n] [thread %t] %v)"};
+#else
+        std::string format{R"([%Y-%m-%d %T.%e] [%^%l%$] [%n] %v)"};
+#endif
         spdlog::set_pattern(format);
         spdlog::flush_every(std::chrono::seconds(5));
     }
