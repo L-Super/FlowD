@@ -10,7 +10,6 @@ namespace Ui {
 QT_END_NAMESPACE
 
 class QButtonGroup;
-class QToolButton;
 class DownloadListWidget;
 class HelpWidget;
 class SettingsWidget;
@@ -27,15 +26,13 @@ protected slots:
     void toolButtonClicked(int index);
 
 private:
-    void minimizeMainTab(bool minimize);
+    void minimizeSidebar(bool minimize);
 
 private:
     Ui::MainWindow* ui;
     DownloadListWidget* downloadListWidget;
     SettingsWidget* settingsWidget;
     HelpWidget* helpWidget;
-    QList<QToolButton*> checkableToolButtons;//所有选项卡按钮
-
-    bool tabMinimized;//主选项卡状态
-    QButtonGroup * buttonGroup;
+    QButtonGroup* buttonGroup;
+    bool sidebarMinimized; // sidebar status
 };

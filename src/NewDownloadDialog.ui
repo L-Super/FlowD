@@ -10,84 +10,19 @@
     <height>623</height>
    </rect>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>628</width>
-    <height>623</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Create a Download Task</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_9">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="btnTabLinkMode">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string>URL Task</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QLabel" name="label">
-       <property name="minimumSize">
-        <size>
-         <width>611</width>
-         <height>21</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>611</width>
-         <height>16777215</height>
-        </size>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="font">
         <font>
@@ -95,24 +30,12 @@
         </font>
        </property>
        <property name="text">
-        <string>One task URL per line:</string>
+        <string>URL:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPlainTextEdit" name="plainUrl">
-       <property name="minimumSize">
-        <size>
-         <width>612</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>612</width>
-         <height>60</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
@@ -128,73 +51,34 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_8">
      <item>
-      <widget class="QLabel" name="label_6">
-       <property name="minimumSize">
-        <size>
-         <width>600</width>
-         <height>21</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>600</width>
-         <height>21</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rename (Optional, corresponding to the download links above):</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_10">
-       <item>
-        <widget class="QPlainTextEdit" name="plainRename">
-         <property name="minimumSize">
-          <size>
-           <width>303</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>303</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="plainText">
-          <string/>
-         </property>
-        </widget>
-       </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
+            <widget class="QLabel" name="label_6">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Rename:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit"/>
+           </item>
+           <item>
             <widget class="QLabel" name="label_7">
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>21</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>88888</width>
-               <height>21</height>
-              </size>
-             </property>
              <property name="font">
               <font>
                <pointsize>11</pointsize>
@@ -207,34 +91,15 @@
            </item>
            <item>
             <widget class="QSpinBox" name="spinThreadCount">
-             <property name="minimumSize">
-              <size>
-               <width>81</width>
-               <height>21</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>21</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
             </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
@@ -246,18 +111,6 @@
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
       <widget class="QLabel" name="label_4">
-       <property name="minimumSize">
-        <size>
-         <width>90</width>
-         <height>21</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>90</width>
-         <height>21</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -269,29 +122,10 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineSavePath">
-       <property name="minimumSize">
-        <size>
-         <width>411</width>
-         <height>31</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="lineSavePath"/>
      </item>
      <item>
-      <widget class="QPushButton" name="btnSelectPath">
-       <property name="minimumSize">
-        <size>
-         <width>101</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>101</width>
-         <height>31</height>
-        </size>
-       </property>
+      <widget class="QPushButton" name="selectSavePathButton">
        <property name="text">
         <string>Select...(&amp;S)</string>
        </property>
@@ -311,18 +145,6 @@
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <widget class="QLabel" name="label_8">
-            <property name="minimumSize">
-             <size>
-              <width>90</width>
-              <height>21</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>90</width>
-              <height>21</height>
-             </size>
-            </property>
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -349,20 +171,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="plainUserAgent">
-          <property name="minimumSize">
-           <size>
-            <width>460</width>
-            <height>60</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>460</width>
-            <height>60</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="QPlainTextEdit" name="plainUserAgent"/>
         </item>
        </layout>
       </item>
@@ -372,18 +181,6 @@
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <widget class="QLabel" name="label_9">
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>21</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>100</width>
-              <height>21</height>
-             </size>
-            </property>
             <property name="font">
              <font>
               <pointsize>9</pointsize>
@@ -410,20 +207,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="plainAuthentication">
-          <property name="minimumSize">
-           <size>
-            <width>460</width>
-            <height>60</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>460</width>
-            <height>60</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="QPlainTextEdit" name="plainAuthentication"/>
         </item>
        </layout>
       </item>
@@ -433,18 +217,6 @@
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
            <widget class="QLabel" name="label_10">
-            <property name="minimumSize">
-             <size>
-              <width>90</width>
-              <height>21</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>90</width>
-              <height>21</height>
-             </size>
-            </property>
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -471,20 +243,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="plainReferer">
-          <property name="minimumSize">
-           <size>
-            <width>460</width>
-            <height>60</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>460</width>
-            <height>60</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="QPlainTextEdit" name="plainReferer"/>
         </item>
        </layout>
       </item>
@@ -494,18 +253,6 @@
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <widget class="QLabel" name="label_11">
-            <property name="minimumSize">
-             <size>
-              <width>90</width>
-              <height>21</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>90</width>
-              <height>21</height>
-             </size>
-            </property>
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -532,20 +279,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QPlainTextEdit" name="plainCookie">
-          <property name="minimumSize">
-           <size>
-            <width>460</width>
-            <height>60</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>460</width>
-            <height>60</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="QPlainTextEdit" name="plainCookie"/>
         </item>
        </layout>
       </item>
@@ -595,7 +329,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
-      <widget class="QCheckBox" name="checkAdvanced">
+      <widget class="QCheckBox" name="advancedCheckBox">
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -620,38 +354,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnOk">
-       <property name="minimumSize">
-        <size>
-         <width>101</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>101</width>
-         <height>31</height>
-        </size>
-       </property>
+      <widget class="QPushButton" name="okButton">
        <property name="text">
         <string>OK(&amp;O)</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnCancel">
-       <property name="minimumSize">
-        <size>
-         <width>101</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>101</width>
-         <height>31</height>
-        </size>
-       </property>
+      <widget class="QPushButton" name="cancelButton">
        <property name="text">
         <string>Cancel(&amp;C)</string>
        </property>
@@ -664,7 +374,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>btnCancel</sender>
+   <sender>cancelButton</sender>
    <signal>clicked()</signal>
    <receiver>NewDownloadDialog</receiver>
    <slot>close()</slot>

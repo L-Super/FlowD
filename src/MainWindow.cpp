@@ -3,8 +3,6 @@
 
 #include <QButtonGroup>
 #include <QDir>
-#include <QMessageBox>
-#include <QSettings>
 #include <QTimer>
 
 #include "DownloadListWidget.h"
@@ -12,33 +10,38 @@
 #include "NewDownloadDialog.h"
 #include "SettingsWidget.h"
 
-#include "Logger.hpp"
+#include "AppConfig.h"
+#include "Utils/Logger.hpp"
 #include "Utils/Path.h"
 
-MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow), buttonGroup(new QButtonGroup(this))
+MainWindow::MainWindow(QWidget* parent)
+    : QWidget(parent), ui(new Ui::MainWindow), buttonGroup(new QButtonGroup(this)), sidebarMinimized(false)
 {
     ui->setupUi(this);
 
-    minimizeMainTab(tabMinimized);
-
-    // Add QWidget to the StackedWidget
     downloadListWidget = new DownloadListWidget(this);
     settingsWidget = new SettingsWidget(this);
     helpWidget = new HelpWidget(this);
 
+    // Add QWidget to the StackedWidget
     ui->stackedWidget->insertWidget(0, downloadListWidget);
     ui->stackedWidget->insertWidget(1, settingsWidget);
     ui->stackedWidget->insertWidget(2, helpWidget);
 
-    // Initially select "Download List"
     ui->stackedWidget->setCurrentIndex(0);
 
     buttonGroup->setExclusive(true);
     buttonGroup->addButton(ui->downloadListToolButton, 0);
     buttonGroup->addButton(ui->settingsToolButton, 1);
     buttonGroup->addButton(ui->helpToolButton, 2);
-    connect(buttonGroup, &QButtonGroup::idClicked, this, &MainWindow::toolButtonClicked);
 
+    auto isMinimizeSidebar = AppConfig::instance().getBasic<bool>("minimizeSidebar");
+    if (isMinimizeSidebar.has_value()) {
+        sidebarMinimized = isMinimizeSidebar.value();
+    }
+    minimizeSidebar(sidebarMinimized);
+
+    connect(buttonGroup, &QButtonGroup::idClicked, this, &MainWindow::toolButtonClicked);
     connect(ui->menuToolButton, &QToolButton::clicked, this, &MainWindow::onToolMenuClicked);
     connect(ui->newDownloadToolButton, &QToolButton::clicked, this, [] {
         auto newDownloadDialog = new NewDownloadDialog;
@@ -48,7 +51,7 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent), ui(new Ui::MainWindow
 }
 
 // This function sets the display mode of the main tab to show only icons or both icons and text
-void MainWindow::minimizeMainTab(bool minimize)
+void MainWindow::minimizeSidebar(bool minimize)
 {
     if (minimize) {
         for (const auto& button: buttonGroup->buttons()) {
@@ -70,8 +73,9 @@ void MainWindow::minimizeMainTab(bool minimize)
 
 void MainWindow::onToolMenuClicked()
 {
-    tabMinimized = !tabMinimized;//Change State
-    minimizeMainTab(tabMinimized);
+    sidebarMinimized = !sidebarMinimized;
+    minimizeSidebar(sidebarMinimized);
+    AppConfig::instance().setBasic<bool>("minimizeSidebar", sidebarMinimized);
 }
 
 MainWindow::~MainWindow()

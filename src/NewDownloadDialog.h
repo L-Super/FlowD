@@ -16,10 +16,8 @@ public:
     ~NewDownloadDialog() override;
 
 protected slots:
+    void resizeWidget(bool minMode);//调整窗口大小
 
 private:
     Ui::NewDownloadDialog* ui;
-
-    void connectSlots();
-    void resizeWidget(bool minMode);//调整窗口大小
 };
