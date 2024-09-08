@@ -20,10 +20,6 @@ elseif(UNIX AND NOT APPLE)
     add_compile_definitions(LINUX_OS)
 endif()
 
-include(CheckIPOSupported)
-check_ipo_supported(RESULT IPO_SUPPORTED)
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${IPO_SUPPORTED})
-
 add_subdirectory(src)
 
 if (BUILD_TEST)
