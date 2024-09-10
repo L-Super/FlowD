@@ -217,22 +217,22 @@ Please check whether the file exists and the application can access the file.</s
         <translation>主窗口</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="94"/>
+        <location filename="../../MainWindow.ui" line="84"/>
         <source>     New Download</source>
         <translation>     新建下载</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="137"/>
+        <location filename="../../MainWindow.ui" line="117"/>
         <source>     Download List</source>
         <translation>     下载列表</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="193"/>
+        <location filename="../../MainWindow.ui" line="163"/>
         <source>       Settings</source>
         <translation>       设置</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="236"/>
+        <location filename="../../MainWindow.ui" line="196"/>
         <source>       Help</source>
         <translation>       帮助</translation>
     </message>
@@ -240,77 +240,72 @@ Please check whether the file exists and the application can access the file.</s
 <context>
     <name>NewDownloadDialog</name>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="20"/>
+        <location filename="../../NewDownloadDialog.ui" line="14"/>
         <source>Create a Download Task</source>
         <translation>新建下载任务</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="51"/>
-        <source>URL Task</source>
-        <translation>URL 任务</translation>
+        <location filename="../../NewDownloadDialog.ui" line="33"/>
+        <source>URL:</source>
+        <translation>链接:</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="98"/>
-        <source>One task URL per line:</source>
-        <translation>如果有多个链接，请保持每行一个链接：</translation>
+        <location filename="../../NewDownloadDialog.ui" line="73"/>
+        <source>Rename:</source>
+        <translation>重命名：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="150"/>
-        <source>Rename (Optional, corresponding to the download links above):</source>
-        <translation>重命名 （可选， 和下载链接对应）:</translation>
-    </message>
-    <message>
-        <location filename="../../NewDownloadDialog.ui" line="204"/>
+        <location filename="../../NewDownloadDialog.ui" line="88"/>
         <source>Splits:</source>
         <translation>分片数:</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="267"/>
+        <location filename="../../NewDownloadDialog.ui" line="120"/>
         <source>Save Path:</source>
         <translation>保存路径:</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="296"/>
+        <location filename="../../NewDownloadDialog.ui" line="130"/>
         <source>Select...(&amp;S)</source>
         <translation>选择...(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="332"/>
+        <location filename="../../NewDownloadDialog.ui" line="154"/>
         <source>User-Agent：</source>
         <translation>User-Agent：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="393"/>
+        <location filename="../../NewDownloadDialog.ui" line="190"/>
         <source>Authentication：</source>
         <translation>Authentication：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="454"/>
+        <location filename="../../NewDownloadDialog.ui" line="226"/>
         <source>Referer：</source>
         <translation>Referer：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="515"/>
+        <location filename="../../NewDownloadDialog.ui" line="262"/>
         <source>Cookie：</source>
         <translation>Cookie：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="586"/>
+        <location filename="../../NewDownloadDialog.ui" line="320"/>
         <source>Jump to Download Page</source>
         <translation>跳转至下载页面</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="605"/>
+        <location filename="../../NewDownloadDialog.ui" line="339"/>
         <source>Advanced Options</source>
         <translation>高级设置</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="637"/>
+        <location filename="../../NewDownloadDialog.ui" line="359"/>
         <source>OK(&amp;O)</source>
         <translation>确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="656"/>
+        <location filename="../../NewDownloadDialog.ui" line="366"/>
         <source>Cancel(&amp;C)</source>
         <translation>取消(&amp;C)</translation>
     </message>
@@ -338,15 +333,11 @@ Please check whether the file exists and the application can access the file.</s
         <translation>%1 秒</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="59"/>
-        <location filename="../../MainWindow.cpp" line="184"/>
         <location filename="../../SettingsBasicWidget.cpp" line="185"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../main.cpp" line="59"/>
-        <location filename="../../MainWindow.cpp" line="184"/>
         <location filename="../../SettingsBasicWidget.cpp" line="185"/>
         <source>Failed in getting style sheet!</source>
         <translation>无法获取样式表！</translation>
