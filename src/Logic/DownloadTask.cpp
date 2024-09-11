@@ -43,7 +43,6 @@ void DownloadTask::start()
     if (totalSize_ == 0) {
         spdlog::error("Failed to get file size.");
         // Unable to get file size, can try downloading
-        // return;
     }
     filename_ = filename;
     tmpFilenamePath_ = filePath_ + "/" + filename + ".tmp";
@@ -137,7 +136,6 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
     //see:https://github.com/libcpr/cpr/pull/599
     cpr::Response response = session_.Head();
 
-
     if (response.status_code != 200) {
         spdlog::warn("Request head failed.");
     }
@@ -160,16 +158,15 @@ DownloadTask::HeadInfo DownloadTask::fileSize(const cpr::Header& header)
     }
 
     HeadInfo info;
+    info.length = length;
     if (auto search = header.find("Accept-Ranges"); search != header.end()) {
         auto acceptRange = search->second;
         // not support Accept-Ranges:
         // haven't Accept-Ranges header or value is none
         if (acceptRange == "bytes") {
-            info.length = length;
             info.supportRange = true;
         }
         else {
-            info.length = length;
             info.supportRange = false;
         }
     }
@@ -182,7 +179,7 @@ std::string DownloadTask::fileName(const cpr::Response& response)
     auto headers = response.header;
     auto url = response.url.str();
     // First, try to get it from the Content-Disposition header.
-    auto getFilenameFromHeader = [&headers]() -> std::string {
+    auto getFilenameFromHeader = [](const cpr::Header& headers) -> std::string {
         if (auto it = headers.find("Content-Disposition"); it != headers.end()) {
             std::string header = it->second;
             size_t filenamePos = header.find("filename=");
@@ -195,6 +192,16 @@ std::string DownloadTask::fileName(const cpr::Response& response)
         }
         return {};
     };
+
+    auto getFilenameFromGet = [this, getFilenameFromHeader]() -> std::string {
+        session_.SetRange(cpr::Range{0, 1});
+        auto response = session_.Get();
+        if (response.status_code == 200 || response.status_code == 206) {
+            return getFilenameFromHeader(response.header);
+        }
+        return {};
+    };
+
     auto getFilenameFromUrl = [&url]() -> std::string {
         //TODO: maybe not correct
         size_t pos = url.find_last_of('/');
@@ -204,14 +211,18 @@ std::string DownloadTask::fileName(const cpr::Response& response)
         return {};
     };
 
-    auto filename = getFilenameFromHeader();
+    auto filename = getFilenameFromHeader(headers);
     if (filename.empty()) {
-        spdlog::warn("Get filename from header failed");
+        spdlog::warn("Get filename from header failed, try get it from Get request");
+        filename = getFilenameFromGet();
+    }
+    if (filename.empty()) {
+        spdlog::warn("Get filename from Get reqeust failed, try get it from url");
         filename = getFilenameFromUrl();
     }
     if (filename.empty()) {
-        spdlog::warn("Get filename from url failed");
-        return "downloading";
+        spdlog::warn("Get filename from url failed, return default name");
+        filename = "downloading";
     }
     spdlog::info("Get filename success. File name:{}", filename);
     return filename;
@@ -257,7 +268,7 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
 {
     if (status_ != Status::RUNNING)
         return;
-    // cpr::Header headers = {{"Range", "bytes=" + std::to_string(start) + "-" + std::to_string(end)}};
+
     cpr::ProgressCallback progressCallbackFunc(
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
@@ -305,7 +316,6 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
 
 bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata)
 {
-    // FIXME: write file wrong
     ChunkFile* pf = reinterpret_cast<ChunkFile*>(userdata);
     pf->readLen += data.size();
     pf->data.append(data);
