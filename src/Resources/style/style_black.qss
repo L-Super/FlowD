@@ -314,48 +314,48 @@ QCheckBox::indicator:checked:hover{
 }
 
 /*MainWindow QToolButton*/
-#MainWindow QToolButton{
+MainWindow QToolButton{
     padding-left: 2px;
     border-radius: 6px;
     color:white;
 
 }
-#MainWindow QToolButton:hover{
+MainWindow QToolButton:hover{
     background-color:rgb(80,80,80) ;
 }
-#MainWindow QToolButton:pressed{
+MainWindow QToolButton:pressed{
     background-color:rgb(60,60,60) ;
 
 }
-#MainWindow QToolButton:checked{
+MainWindow QToolButton:checked{
     border-left: 2px solid qlineargradient(spread:reflect, x1:1, y1:0.517636, x2:1, y2:1, stop:0.631285 rgba(0, 103, 192, 255), stop:0.636872 rgba(60, 60, 60, 255));
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     background-color:rgb(60,60,60) ;
 }
 
-#MainWindow QToolButton{
+MainWindow QToolButton{
     icon-size: 30px;
 }
 
-#MainWindow QToolButton#menuToolButton{
+MainWindow QToolButton#menuToolButton{
     qproperty-icon: url(:/Resources/icons/black/menu.svg);
     icon-size: 22px;
 }
 
-#MainWindow QToolButton#m#newDownloadToolButton{
+MainWindow QToolButton#m#newDownloadToolButton{
     qproperty-icon: url(:/Resources/icons/black/new.svg);
 }
 
-#MainWindow QToolButton#m#downloadListToolButton{
+MainWindow QToolButton#m#downloadListToolButton{
     qproperty-icon: url(:/Resources/icons/black/downloadlist.svg);
 }
 
-#MainWindow QToolButton#m#settingsToolButton{
+MainWindow QToolButton#m#settingsToolButton{
     qproperty-icon: url(:/Resources/icons/black/settings.svg);
 }
 
-#MainWindow QToolButton#m#helpToolButton{
+MainWindow QToolButton#m#helpToolButton{
     qproperty-icon: url(:/Resources/icons/black/help.svg);
 }
 
