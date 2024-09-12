@@ -339,6 +339,32 @@ QCheckBox::indicator:checked:hover{
     background-color: white;
 }
 
+#MainWindow>QToolButton{
+    icon-size: 30px;
+}
+
+#MainWindow>#menuToolButton{
+    qproperty-icon: url(:/Resources/icons/white/menu.svg);
+    icon-size: 22px;
+}
+
+#MainWindow>#newDownloadToolButton{
+    qproperty-icon: url(:/Resources/icons/white/new.svg);
+}
+
+#MainWindow>#downloadListToolButton{
+    qproperty-icon: url(:/Resources/icons/white/downloadlist.svg);
+}
+
+#MainWindow>#settingsToolButton{
+    qproperty-icon: url(:/Resources/icons/white/settings.svg);
+}
+
+#MainWindow>#helpToolButton{
+    qproperty-icon: url(:/Resources/icons/white/help.svg);
+}
+
+#MainWindw
 /*QFrame*/
 DownloadItemWidget>QFrame{
     border: 1px solid rgb(200, 200, 200);
