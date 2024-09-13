@@ -131,6 +131,8 @@ void DownloadTask::addHeader(const std::string& key, const std::string& value)
 DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
 {
     session_.SetHeader(header_);
+    // disable ssl verify
+    session_.SetVerifySsl(false);
     //TODO: Maybe use GetDownloadFileLength first
     // Head 404 sometimes, should be get filename by Get
     //see:https://github.com/libcpr/cpr/pull/599
@@ -291,8 +293,8 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
             },
             reinterpret_cast<intptr_t>(&f));
 
-    cpr::Response response =
-            cpr::Get(cpr::Url{url_}, header_, cpr::Range(start, end), progressCallbackFunc, writeCallbackFunc);
+    cpr::Response response = cpr::Get(cpr::Url{url_}, header_, cpr::Range(start, end), cpr::VerifySsl{false},
+                                      progressCallbackFunc, writeCallbackFunc);
 
     if (response.status_code != 206) {
         spdlog::error("Thread failed to download part. Status code: {}", response.status_code);
