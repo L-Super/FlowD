@@ -13,12 +13,12 @@ namespace {
     constexpr unsigned int KB = 1 * 1024;
     constexpr unsigned int MB = 1 * 1024 * 1024;
 
-    std::string generateUniqueFilename(const std::string& file_path)
+    std::string generateUniqueFilename(const std::string& filePath)
     {
-        auto newFilePath = fs::path(file_path);
-        std::string directory = newFilePath.parent_path().string();
-        std::string base_filename = newFilePath.stem().string();
-        std::string extension = newFilePath.extension().string();
+        std::string newFilePath = filePath;
+        std::string directory = fs::path(filePath).parent_path().string();
+        std::string base_filename = fs::path(filePath).stem().string();
+        std::string extension = fs::path(filePath).extension().string();
         int i = 1;
 
 
