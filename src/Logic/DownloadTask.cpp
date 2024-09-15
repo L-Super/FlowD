@@ -7,12 +7,29 @@
 
 #include <filesystem>
 
+namespace fs = std::filesystem;
+
 namespace {
     constexpr unsigned int KB = 1 * 1024;
     constexpr unsigned int MB = 1 * 1024 * 1024;
-}// namespace
 
-namespace fs = std::filesystem;
+    std::string generateUniqueFilename(const std::string& file_path)
+    {
+        auto newFilePath = fs::path(file_path);
+        std::string directory = newFilePath.parent_path().string();
+        std::string base_filename = newFilePath.stem().string();
+        std::string extension = newFilePath.extension().string();
+        int i = 1;
+
+
+        // 循环直到找到一个不存在的文件名
+        while (fs::exists(newFilePath)) {
+            // 构造新的文件名，格式为：xxx(i).ext
+            newFilePath = directory + "/" + base_filename + "(" + std::to_string(i++) + ")" + extension;
+        }
+        return newFilePath;
+    }
+}// namespace
 
 DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int threadNum)
     : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
@@ -68,6 +85,7 @@ void DownloadTask::start()
 
     spdlog::info("Start mutil thread download");
 
+    tmpFilenamePath_ = generateUniqueFilename(filePath_ + "/" + filename_);
     // Allocate the compartment for each thread's download
     uint64_t part_size = totalSize_ / threadNum_;
 
@@ -246,7 +264,7 @@ void DownloadTask::download()
     if (status_ != Status::RUNNING)
         return;
 
-    fs::path filename = filePath_ + "/" + filename_;
+    fs::path filename = generateUniqueFilename(filePath_ + "/" + filename_);
     std::ofstream file(filename, std::ios::binary | std::ios::out);
     session_.SetProgressCallback(cpr::ProgressCallback(
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
@@ -280,7 +298,7 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
     f.readLen = 0;
     f.start = start;
     f.end = end;
-    f.chunkFilename = filePath_ + "/" + filename_ + ".part" + std::to_string(part);
+    f.chunkFilename = tmpFilenamePath_ + ".part" + std::to_string(part);
 
     cpr::WriteCallback writeCallbackFunc(
             [this](const std::string_view& data, intptr_t userdata) {
@@ -379,12 +397,10 @@ bool DownloadTask::isDownloadComplete()
 
 void DownloadTask::mergeChunkFiles()
 {
-    fs::path filepath(filePath_);
-    filepath.append(filename_);
-    std::ofstream outputFile(filepath, std::ios::binary);
+    std::ofstream outputFile(tmpFilenamePath_, std::ios::binary);
 
     for (int i = 0; i < threadNum_; ++i) {
-        std::string partFilename = filePath_ + "/" + filename_ + ".part" + std::to_string(i);
+        std::string partFilename = tmpFilenamePath_ + ".part" + std::to_string(i);
         std::ifstream partFile(partFilename, std::ios::binary);
         outputFile << partFile.rdbuf();
         partFile.close();
