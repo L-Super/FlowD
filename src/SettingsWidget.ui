@@ -24,18 +24,6 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="btnTabBasic">
-       <property name="minimumSize">
-        <size>
-         <width>281</width>
-         <height>31</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>31</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -54,12 +42,6 @@
      </item>
      <item>
       <widget class="QPushButton" name="btnTabAdvanced">
-       <property name="minimumSize">
-        <size>
-         <width>281</width>
-         <height>31</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <pointsize>11</pointsize>

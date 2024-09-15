@@ -43,6 +43,7 @@ int main(int argc, char* argv[])
 #endif
 
     spdlog::info("App launched. Version:{}", VERSION_STR);
+    spdlog::info("Cache path:{}", utils::Path::instance().cachePath());
 
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));
