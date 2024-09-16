@@ -12,8 +12,8 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
 {
     ui->setupUi(this);
 
-    ui->languageComboBox->addItem("System Language");
-    for (const auto& lan: languageCode) { ui->languageComboBox->addItem(QString::fromStdString(lan.second)); }
+    ui->languageComboBox->addItem(tr("System Language"));
+    for (const auto& lan: lan::languageCode) { ui->languageComboBox->addItem(QString::fromStdString(lan.second)); }
     ui->savePathLineEdit->setPlaceholderText(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
 
     initSettings();

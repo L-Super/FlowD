@@ -4,19 +4,21 @@
 
 #pragma once
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
-static std::unordered_map<std::string, std::string> languageCode{
-        {"zh-CN","中文"},
-        {"en","English"}
-};
+namespace lan {
+    // supported language code table
+    static std::unordered_map<std::string, std::string> languageCode{
+            {"zh-CN", "中文"},
+            {"en", "English"}
+    };
 
-static std::string languageMap(const std::string& code)
-{
-    if (auto search = languageCode.find(code); search != languageCode.end())
+    static std::string languageMap(const std::string& code)
     {
-        return search->second;
+        if (auto search = languageCode.find(code); search != languageCode.end()) {
+            return search->second;
+        }
+        return {};
     }
-    return {};
-}
+}// namespace lan
