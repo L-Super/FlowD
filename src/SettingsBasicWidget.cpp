@@ -18,11 +18,19 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
 
     initSettings();
 
+#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
+    connect(ui->styleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
+        //TODO: change theme
+        spdlog::info("User change default theme to {}", index);
+        AppConfig::instance().setBasic("style", index);
+    });
+#else
     connect(ui->styleComboBox, &QComboBox::currentIndexChanged, this, [this](int index) {
         //TODO: change theme
         spdlog::info("User change default theme to {}", index);
         AppConfig::instance().setBasic("style", index);
     });
+#endif
     connect(ui->languageComboBox, &QComboBox::currentTextChanged, this, [this](const QString& index) {
         //TODO: change language
         spdlog::info("User change default language to {}", index.toStdString());
