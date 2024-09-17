@@ -1,6 +1,8 @@
 #include "NewDownloadDialog.h"
 #include "ui_NewDownloadDialog.h"
 
+#include <QDebug>
+
 #include "Logger.hpp"
 
 NewDownloadDialog::NewDownloadDialog(QWidget* parent) : QDialog(parent), ui(new Ui::NewDownloadDialog)
