@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>628</width>
-    <height>623</height>
+    <height>655</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPlainTextEdit" name="plainUrl">
+      <widget class="QPlainTextEdit" name="urlTextEdit">
        <property name="font">
         <font>
          <pointsize>10</pointsize>

@@ -17,6 +17,4 @@ public:
 
 private:
     Ui::SettingsAdvancedWidget* ui;
-
-    void connectSlots();
 };

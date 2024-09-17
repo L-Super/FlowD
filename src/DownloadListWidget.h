@@ -8,8 +8,6 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
-class QListWidgetItem;
-
 class DownloadItemWidget;
 
 class DownloadListWidget : public QWidget {
@@ -19,15 +17,9 @@ public:
     explicit DownloadListWidget(QWidget* parent = nullptr);
     ~DownloadListWidget() override;
 
-    DownloadItemWidget* addDownloadItem(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes,
-                                        qint64 downloadedBytes, bool isDownloading);
-protected slots:
-    void onRemoveFromWidgetRequested(QListWidgetItem* itemToRemove);
+    void addDownloadingItem(DownloadItemWidget* item);
 
+protected:
 private:
     Ui::DownloadListWidget* ui;
-
-    void iniUi();
-    void connectSlots();
-    void changeTab(int index);
 };

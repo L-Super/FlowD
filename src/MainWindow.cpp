@@ -3,14 +3,16 @@
 
 #include <QButtonGroup>
 #include <QDir>
+#include <QStandardPaths>
 #include <QTimer>
 
+#include "AppConfig.h"
+#include "DownloadItemWidget.h"
 #include "DownloadListWidget.h"
 #include "HelpWidget.h"
+#include "Logic/DownloadManager.h"
 #include "NewDownloadDialog.h"
 #include "SettingsWidget.h"
-
-#include "AppConfig.h"
 #include "Utils/Logger.hpp"
 #include "Utils/Path.h"
 
@@ -43,11 +45,27 @@ MainWindow::MainWindow(QWidget* parent)
 
     connect(buttonGroup, &QButtonGroup::idClicked, this, &MainWindow::toolButtonClicked);
     connect(ui->menuToolButton, &QToolButton::clicked, this, &MainWindow::onToolMenuClicked);
-    connect(ui->newDownloadToolButton, &QToolButton::clicked, this, [] {
+    connect(ui->newDownloadToolButton, &QToolButton::clicked, this, [this] {
         auto newDownloadDialog = new NewDownloadDialog;
         newDownloadDialog->exec();
+        auto url = newDownloadDialog->downloadUrl().toStdString();
+        spdlog::info("Download url:{}", url);
+
+        //TODO: get user's file path and thread count
+        QString filePath;
+        if (true) {
+            filePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+        }
+        auto id = DownloadManager::instance().addTask(url, filePath.toStdString());
+        DownloadItemWidget* item = new DownloadItemWidget(id, downloadListWidget);
+        downloadListWidget->addDownloadingItem(item);
         newDownloadDialog->deleteLater();
     });
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }
 
 // This function sets the display mode of the main tab to show only icons or both icons and text
@@ -76,11 +94,6 @@ void MainWindow::onToolMenuClicked()
     sidebarMinimized = !sidebarMinimized;
     minimizeSidebar(sidebarMinimized);
     AppConfig::instance().setBasic<bool>("minimizeSidebar", sidebarMinimized);
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::toolButtonClicked(int index)

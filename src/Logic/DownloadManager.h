@@ -4,16 +4,18 @@
 
 #pragma once
 #include <memory>
+#include <optional>
 #include <string>
 #include <thread>
 #include <unordered_map>
 
+#include "DownloadItem.h"
 #include "Noncopyable.hpp"
 
 class DownloadTask;
 class DownloadManager : private Noncopyable {
 public:
-    static DownloadManager& GetInstance()
+    static DownloadManager& instance()
     {
         static DownloadManager instance;
         return instance;
@@ -21,9 +23,16 @@ public:
 
     [[nodiscard]] std::size_t addTask(const std::string& url, const std::string& filePath,
                                       unsigned int threadNum = std::thread::hardware_concurrency());
+
+    using ProgressCallback = std::function<void(unsigned long downloadTotal, unsigned long downloadNow)>;
+    using DownloadCompleteCallback = std::function<void()>;
+    void setProgressCallback(size_t taskID, const ProgressCallback& cb);
+    void setDownloadCompleteCallback(size_t taskID, const DownloadCompleteCallback& cb);
+
     void pauseTask(size_t taskID);
     void resumeTask(size_t taskID);
     void removeTask(size_t taskID);
+    std::optional<DownloadItem> downloadTaskInfo(size_t taskID);
 
 private:
     DownloadManager();

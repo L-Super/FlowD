@@ -6,11 +6,11 @@
 
 #include <atomic>
 #include <functional>
-#include <iostream>
 #include <mutex>
 #include <string>
 #include <thread>
 
+#include "DownloadItem.h"
 #include "Noncopyable.hpp"
 #include "ThreadPool.hpp"
 #include "cpr/cpr.h"
@@ -28,10 +28,12 @@ public:
     void setHeader(const std::map<std::string, std::string>& header);
     void addHeader(const std::string& key, const std::string& value);
 
+    DownloadItem downloadInfo();
+
     using ProgressCallback = std::function<void(unsigned long downloadTotal, unsigned long downloadNow)>;
     using DownloadCompleteCallback = std::function<void()>;
-    void setProgressCallback(ProgressCallback& cb);
-    void setDownloadCompleteCallback(DownloadCompleteCallback& cb);
+    void setProgressCallback(const ProgressCallback& cb);
+    void setDownloadCompleteCallback(const DownloadCompleteCallback& cb);
 
 protected:
     struct HeadInfo {

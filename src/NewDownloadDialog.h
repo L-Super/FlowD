@@ -15,9 +15,12 @@ public:
     explicit NewDownloadDialog(QWidget* parent = nullptr);
     ~NewDownloadDialog() override;
 
+    QString downloadUrl();
+
 protected slots:
-    void resizeWidget(bool minMode);//调整窗口大小
+    void showAdvanceOption(bool minMode);
 
 private:
     Ui::NewDownloadDialog* ui;
+    QString url;
 };

@@ -9,188 +9,102 @@
 #include <QUrl>
 
 #include "Logger.hpp"
+#include "Logic/DownloadManager.h"
 
-//TODO:Calculate remaining downloading time and download speed(perhaps)
-DownloadItemWidget::DownloadItemWidget(QString URL, QString fileName, QString fileSavedPath, qint64 totalBytes,
-                                       qint64 downloadedBytes, bool isDownloading, QListWidgetItem* listItem,
-                                       QWidget* parent)
-    : QWidget(parent), ui(new Ui::DownloadItemWidget)
+namespace {
+    std::string convertBytesToReadable(double bytes)
+    {
+        const std::array<std::string, 5> units = {"Bytes", "KB", "MB", "GB", "TB"};
+
+        int i = 0;
+        // 将字节转换为更大的单位
+        while (bytes >= 1024 && i < static_cast<int>(units.size()) - 1) {
+            bytes /= 1024;
+            i++;
+        }
+
+        return fmt::format("{:.2f} {}", bytes, units[i]);
+    }
+}// namespace
+
+
+DownloadItemWidget::DownloadItemWidget(size_t id, QWidget* parent)
+    : QWidget(parent), ui(new Ui::DownloadItemWidget), taskID(id)
 {
-    this->fileUrl = URL;
-    this->fileName = fileName;
-    this->savedFilePath = fileSavedPath;
-    this->isDownloading = isDownloading;
-    this->qint64_totalBytes = totalBytes;
-    this->qint64_downloadedBytes = downloadedBytes;
-    this->listItem = listItem;
-
     ui->setupUi(this);
-    iniUi();
-    connectSlots();
-}
 
-void DownloadItemWidget::connectSlots()
-{
-    connect(ui->btnSuspend, &QPushButton::clicked, this, &DownloadItemWidget::onBtnSuspendClicked);
-    connect(ui->btnDelete, &QPushButton::clicked, this, &DownloadItemWidget::onBtnDeleteClicked);
-    connect(ui->btnO, &QPushButton::clicked, this, &DownloadItemWidget::onBtnOpenClicked);
-    connect(ui->btnMore, &QPushButton::clicked, this, &DownloadItemWidget::onBtnMoreClicked);
-}
+    DownloadManager::instance().setDownloadCompleteCallback(taskID, [this]() {
+        this->onCompleteDownload();
+    });
+    DownloadManager::instance().setProgressCallback(taskID, [this](auto total, auto downloaded) {
+        ui->progressBar->setValue(downloaded);
+        //TODO:
+        // ui->speedLabel->setText(QString("%1 MB/s").arg(1));
+        // ui->remainTimeLabel
+    });
+    auto fileInfo = DownloadManager::instance().downloadTaskInfo(taskID);
 
-void DownloadItemWidget::setFileName(QString fileName)
-{
-    this->fileName = fileName;
-    ui->labFileName->setText(this->fileName);
-}
-void DownloadItemWidget::setFileUrl(QString fileUrl)
-{
-    this->fileUrl = fileUrl;
-}
-void DownloadItemWidget::setSavedFilePath(QString filePath)
-{
-    this->savedFilePath = filePath;
-}
-void DownloadItemWidget::setFileDownloadProgress(qint64 totalBytes, qint64 downloadedBytes)
-{
-    this->qint64_totalBytes = totalBytes;
-    this->qint64_downloadedBytes = downloadedBytes;
-
-    ui->progressBar->setMaximum(totalBytes);
-    ui->progressBar->setMaximum(downloadedBytes);
-
-    std::pair<double, QString> resultTotal = convertToReasonableUnit(totalBytes);
-    //std::pair<double,QString> resultDownloaded=convertToReasonableUnit(downloadedBytes);
-
-    ui->labFileSize->setText(tr("File Size: %1 %2").arg(resultTotal.first, 0, 'f', 2).arg(resultTotal.second));
-    //TODO:Update UI of downloaded bytes
-}
-void DownloadItemWidget::setDownloadState(bool isDownloading)
-{
-    //Update State
-    this->isDownloading = isDownloading;
-
-    //Update UI
-    if (isDownloading) {
-        ui->btnSuspend->show();
-        ui->btnO->hide();
+    if (fileInfo.has_value()) {
+        //TODO: get info from DownloadManager
+        ui->fileNameLabel->setText(QString::fromStdString(fileInfo->filename));
+        auto fileSizeStr = convertBytesToReadable(fileInfo->totalBytes);
+        ui->fileSizeLabel->setText(QString::fromStdString(fileSizeStr));
+        ui->progressBar->setMaximum(fileInfo->totalBytes);
     }
     else {
-        ui->btnSuspend->hide();
-        ui->btnO->show();
+        spdlog::warn("Get null file info from DownloadManager");
     }
-}
-void DownloadItemWidget::setRemainTime()
-{
 
-}
-void DownloadItemWidget::setDownloadSpeed(double downloadSpeed)
-{
-    this->double_downloadSpeed = downloadSpeed;
-
-    std::pair<double, QString> result = convertToReasonableUnit(this->double_downloadSpeed);
-    ui->labSpeed->setText(tr("Speed: %1 %2/s").arg(result.first, 0, 'f', 2).arg(result.second));
-}
-//This function converts byte sizes to more readable units.
-std::pair<double, QString> DownloadItemWidget::convertToReasonableUnit(double bytesToConvert)
-{
-    QString unit;
-    if (bytesToConvert >= 1024 * 1024 * 1024) {
-        bytesToConvert /= (1024.00 * 1024.00 * 1024.00);
-        unit = "GB";
-    }
-    else if (bytesToConvert >= 1024 * 1024) {
-        bytesToConvert /= (1024.00 * 1024.00);
-        unit = "MB";
-    }
-    else if (bytesToConvert >= 1024) {
-        bytesToConvert /= 1024.00;
-        unit = "KB";
-    }
-    else {
-        unit = "B";
-    }
-    return {bytesToConvert, unit};
+    ui->pauseButton->setProperty("isPause", "false");
+    connect(ui->pauseButton, &QPushButton::clicked, this, &DownloadItemWidget::onPauseButtonClicked);
+    connect(ui->deleteButton, &QPushButton::clicked, this, &DownloadItemWidget::onDeleteButtonClicked);
+    connect(ui->openFileButton, &QPushButton::clicked, this, &DownloadItemWidget::onOpenFileButtonClicked);
+    connect(ui->moreInfoButton, &QPushButton::clicked, this, &DownloadItemWidget::onMoreInfoButtonClicked);
 }
 
-QString DownloadItemWidget::convertToReasonableTimeUnit(qint64 sec,qint64 min,qint64 hour,qint64 day)
+DownloadItemWidget::~DownloadItemWidget()
 {
-    min += sec / 60;
-    sec = sec % 60;
-
-    hour += min / 60;
-    min = min % 60;
-
-    day += hour / 24;
-    hour = hour % 24;
-
-    QString result;
-    if (day != 0) {
-        result = QObject::tr("%1 Day %2 Hours %3 Minutes %4 Seconds").arg(day).arg(hour).arg(min).arg(sec);
-    } else if (hour != 0) {
-        result = QObject::tr("%1 Hours %2 Minutes %3 Seconds").arg(hour).arg(min).arg(sec);
-    } else if (min != 0) {
-        result = QObject::tr("%1 Minutes %2 Seconds").arg(min).arg(sec);
-    } else {
-        result = QObject::tr("%1 Seconds").arg(sec);
-    }
-    return result;
+    delete ui;
 }
 
-QString DownloadItemWidget::getFileName()
+size_t DownloadItemWidget::downloadTaskID()
 {
-    return fileName;
-}
-QString DownloadItemWidget::getSavedFilePath()
-{
-    return savedFilePath;
-}
-QString DownloadItemWidget::getFileUrl()
-{
-    return fileUrl;
-}
-void DownloadItemWidget::getFileDownloadProgress(qint64& totalBytes, qint64& downloadedBytes)
-{
-    totalBytes = this->qint64_totalBytes;
-    downloadedBytes = this->qint64_downloadedBytes;
-}
-bool DownloadItemWidget::getDownloadState()
-{
-    return isDownloading;
-}
-qint64 DownloadItemWidget::getRemainTime()
-{
-    return qint64_remainTime;
-}
-double DownloadItemWidget::getDownloadSpeed()
-{
-    return double_downloadSpeed;
+    return taskID;
 }
 
-
-void DownloadItemWidget::onBtnSuspendClicked(bool checked)
+void DownloadItemWidget::hidePauseButton(bool hide)
 {
-    if (checked) {
-        ui->btnSuspend->setText(tr("Continue"));
-        //TODO: Add logic to pause the download
+    ui->pauseButton->setHidden(hide);
+}
+
+void DownloadItemWidget::onPauseButtonClicked(bool /*checked*/)
+{
+    //TODO: change icon
+    if (ui->pauseButton->property("isPause").toBool()) {
+        ui->pauseButton->setText(tr("Continue"));
+        ui->pauseButton->setProperty("isPause", false);
+        DownloadManager::instance().resumeTask(taskID);
     }
     else {
-        ui->btnSuspend->setText(tr("Pause"));
-        //TODO: Add logic to resume the download
+        ui->pauseButton->setText(tr("Pause"));
+        ui->pauseButton->setProperty("isPause", true);
+        DownloadManager::instance().pauseTask(taskID);
     }
 }
 
-void DownloadItemWidget::onBtnDeleteClicked()
+void DownloadItemWidget::onDeleteButtonClicked()
 {
-    //TODO:Add Logic to terminate the download
-    this->isDownloading = false;
+    //TODO: remove it from the download list and confirm weather to remove the file
+    DownloadManager::instance().removeTask(taskID);
 
-    emit removeFromWidgetRequested(this->listItem);//Request the ListWidget to remove this
+    // Request the ListWidget to remove this
+    emit removeItemSignal();
 }
 
-void DownloadItemWidget::onBtnOpenClicked()
+void DownloadItemWidget::onOpenFileButtonClicked()
 {
-    //Open the downloaded file
-    QFileInfo fileInfo(savedFilePath, fileName);
+    //TODO: get file info from DownloadManager
+    QFileInfo fileInfo("");
     QString savedFilePathName = fileInfo.absoluteFilePath();
     QUrl fileUrl = QUrl::fromLocalFile(savedFilePathName);
     if (!QDesktopServices::openUrl(fileUrl)) {
@@ -202,22 +116,13 @@ void DownloadItemWidget::onBtnOpenClicked()
     }
 }
 
-void DownloadItemWidget::onBtnMoreClicked() {}
+void DownloadItemWidget::onMoreInfoButtonClicked() {}
 
-void DownloadItemWidget::iniUi()
+void DownloadItemWidget::onCompleteDownload()
 {
-    //set progress bar ui
-    ui->progressBar->setMaximum(qint64_totalBytes);
-    ui->progressBar->setValue(qint64_downloadedBytes);
+    ui->pauseButton->hide();
+    //TODO: add complete download logic
 
-    //display filename
-    ui->labFileName->setText(fileName);
-
-    std::pair<double, QString> resultTotal = convertToReasonableUnit(qint64_totalBytes);
-    ui->labFileSize->setText(tr("File Size: %1 %2").arg(resultTotal.first, 0, 'f', 2).arg(resultTotal.second));
-}
-
-DownloadItemWidget::~DownloadItemWidget()
-{
-    delete ui;
+    //TODO: when download complete, remove it from downloading list, and then add it into finished list
+    emit completeDownloadSignal();
 }

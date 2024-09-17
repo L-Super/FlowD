@@ -4,69 +4,85 @@
 <context>
     <name>DownloadItemWidget</name>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="52"/>
-        <source>//  File Name</source>
-        <translation>//  File Name</translation>
-    </message>
-    <message>
-        <location filename="../../DownloadItemWidget.ui" line="92"/>
-        <location filename="../../DownloadItemWidget.cpp" line="177"/>
+        <location filename="../../DownloadItemWidget.ui" line="73"/>
+        <location filename="../../DownloadItemWidget.cpp" line="89"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="117"/>
+        <location filename="../../DownloadItemWidget.ui" line="99"/>
         <source>Delete</source>
         <translation>Delete</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="139"/>
+        <location filename="../../DownloadItemWidget.ui" line="86"/>
         <source>Open</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="164"/>
+        <location filename="../../DownloadItemWidget.ui" line="40"/>
+        <source>File Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="109"/>
         <source>More</source>
         <translation>More</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="192"/>
+        <location filename="../../DownloadItemWidget.ui" line="123"/>
+        <source>File Size:</source>
+        <translation type="unfinished">File Size:</translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="130"/>
+        <location filename="../../DownloadItemWidget.ui" line="144"/>
+        <location filename="../../DownloadItemWidget.ui" line="158"/>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="137"/>
+        <source>Remaining Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="151"/>
+        <source>Speed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>File Size</source>
-        <translation>File Size</translation>
+        <translation type="vanished">File Size</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="211"/>
         <source>Remaining time</source>
-        <translation>Remaining time</translation>
+        <translation type="vanished">Remaining time</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="230"/>
         <source>Speed</source>
-        <translation>Speed</translation>
+        <translation type="vanished">Speed</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="64"/>
-        <location filename="../../DownloadItemWidget.cpp" line="217"/>
         <source>File Size: %1 %2</source>
-        <translation>File Size: %1 %2</translation>
+        <translation type="vanished">File Size: %1 %2</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="91"/>
         <source>Speed: %1 %2/s</source>
-        <translation>Speed: %1 %2/s</translation>
+        <translation type="vanished">Speed: %1 %2/s</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="173"/>
+        <location filename="../../DownloadItemWidget.cpp" line="84"/>
         <source>Continue</source>
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="197"/>
+        <location filename="../../DownloadItemWidget.cpp" line="111"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="198"/>
+        <location filename="../../DownloadItemWidget.cpp" line="112"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>Failed in opening %1 !
@@ -81,14 +97,18 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Download List</translation>
     </message>
     <message>
-        <location filename="../../DownloadListWidget.ui" line="48"/>
+        <location filename="../../DownloadListWidget.ui" line="33"/>
         <source>Downloading</source>
         <translation>Downloading</translation>
     </message>
     <message>
-        <location filename="../../DownloadListWidget.ui" line="72"/>
+        <location filename="../../DownloadListWidget.ui" line="55"/>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Stoppped</source>
-        <translation>Stoppped</translation>
+        <translation type="vanished">Stoppped</translation>
     </message>
 </context>
 <context>
@@ -316,34 +336,28 @@ Please check whether the file exists and the application can access the file.</t
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="128"/>
         <source>%1 Day %2 Hours %3 Minutes %4 Seconds</source>
-        <translation>%1 Day %2 Hours %3 Minutes %4 Seconds</translation>
+        <translation type="vanished">%1 Day %2 Hours %3 Minutes %4 Seconds</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="130"/>
         <source>%1 Hours %2 Minutes %3 Seconds</source>
-        <translation>%1 Hours %2 Minutes %3 Seconds</translation>
+        <translation type="vanished">%1 Hours %2 Minutes %3 Seconds</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="132"/>
         <source>%1 Minutes %2 Seconds</source>
-        <translation>%1 Minutes %2 Seconds</translation>
+        <translation type="vanished">%1 Minutes %2 Seconds</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="134"/>
         <source>%1 Seconds</source>
-        <translation>%1 Seconds</translation>
+        <translation type="vanished">%1 Seconds</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="185"/>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation type="vanished">Error</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="185"/>
         <source>Failed in getting style sheet!</source>
-        <translation>Failed in getting style sheet!</translation>
+        <translation type="vanished">Failed in getting style sheet!</translation>
     </message>
 </context>
 <context>
@@ -354,14 +368,13 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Advanced Settings</translation>
     </message>
     <message>
-        <location filename="../../SettingsAdvancedWidget.ui" line="39"/>
+        <location filename="../../SettingsAdvancedWidget.ui" line="27"/>
         <source>User-Agent:</source>
         <translation>User-Agent:</translation>
     </message>
     <message>
-        <location filename="../../SettingsAdvancedWidget.ui" line="58"/>
         <source>Config User-Agent</source>
-        <translation>Config User-Agent</translation>
+        <translation type="vanished">Config User-Agent</translation>
     </message>
 </context>
 <context>
@@ -372,117 +385,111 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Basic Settings</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="77"/>
+        <location filename="../../SettingsBasicWidget.ui" line="52"/>
         <source>Appereance:</source>
         <translation>Appereance:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="108"/>
+        <location filename="../../SettingsBasicWidget.ui" line="77"/>
         <source>System Settings</source>
         <translation>System Settings</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="113"/>
+        <location filename="../../SettingsBasicWidget.ui" line="82"/>
         <source>Light</source>
         <translation>Light</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="118"/>
+        <location filename="../../SettingsBasicWidget.ui" line="87"/>
         <source>Dark</source>
         <translation>Dark</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="147"/>
+        <location filename="../../SettingsBasicWidget.ui" line="27"/>
         <source>Language:</source>
         <translation>Language:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="166"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="15"/>
         <source>System Language</source>
         <translation>System Language</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="171"/>
         <source>简体中文</source>
-        <translation>简体中文</translation>
+        <translation type="vanished">简体中文</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="176"/>
         <source>繁体中文</source>
-        <translation>繁体中文</translation>
+        <translation type="vanished">繁体中文</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="181"/>
         <source>English</source>
-        <translation>English</translation>
+        <translation type="vanished">English</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="212"/>
+        <location filename="../../SettingsBasicWidget.ui" line="102"/>
         <source>Startup:</source>
         <translation>Startup:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="256"/>
+        <location filename="../../SettingsBasicWidget.ui" line="236"/>
         <source>Open at login</source>
         <translation>Open at login</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="280"/>
         <source>Display main interface after automatic startup</source>
-        <translation>Display main interface after automatic startup</translation>
+        <translation type="vanished">Display main interface after automatic startup</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="304"/>
+        <location filename="../../SettingsBasicWidget.ui" line="212"/>
         <source>Automatically resume all unfinished tasks</source>
         <translation>Automatically resume all unfinished tasks</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="334"/>
+        <location filename="../../SettingsBasicWidget.ui" line="170"/>
         <source>Default Path:</source>
         <translation>Default Path:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="368"/>
+        <location filename="../../SettingsBasicWidget.ui" line="186"/>
         <source>Select(&amp;S)</source>
         <translation>Select(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="398"/>
+        <location filename="../../SettingsBasicWidget.ui" line="224"/>
         <source>Task Management:</source>
         <translation>Task Management:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="444"/>
+        <location filename="../../SettingsBasicWidget.ui" line="116"/>
         <source>Download Splits:</source>
         <translation>Download Splits:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="492"/>
         <source>Automatically jump to the download page after creating a new task</source>
-        <translation>Automatically jump to the download page after creating a new task</translation>
+        <translation type="vanished">Automatically jump to the download page after creating a new task</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="516"/>
+        <location filename="../../SettingsBasicWidget.ui" line="200"/>
         <source>Notify after download completion</source>
         <translation>Notify after download completion</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="540"/>
         <source>No confirmation required before deleting tasks</source>
-        <translation>No confirmation required before deleting tasks</translation>
+        <translation type="vanished">No confirmation required before deleting tasks</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="570"/>
+        <location filename="../../SettingsBasicWidget.ui" line="142"/>
         <source>Automatic upgrade:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="594"/>
+        <location filename="../../SettingsBasicWidget.ui" line="154"/>
         <source>Enable</source>
         <translation>Enable</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="99"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="42"/>
         <source>Select a folder for file saving</source>
         <translation>Select a folder for file saving</translation>
     </message>
@@ -495,12 +502,12 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../../SettingsWidget.ui" line="48"/>
+        <location filename="../../SettingsWidget.ui" line="36"/>
         <source>Basic Settings</source>
         <translation>Basic Settings</translation>
     </message>
     <message>
-        <location filename="../../SettingsWidget.ui" line="72"/>
+        <location filename="../../SettingsWidget.ui" line="54"/>
         <source>Advanced Settings</source>
         <translation>Advanced Settings</translation>
     </message>
@@ -508,24 +515,20 @@ Please check whether the file exists and the application can access the file.</t
 <context>
     <name>UserAgentConfigDialog</name>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="20"/>
         <source>Config User-Agent</source>
-        <translation>Config User-Agent</translation>
+        <translation type="vanished">Config User-Agent</translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="49"/>
         <source>User-Agent：</source>
-        <translation>User-Agent：</translation>
+        <translation type="vanished">User-Agent：</translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="131"/>
         <source>OK(&amp;O)</source>
-        <translation>OK(&amp;O)</translation>
+        <translation type="vanished">OK(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="150"/>
         <source>Cancel(&amp;C)</source>
-        <translation>Cancel(&amp;C)</translation>
+        <translation type="vanished">Cancel(&amp;C)</translation>
     </message>
 </context>
 </TS>

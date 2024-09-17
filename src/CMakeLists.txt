@@ -32,7 +32,6 @@ set(SRC_FILES MainWindow.cpp MainWindow.h MainWindow.ui
     SettingsBasicWidget.cpp SettingsBasicWidget.h SettingsBasicWidget.ui
     SettingsAdvancedWidget.cpp SettingsAdvancedWidget.h SettingsAdvancedWidget.ui
     NewDownloadDialog.cpp NewDownloadDialog.h NewDownloadDialog.ui
-    UserAgentConfigDialog.cpp UserAgentConfigDialog.h UserAgentConfigDialog.ui
     FileInformationWidget.h FileInformationWidget.cpp FileInformationWidget.ui
 )
 

@@ -62,8 +62,8 @@ void DownloadTask::start()
         // Unable to get file size, can try downloading
     }
     filename_ = filename;
-    tmpFilenamePath_ = filePath_ + "/" + filename + ".tmp";
     status_ = Status::RUNNING;
+    tmpFilenamePath_ = generateUniqueFilename(filePath_ + "/" + filename_);
 
     fs::path dirPath = fs::path(filePath_);
     // If the directory does not exist, create it
@@ -85,7 +85,6 @@ void DownloadTask::start()
 
     spdlog::info("Start mutil thread download");
 
-    tmpFilenamePath_ = generateUniqueFilename(filePath_ + "/" + filename_);
     // Allocate the compartment for each thread's download
     uint64_t part_size = totalSize_ / threadNum_;
 
@@ -144,6 +143,32 @@ void DownloadTask::setHeader(const std::map<std::string, std::string>& header)
 void DownloadTask::addHeader(const std::string& key, const std::string& value)
 {
     header_[key] = value;
+}
+
+DownloadItem DownloadTask::downloadInfo()
+{
+    DownloadItem item;
+    item.filename = filename_;
+    item.filenamePath = tmpFilenamePath_;
+    item.url = url_;
+    item.totalBytes = totalSize_;
+    item.downloadedBytes = downloadedSize_;
+
+    using ItemStatus = DownloadItem::DownloadStatus;
+    switch (status_) {
+        case Status::PAUSE:
+            item.status = ItemStatus::Pause;
+            break;
+        case Status::RUNNING:
+            item.status = ItemStatus::Downloading;
+            break;
+        case Status::STOP:
+            item.status = ItemStatus::Stop;
+            break;
+        default:
+            break;
+    }
+    return item;
 }
 
 DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
@@ -264,7 +289,7 @@ void DownloadTask::download()
     if (status_ != Status::RUNNING)
         return;
 
-    fs::path filename = generateUniqueFilename(filePath_ + "/" + filename_);
+    fs::path filename = tmpFilenamePath_;
     std::ofstream file(filename, std::ios::binary | std::ios::out);
     session_.SetProgressCallback(cpr::ProgressCallback(
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
@@ -368,6 +393,11 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
     (void) uploadNow;
     (void) userdata;
 
+    if (totalSize_ == 0) {
+        totalSize_.store(downloadTotal);
+    }
+
+    // TODO: send speed and remaining Time
     if (progressCallback_) {
         spdlog::info("Execute progress callback");
         progressCallback_(totalSize_.load(), downloadedSize_.load());
@@ -378,12 +408,12 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
     return true;
 }
 
-void DownloadTask::setProgressCallback(ProgressCallback& cb)
+void DownloadTask::setProgressCallback(const ProgressCallback& cb)
 {
     progressCallback_ = cb;
 }
 
-void DownloadTask::setDownloadCompleteCallback(DownloadTask::DownloadCompleteCallback& cb)
+void DownloadTask::setDownloadCompleteCallback(const DownloadCompleteCallback& cb)
 {
     downloadCompleteCallback = cb;
 }

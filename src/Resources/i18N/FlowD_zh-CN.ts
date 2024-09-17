@@ -4,69 +4,85 @@
 <context>
     <name>DownloadItemWidget</name>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="52"/>
-        <source>//  File Name</source>
-        <translation>//  文件名称</translation>
-    </message>
-    <message>
-        <location filename="../../DownloadItemWidget.ui" line="92"/>
-        <location filename="../../DownloadItemWidget.cpp" line="177"/>
+        <location filename="../../DownloadItemWidget.ui" line="73"/>
+        <location filename="../../DownloadItemWidget.cpp" line="89"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="117"/>
+        <location filename="../../DownloadItemWidget.ui" line="99"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="139"/>
+        <location filename="../../DownloadItemWidget.ui" line="86"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="164"/>
+        <location filename="../../DownloadItemWidget.ui" line="40"/>
+        <source>File Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="109"/>
         <source>More</source>
         <translation>更多</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="192"/>
+        <location filename="../../DownloadItemWidget.ui" line="123"/>
+        <source>File Size:</source>
+        <translation type="unfinished">文件大小:</translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="130"/>
+        <location filename="../../DownloadItemWidget.ui" line="144"/>
+        <location filename="../../DownloadItemWidget.ui" line="158"/>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="137"/>
+        <source>Remaining Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DownloadItemWidget.ui" line="151"/>
+        <source>Speed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>File Size</source>
-        <translation>文件大小</translation>
+        <translation type="vanished">文件大小</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="211"/>
         <source>Remaining time</source>
-        <translation>剩余时间</translation>
+        <translation type="vanished">剩余时间</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="230"/>
         <source>Speed</source>
-        <translation>下载速度</translation>
+        <translation type="vanished">下载速度</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="64"/>
-        <location filename="../../DownloadItemWidget.cpp" line="217"/>
         <source>File Size: %1 %2</source>
-        <translation>文件大小:%1 %2</translation>
+        <translation type="vanished">文件大小:%1 %2</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="91"/>
         <source>Speed: %1 %2/s</source>
-        <translation>下载速度: %1 %2/s</translation>
+        <translation type="vanished">下载速度: %1 %2/s</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="173"/>
+        <location filename="../../DownloadItemWidget.cpp" line="84"/>
         <source>Continue</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="197"/>
+        <location filename="../../DownloadItemWidget.cpp" line="111"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="198"/>
+        <location filename="../../DownloadItemWidget.cpp" line="112"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>无法打开文件 %1 ！\n请检查该文件是否存在并且该软件有权限访问。</translation>
@@ -80,14 +96,18 @@ Please check whether the file exists and the application can access the file.</s
         <translation>下载列表</translation>
     </message>
     <message>
-        <location filename="../../DownloadListWidget.ui" line="48"/>
+        <location filename="../../DownloadListWidget.ui" line="33"/>
         <source>Downloading</source>
         <translation>下载中</translation>
     </message>
     <message>
-        <location filename="../../DownloadListWidget.ui" line="72"/>
+        <location filename="../../DownloadListWidget.ui" line="55"/>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Stoppped</source>
-        <translation>已停止</translation>
+        <translation type="vanished">已停止</translation>
     </message>
 </context>
 <context>
@@ -313,34 +333,28 @@ Please check whether the file exists and the application can access the file.</s
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="128"/>
         <source>%1 Day %2 Hours %3 Minutes %4 Seconds</source>
-        <translation>%1 天 %2 小时 %3 分钟 %4 秒</translation>
+        <translation type="vanished">%1 天 %2 小时 %3 分钟 %4 秒</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="130"/>
         <source>%1 Hours %2 Minutes %3 Seconds</source>
-        <translation>%1 小时 %2 分钟 %3 秒</translation>
+        <translation type="vanished">%1 小时 %2 分钟 %3 秒</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="132"/>
         <source>%1 Minutes %2 Seconds</source>
-        <translation>%1 分钟 %2 秒</translation>
+        <translation type="vanished">%1 分钟 %2 秒</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="134"/>
         <source>%1 Seconds</source>
-        <translation>%1 秒</translation>
+        <translation type="vanished">%1 秒</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="185"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="185"/>
         <source>Failed in getting style sheet!</source>
-        <translation>无法获取样式表！</translation>
+        <translation type="vanished">无法获取样式表！</translation>
     </message>
 </context>
 <context>
@@ -351,14 +365,13 @@ Please check whether the file exists and the application can access the file.</s
         <translation>高级设置</translation>
     </message>
     <message>
-        <location filename="../../SettingsAdvancedWidget.ui" line="39"/>
+        <location filename="../../SettingsAdvancedWidget.ui" line="27"/>
         <source>User-Agent:</source>
         <translation>User-Agent:</translation>
     </message>
     <message>
-        <location filename="../../SettingsAdvancedWidget.ui" line="58"/>
         <source>Config User-Agent</source>
-        <translation>配置 User-Agent</translation>
+        <translation type="vanished">配置 User-Agent</translation>
     </message>
 </context>
 <context>
@@ -369,117 +382,111 @@ Please check whether the file exists and the application can access the file.</s
         <translation>基础设置</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="77"/>
+        <location filename="../../SettingsBasicWidget.ui" line="52"/>
         <source>Appereance:</source>
         <translation>外观:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="108"/>
+        <location filename="../../SettingsBasicWidget.ui" line="77"/>
         <source>System Settings</source>
         <translation>系统设置</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="113"/>
+        <location filename="../../SettingsBasicWidget.ui" line="82"/>
         <source>Light</source>
         <translation>浅色主题</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="118"/>
+        <location filename="../../SettingsBasicWidget.ui" line="87"/>
         <source>Dark</source>
         <translation>深色主题</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="147"/>
+        <location filename="../../SettingsBasicWidget.ui" line="27"/>
         <source>Language:</source>
         <translation>语言:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="166"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="15"/>
         <source>System Language</source>
         <translation>系统语言</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="171"/>
         <source>简体中文</source>
-        <translation>简体中文</translation>
+        <translation type="vanished">简体中文</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="176"/>
         <source>繁体中文</source>
-        <translation>繁体中文</translation>
+        <translation type="vanished">繁体中文</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="181"/>
         <source>English</source>
-        <translation>English</translation>
+        <translation type="vanished">English</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="212"/>
+        <location filename="../../SettingsBasicWidget.ui" line="102"/>
         <source>Startup:</source>
         <translation>启动:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="256"/>
+        <location filename="../../SettingsBasicWidget.ui" line="236"/>
         <source>Open at login</source>
         <translation>自启动</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="280"/>
         <source>Display main interface after automatic startup</source>
-        <translation>自启动时显示主界面</translation>
+        <translation type="vanished">自启动时显示主界面</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="304"/>
+        <location filename="../../SettingsBasicWidget.ui" line="212"/>
         <source>Automatically resume all unfinished tasks</source>
         <translation>自动恢复所有未完成的下载任务</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="334"/>
+        <location filename="../../SettingsBasicWidget.ui" line="170"/>
         <source>Default Path:</source>
         <translation>默认保存位置:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="368"/>
+        <location filename="../../SettingsBasicWidget.ui" line="186"/>
         <source>Select(&amp;S)</source>
         <translation>选择(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="398"/>
+        <location filename="../../SettingsBasicWidget.ui" line="224"/>
         <source>Task Management:</source>
         <translation>任务管理:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="444"/>
+        <location filename="../../SettingsBasicWidget.ui" line="116"/>
         <source>Download Splits:</source>
         <translation>下载分片数:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="492"/>
         <source>Automatically jump to the download page after creating a new task</source>
-        <translation>创建任务后自动跳转到下载页面</translation>
+        <translation type="vanished">创建任务后自动跳转到下载页面</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="516"/>
+        <location filename="../../SettingsBasicWidget.ui" line="200"/>
         <source>Notify after download completion</source>
         <translation>下载完成后通知</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="540"/>
         <source>No confirmation required before deleting tasks</source>
-        <translation>删除任务前无需确认</translation>
+        <translation type="vanished">删除任务前无需确认</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="570"/>
+        <location filename="../../SettingsBasicWidget.ui" line="142"/>
         <source>Automatic upgrade:</source>
         <translation>自动更新:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.ui" line="594"/>
+        <location filename="../../SettingsBasicWidget.ui" line="154"/>
         <source>Enable</source>
         <translation>启用</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="99"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="42"/>
         <source>Select a folder for file saving</source>
         <translation>选择默认保存位置</translation>
     </message>
@@ -492,12 +499,12 @@ Please check whether the file exists and the application can access the file.</s
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../../SettingsWidget.ui" line="48"/>
+        <location filename="../../SettingsWidget.ui" line="36"/>
         <source>Basic Settings</source>
         <translation>基础设置</translation>
     </message>
     <message>
-        <location filename="../../SettingsWidget.ui" line="72"/>
+        <location filename="../../SettingsWidget.ui" line="54"/>
         <source>Advanced Settings</source>
         <translation>高级设置</translation>
     </message>
@@ -505,24 +512,20 @@ Please check whether the file exists and the application can access the file.</s
 <context>
     <name>UserAgentConfigDialog</name>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="20"/>
         <source>Config User-Agent</source>
-        <translation>配置 User-Agent</translation>
+        <translation type="vanished">配置 User-Agent</translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="49"/>
         <source>User-Agent：</source>
-        <translation>User-Agent：</translation>
+        <translation type="vanished">User-Agent：</translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="131"/>
         <source>OK(&amp;O)</source>
-        <translation>确定(&amp;O)</translation>
+        <translation type="vanished">确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../../UserAgentConfigDialog.ui" line="150"/>
         <source>Cancel(&amp;C)</source>
-        <translation>取消(&amp;C)</translation>
+        <translation type="vanished">取消(&amp;C)</translation>
     </message>
 </context>
 </TS>

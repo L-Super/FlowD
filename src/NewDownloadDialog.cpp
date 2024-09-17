@@ -6,11 +6,11 @@
 NewDownloadDialog::NewDownloadDialog(QWidget* parent) : QDialog(parent), ui(new Ui::NewDownloadDialog)
 {
     ui->setupUi(this);
-    resizeWidget(false);
-    connect(ui->advancedCheckBox, &QCheckBox::clicked, this, &NewDownloadDialog::resizeWidget);
+    showAdvanceOption(false);
+    connect(ui->advancedCheckBox, &QCheckBox::clicked, this, &NewDownloadDialog::showAdvanceOption);
 }
 
-void NewDownloadDialog::resizeWidget(bool maxMode)
+void NewDownloadDialog::showAdvanceOption(bool maxMode)
 {
     if (maxMode) {
         ui->advancedWidget->show();
@@ -22,6 +22,12 @@ void NewDownloadDialog::resizeWidget(bool maxMode)
 
 NewDownloadDialog::~NewDownloadDialog()
 {
-    spdlog::info(__func__);
+    qDebug() << __func__;
     delete ui;
+}
+
+QString NewDownloadDialog::downloadUrl()
+{
+    //TODO:return clean url and check valid
+    return ui->urlTextEdit->placeholderText();
 }
