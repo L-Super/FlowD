@@ -37,10 +37,10 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
         AppConfig::instance().setBasic("language", index.toStdString());
     });
     connect(ui->selectPathButton, &QPushButton::clicked, this, [this] {
-        QString ordinaryPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+        QString defaultPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
         QString selectedPath =
-                QFileDialog::getExistingDirectory(this, tr("Select a folder for file saving"), ordinaryPath);
-        if (!selectedPath.isEmpty() && ordinaryPath != selectedPath) {
+                QFileDialog::getExistingDirectory(this, tr("Select a folder for file saving"), defaultPath);
+        if (!selectedPath.isEmpty() && defaultPath != selectedPath) {
             ui->savePathLineEdit->setText(QDir::toNativeSeparators(selectedPath));
             AppConfig::instance().setBasic("save_path", selectedPath.toStdString());
         }

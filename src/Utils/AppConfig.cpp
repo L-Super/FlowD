@@ -32,7 +32,7 @@ void AppConfig::load()
         data_ = json::parse(f);
     }
     catch (const std::exception& e) {
-        spdlog::error("Failed to parse json file: {}", e.what());
+        spdlog::error("Failed to parse json file. Reason: {}", e.what());
     }
 }
 

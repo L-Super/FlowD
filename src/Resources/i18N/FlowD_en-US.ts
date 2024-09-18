@@ -298,37 +298,37 @@ Please check whether the file exists and the application can access the file.</t
         <translation>User-Agent：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="190"/>
+        <location filename="../../NewDownloadDialog.ui" line="184"/>
         <source>Authentication：</source>
         <translation>Authentication：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="226"/>
+        <location filename="../../NewDownloadDialog.ui" line="214"/>
         <source>Referer：</source>
         <translation>Referer：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="262"/>
+        <location filename="../../NewDownloadDialog.ui" line="244"/>
         <source>Cookie：</source>
         <translation>Cookie：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="320"/>
+        <location filename="../../NewDownloadDialog.ui" line="296"/>
         <source>Jump to Download Page</source>
         <translation>Jump to Download Page</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="339"/>
+        <location filename="../../NewDownloadDialog.ui" line="315"/>
         <source>Advanced Options</source>
         <translation>Advanced Options</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="359"/>
+        <location filename="../../NewDownloadDialog.ui" line="335"/>
         <source>OK(&amp;O)</source>
         <translation>OK(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="366"/>
+        <location filename="../../NewDownloadDialog.ui" line="342"/>
         <source>Cancel(&amp;C)</source>
         <translation>Cancel(&amp;C)</translation>
     </message>

@@ -122,7 +122,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineSavePath"/>
+      <widget class="QLineEdit" name="savePathLineEdit"/>
      </item>
      <item>
       <widget class="QPushButton" name="selectSavePathButton">
@@ -160,12 +160,6 @@
             <property name="orientation">
              <enum>Qt::Orientation::Vertical</enum>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>30</height>
-             </size>
-            </property>
            </spacer>
           </item>
          </layout>
@@ -195,12 +189,6 @@
            <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Orientation::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>17</width>
-              <height>37</height>
-             </size>
             </property>
            </spacer>
           </item>
@@ -232,12 +220,6 @@
             <property name="orientation">
              <enum>Qt::Orientation::Vertical</enum>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>17</width>
-              <height>37</height>
-             </size>
-            </property>
            </spacer>
           </item>
          </layout>
@@ -267,12 +249,6 @@
            <spacer name="verticalSpacer_4">
             <property name="orientation">
              <enum>Qt::Orientation::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>17</width>
-              <height>37</height>
-             </size>
             </property>
            </spacer>
           </item>

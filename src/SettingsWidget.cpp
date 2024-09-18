@@ -1,56 +1,31 @@
 #include "SettingsWidget.h"
 #include "ui_SettingsWidget.h"
 
-#include <QPushButton>
-SettingsWidget::SettingsWidget(QWidget* parent) : QWidget(parent), ui(new Ui::SettingsWidget)
+#include "SettingsAdvancedWidget.h"
+#include "SettingsBasicWidget.h"
+
+SettingsWidget::SettingsWidget(QWidget* parent)
+    : QWidget(parent), ui(new Ui::SettingsWidget), basicWidget(new SettingsBasicWidget(this)),
+      advancedWidget(new SettingsAdvancedWidget(this))
 {
     ui->setupUi(this);
 
-    addToTabsList();
-    iniUi();
-    connectSlots();
-}
-
-// This function adds the tabs within this tab page to tabsList for easy control
-void SettingsWidget::addToTabsList()
-{
-    // The order of addition cannot be swapped
-    tabsList.append(ui->btnTabBasic);
-    tabsList.append(ui->btnTabAdvanced);
-}
-
-void SettingsWidget::iniUi()
-{
-    settingsBasicWidget = new SettingsBasicWidget;
-    settingsAdvancedWidget = new SettingsAdvancedWidget;
-    ui->stackedWidget->insertWidget(0, settingsBasicWidget);
-    ui->stackedWidget->insertWidget(1, settingsAdvancedWidget);
-
-    tabsList[0]->setChecked(true);
+    ui->stackedWidget->insertWidget(0, basicWidget);
+    ui->stackedWidget->insertWidget(1, advancedWidget);
     ui->stackedWidget->setCurrentIndex(0);
-}
 
-void SettingsWidget::connectSlots()
-{
-    // Connect the slot for tabList
-    for (int i = 0; i < tabsList.count(); ++i)
-        connect(tabsList[i], &QPushButton::clicked, this, &SettingsWidget::onTabsClicked);
-}
+    ui->basicTabButton->setChecked(true);
 
-void SettingsWidget::onTabsClicked()
-{
-    QPushButton* btnTabClicked = qobject_cast<QPushButton*>(sender());
-    // Find the pressed tab
-    for (int i = 0; i < tabsList.count(); ++i) {
-        if (tabsList[i] == btnTabClicked) {
-            ui->stackedWidget->setCurrentIndex(i);
-            if (!tabsList[i]->isChecked())
-                tabsList[i]->setChecked(true);
-        }
-        else {
-            tabsList[i]->setChecked(false);
-        }
-    }
+    connect(ui->basicTabButton, &QPushButton::clicked, this, [this] {
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->basicTabButton->setChecked(true);
+        ui->advanceTabButton->setChecked(false);
+    });
+    connect(ui->advanceTabButton, &QPushButton::clicked, this, [this] {
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->basicTabButton->setChecked(false);
+        ui->advanceTabButton->setChecked(true);
+    });
 }
 
 SettingsWidget::~SettingsWidget()

@@ -23,7 +23,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="btnTabBasic">
+      <widget class="QPushButton" name="basicTabButton">
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -41,7 +41,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnTabAdvanced">
+      <widget class="QPushButton" name="advanceTabButton">
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -68,8 +68,6 @@
        <height>0</height>
       </size>
      </property>
-     <widget class="QWidget" name="page"/>
-     <widget class="QWidget" name="page_2"/>
     </widget>
    </item>
   </layout>
