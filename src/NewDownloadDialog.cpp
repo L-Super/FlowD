@@ -40,8 +40,8 @@ NewDownloadDialog::~NewDownloadDialog()
 
 QString NewDownloadDialog::downloadUrl()
 {
-    if (ui->urlTextEdit->placeholderText().isEmpty())
+    if (ui->urlTextEdit->toPlainText().isEmpty())
         return {};
     //TODO:return clean url and check valid
-    return ui->urlTextEdit->placeholderText();
+    return ui->urlTextEdit->toPlainText();
 }
