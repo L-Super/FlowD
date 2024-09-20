@@ -31,6 +31,7 @@ public:
     void setProgressCallback(size_t taskID, const ProgressCallback& cb);
     void setDownloadCompleteCallback(size_t taskID, const DownloadCompleteCallback& cb);
 
+    void startTask(size_t taskID);
     void pauseTask(size_t taskID);
     void resumeTask(size_t taskID);
     void removeTask(size_t taskID);

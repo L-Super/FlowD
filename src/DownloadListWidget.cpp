@@ -24,9 +24,11 @@ void DownloadListWidget::addDownloadingItem(DownloadItemWidget* item)
     ui->downloadingListWidget->setItemWidget(widgetItem, item);
 
     connect(item, &DownloadItemWidget::completeDownloadSignal, [this, widgetItem, item]() {
-        ui->finishedListWidget->addItem(widgetItem);
-        ui->finishedListWidget->setItemWidget(widgetItem, item);
+        // FIXME: when remove item from list widget, item will be deleted
         ui->downloadingListWidget->removeItemWidget(widgetItem);
+        auto listItem = new QListWidgetItem();
+        ui->finishedListWidget->addItem(listItem);
+        ui->finishedListWidget->setItemWidget(widgetItem, item);
     });
     connect(item, &DownloadItemWidget::removeItemSignal, [this, widgetItem]() {
         auto w = ui->downloadingListWidget->itemWidget(widgetItem);

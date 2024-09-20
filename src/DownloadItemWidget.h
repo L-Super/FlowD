@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Logic/DownloadItem.h"
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -17,27 +18,28 @@ public:
     explicit DownloadItemWidget(size_t id, QWidget* parent = nullptr);
     ~DownloadItemWidget() override;
 
-    size_t downloadTaskID();
+    size_t downloadTaskID() const;
 
     void hidePauseButton(bool hide);
 
 protected:
-    void onCompleteDownload();
 
 signals:
     void removeItemSignal();
     void completeDownloadSignal();
+    void progressUpdateFromTaskSignal(unsigned long total, unsigned long downloaded);
+    void completeDownloadFromTaskSignal();
 
 protected slots:
     void onPauseButtonClicked(bool checked);
-
     void onDeleteButtonClicked();
-
     void onOpenFileButtonClicked();
-
     void onMoreInfoButtonClicked();
+    void onProgressUpdate(unsigned long total, unsigned long downloaded);
+    void onCompleteDownload();
 
 private:
     Ui::DownloadItemWidget* ui;
     size_t taskID;
+    DownloadItem fileInfo;
 };

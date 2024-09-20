@@ -13,11 +13,9 @@ NewDownloadDialog::NewDownloadDialog(QWidget* parent) : QDialog(parent), ui(new 
     showAdvanceOption(false);
     connect(ui->advancedCheckBox, &QCheckBox::clicked, this, &NewDownloadDialog::showAdvanceOption);
     connect(ui->okButton, &QPushButton::clicked, this, [this] {
-        spdlog::info("accept");
         accept();
     });
     connect(ui->cancelButton, &QPushButton::clicked, this, [this] {
-        spdlog::info("reject");
         reject();
     });
 }

@@ -30,7 +30,7 @@ public:
 
     DownloadItem downloadInfo();
 
-    using ProgressCallback = std::function<void(unsigned long downloadTotal, unsigned long downloadNow)>;
+    using ProgressCallback = std::function<void(unsigned long total, unsigned long downloaded)>;
     using DownloadCompleteCallback = std::function<void()>;
     void setProgressCallback(const ProgressCallback& cb);
     void setDownloadCompleteCallback(const DownloadCompleteCallback& cb);

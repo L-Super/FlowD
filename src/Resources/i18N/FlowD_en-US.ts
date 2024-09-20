@@ -4,50 +4,45 @@
 <context>
     <name>DownloadItemWidget</name>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="73"/>
-        <location filename="../../DownloadItemWidget.cpp" line="89"/>
+        <location filename="../../DownloadItemWidget.ui" line="66"/>
+        <location filename="../../DownloadItemWidget.cpp" line="87"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="99"/>
+        <location filename="../../DownloadItemWidget.ui" line="92"/>
         <source>Delete</source>
         <translation>Delete</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="86"/>
+        <location filename="../../DownloadItemWidget.ui" line="79"/>
         <source>Open</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="40"/>
-        <source>File Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DownloadItemWidget.ui" line="109"/>
+        <location filename="../../DownloadItemWidget.ui" line="102"/>
         <source>More</source>
         <translation>More</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="123"/>
+        <location filename="../../DownloadItemWidget.ui" line="116"/>
         <source>File Size:</source>
         <translation type="unfinished">File Size:</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="130"/>
-        <location filename="../../DownloadItemWidget.ui" line="144"/>
-        <location filename="../../DownloadItemWidget.ui" line="158"/>
+        <location filename="../../DownloadItemWidget.ui" line="123"/>
+        <location filename="../../DownloadItemWidget.ui" line="137"/>
+        <location filename="../../DownloadItemWidget.ui" line="151"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="137"/>
+        <location filename="../../DownloadItemWidget.ui" line="130"/>
         <source>Remaining Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="151"/>
+        <location filename="../../DownloadItemWidget.ui" line="144"/>
         <source>Speed:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -72,17 +67,17 @@
         <translation type="vanished">Speed: %1 %2/s</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="84"/>
+        <location filename="../../DownloadItemWidget.cpp" line="82"/>
         <source>Continue</source>
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="111"/>
+        <location filename="../../DownloadItemWidget.cpp" line="108"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="112"/>
+        <location filename="../../DownloadItemWidget.cpp" line="109"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>Failed in opening %1 !
@@ -410,9 +405,27 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Language:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="16"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="18"/>
         <source>System Language</source>
         <translation>System Language</translation>
+    </message>
+    <message>
+        <location filename="../../SettingsBasicWidget.cpp" line="57"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="67"/>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <location filename="../../SettingsBasicWidget.cpp" line="58"/>
+        <source>Failed in add Autorun Section!
+Please check whether the app has access to the system setting!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../SettingsBasicWidget.cpp" line="68"/>
+        <source>Failed in remove Autorun Section!
+Please check whether the app has access to the system setting!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>简体中文</source>
@@ -489,7 +502,7 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Enable</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="43"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="45"/>
         <source>Select a folder for file saving</source>
         <translation>Select a folder for file saving</translation>
     </message>

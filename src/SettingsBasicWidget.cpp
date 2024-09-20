@@ -2,10 +2,12 @@
 #include "ui_SettingsBasicWidget.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QSettings>
 #include <QStandardPaths>
 
 #include "AppConfig.h"
+#include "Autorun.h"
 #include "LanguageCode.hpp"
 #include "Logger.hpp"
 
@@ -49,22 +51,25 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
     connect(ui->autoStartupCheckBox, &QCheckBox::clicked, this, [this](const bool checked) {
         AppConfig::instance().setBasic("auto_startup", checked);
         if (checked) {
-#if defined(Q_OS_WIN)
-            const QString autoRegPath = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-
-            QSettings settings(autoRegPath, QSettings::NativeFormat);
-            QString para = QDir::toNativeSeparators(QApplication::applicationFilePath() + " min");
-            settings.setValue(QApplication::applicationName(), para);
-#endif
+            if (!AutoRun::instance().setAutoRun()) {
+                this->ui->autoStartupCheckBox->setChecked(!checked);
+                spdlog::error("Failed to add Autorun Section!");
+                QMessageBox::critical(this, tr("Error"),
+                                      tr("Failed in add Autorun Section!\nPlease check whether the app has access to "
+                                         "the system setting!"));
+            }
         }
         else {
-#if defined(Q_OS_WIN)
-            const QString autoRegPath = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-
-            QSettings settings(autoRegPath, QSettings::NativeFormat);
-            settings.remove(QApplication::applicationName());
+            if (!AutoRun::instance().removeAutoRun()) {
+                this->ui->autoStartupCheckBox->setChecked(!checked);
+                spdlog::error("Failed to remove Autorun Section!");
+                QMessageBox::critical(
+                        this, tr("Error"),
+                        tr("Failed in remove Autorun Section!\nPlease check whether the app has access to "
+                           "the system setting!"));
+            }
         }
-#endif
+
     });
 
     //TODO: when leave this widget, check it weather be changed, if changed, save it

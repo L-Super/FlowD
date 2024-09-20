@@ -13,7 +13,6 @@ size_t DownloadManager::addTask(const std::string& url, const std::string& fileP
 {
     auto urlHash = std::hash<std::string>{}(url);
     tasks_[urlHash] = std::make_unique<DownloadTask>(url, filePath, threadNum);
-    tasks_[urlHash]->start();
     return urlHash;
 }
 
@@ -27,6 +26,11 @@ void DownloadManager::setDownloadCompleteCallback(size_t taskID, const DownloadC
     tasks_[taskID]->setDownloadCompleteCallback(cb);
 }
 
+void DownloadManager::startTask(size_t taskID)
+{
+    tasks_[taskID]->start();
+}
+
 void DownloadManager::pauseTask(size_t taskID)
 {
     if (tasks_.find(taskID) != tasks_.end()) {
@@ -36,7 +40,6 @@ void DownloadManager::pauseTask(size_t taskID)
 
 void DownloadManager::resumeTask(size_t taskID)
 {
-
     if (tasks_.find(taskID) != tasks_.end()) {
         tasks_[taskID]->resume();
     }

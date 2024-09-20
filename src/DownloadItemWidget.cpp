@@ -33,41 +33,39 @@ DownloadItemWidget::DownloadItemWidget(size_t id, QWidget* parent)
 {
     ui->setupUi(this);
 
-    DownloadManager::instance().setDownloadCompleteCallback(taskID, [this]() {
-        this->onCompleteDownload();
-    });
-    DownloadManager::instance().setProgressCallback(taskID, [this](auto total, auto downloaded) {
-        ui->progressBar->setValue(downloaded);
-        //TODO:
-        // ui->speedLabel->setText(QString("%1 MB/s").arg(1));
-        // ui->remainTimeLabel
-    });
-    auto fileInfo = DownloadManager::instance().downloadTaskInfo(taskID);
+    auto taskInfo = DownloadManager::instance().downloadTaskInfo(taskID);
 
-    if (fileInfo.has_value()) {
+    if (taskInfo.has_value()) {
+        fileInfo = taskInfo.value();
         //TODO: get info from DownloadManager
-        ui->fileNameLabel->setText(QString::fromStdString(fileInfo->filename));
-        auto fileSizeStr = convertBytesToReadable(fileInfo->totalBytes);
+        ui->fileNameLabel->setText(QString::fromStdString(fileInfo.filename));
+        auto fileSizeStr = convertBytesToReadable(fileInfo.totalBytes);
         ui->fileSizeLabel->setText(QString::fromStdString(fileSizeStr));
-        ui->progressBar->setMaximum(fileInfo->totalBytes);
+        ui->progressBar->setMaximum(fileInfo.totalBytes);
     }
     else {
         spdlog::warn("Get null file info from DownloadManager");
     }
 
+    ui->progressBar->setMinimum(0);
     ui->pauseButton->setProperty("isPause", "false");
     connect(ui->pauseButton, &QPushButton::clicked, this, &DownloadItemWidget::onPauseButtonClicked);
     connect(ui->deleteButton, &QPushButton::clicked, this, &DownloadItemWidget::onDeleteButtonClicked);
     connect(ui->openFileButton, &QPushButton::clicked, this, &DownloadItemWidget::onOpenFileButtonClicked);
     connect(ui->moreInfoButton, &QPushButton::clicked, this, &DownloadItemWidget::onMoreInfoButtonClicked);
+    connect(this, &DownloadItemWidget::progressUpdateFromTaskSignal, this, &DownloadItemWidget::onProgressUpdate,
+            Qt::QueuedConnection);
+    connect(this, &DownloadItemWidget::completeDownloadFromTaskSignal, this, &DownloadItemWidget::onCompleteDownload,
+            Qt::QueuedConnection);
 }
 
 DownloadItemWidget::~DownloadItemWidget()
 {
+    spdlog::debug(__func__ );
     delete ui;
 }
 
-size_t DownloadItemWidget::downloadTaskID()
+size_t DownloadItemWidget::downloadTaskID() const
 {
     return taskID;
 }
@@ -103,16 +101,15 @@ void DownloadItemWidget::onDeleteButtonClicked()
 
 void DownloadItemWidget::onOpenFileButtonClicked()
 {
-    //TODO: get file info from DownloadManager
-    QFileInfo fileInfo("");
-    QString savedFilePathName = fileInfo.absoluteFilePath();
+    QFileInfo info(QString::fromStdString(fileInfo.filenamePath));
+    QString savedFilePathName = info.absoluteFilePath();
     QUrl fileUrl = QUrl::fromLocalFile(savedFilePathName);
     if (!QDesktopServices::openUrl(fileUrl)) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Failed in opening %1 !\nPlease check whether the file exists and the "
                                  "application can access the file.")
                                       .arg(QDir::toNativeSeparators(savedFilePathName)));
-        spdlog::error("Failed in opening {} !", QDir::toNativeSeparators(savedFilePathName));
+        spdlog::error("Failed in opening {} !", savedFilePathName);
     }
 }
 
@@ -121,8 +118,18 @@ void DownloadItemWidget::onMoreInfoButtonClicked() {}
 void DownloadItemWidget::onCompleteDownload()
 {
     ui->pauseButton->hide();
-    //TODO: add complete download logic
+    //TODO: add complete download logic and remove task
 
     //TODO: when download complete, remove it from downloading list, and then add it into finished list
     emit completeDownloadSignal();
+}
+
+void DownloadItemWidget::onProgressUpdate(unsigned long total, unsigned long downloaded)
+{
+    //TODO:
+    // ui->speedLabel->setText(QString("%1 MB/s").arg(1));
+    // ui->remainTimeLabel
+    if (downloaded == 0)
+        return;
+    ui->progressBar->setValue(downloaded);
 }

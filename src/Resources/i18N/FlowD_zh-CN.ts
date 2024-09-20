@@ -4,50 +4,45 @@
 <context>
     <name>DownloadItemWidget</name>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="73"/>
-        <location filename="../../DownloadItemWidget.cpp" line="89"/>
+        <location filename="../../DownloadItemWidget.ui" line="66"/>
+        <location filename="../../DownloadItemWidget.cpp" line="87"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="99"/>
+        <location filename="../../DownloadItemWidget.ui" line="92"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="86"/>
+        <location filename="../../DownloadItemWidget.ui" line="79"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="40"/>
-        <source>File Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DownloadItemWidget.ui" line="109"/>
+        <location filename="../../DownloadItemWidget.ui" line="102"/>
         <source>More</source>
         <translation>更多</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="123"/>
+        <location filename="../../DownloadItemWidget.ui" line="116"/>
         <source>File Size:</source>
         <translation type="unfinished">文件大小:</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="130"/>
-        <location filename="../../DownloadItemWidget.ui" line="144"/>
-        <location filename="../../DownloadItemWidget.ui" line="158"/>
+        <location filename="../../DownloadItemWidget.ui" line="123"/>
+        <location filename="../../DownloadItemWidget.ui" line="137"/>
+        <location filename="../../DownloadItemWidget.ui" line="151"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="137"/>
+        <location filename="../../DownloadItemWidget.ui" line="130"/>
         <source>Remaining Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.ui" line="151"/>
+        <location filename="../../DownloadItemWidget.ui" line="144"/>
         <source>Speed:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -72,17 +67,17 @@
         <translation type="vanished">下载速度: %1 %2/s</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="84"/>
+        <location filename="../../DownloadItemWidget.cpp" line="82"/>
         <source>Continue</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="111"/>
+        <location filename="../../DownloadItemWidget.cpp" line="108"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="112"/>
+        <location filename="../../DownloadItemWidget.cpp" line="109"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>无法打开文件 %1 ！\n请检查该文件是否存在并且该软件有权限访问。</translation>
@@ -407,9 +402,27 @@ Please check whether the file exists and the application can access the file.</s
         <translation>语言:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="16"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="18"/>
         <source>System Language</source>
         <translation>系统语言</translation>
+    </message>
+    <message>
+        <location filename="../../SettingsBasicWidget.cpp" line="57"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="67"/>
+        <source>Error</source>
+        <translation type="unfinished">错误</translation>
+    </message>
+    <message>
+        <location filename="../../SettingsBasicWidget.cpp" line="58"/>
+        <source>Failed in add Autorun Section!
+Please check whether the app has access to the system setting!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../SettingsBasicWidget.cpp" line="68"/>
+        <source>Failed in remove Autorun Section!
+Please check whether the app has access to the system setting!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>简体中文</source>
@@ -486,7 +499,7 @@ Please check whether the file exists and the application can access the file.</s
         <translation>启用</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="43"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="45"/>
         <source>Select a folder for file saving</source>
         <translation>选择默认保存位置</translation>
     </message>

@@ -88,6 +88,7 @@ add_executable(${PROJECT_NAME}
         ${QM_FILES}
         ${QRC_FILES}
         ${SRC_FILES}
+        Autorun.h Autorun.cpp
 )
 add_subdirectory(Logic)
 add_subdirectory(Utils)
