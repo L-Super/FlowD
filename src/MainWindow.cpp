@@ -45,31 +45,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     connect(buttonGroup, &QButtonGroup::idClicked, this, &MainWindow::toolButtonClicked);
     connect(ui->menuToolButton, &QToolButton::clicked, this, &MainWindow::onToolMenuClicked);
-    connect(ui->newDownloadToolButton, &QToolButton::clicked, this, [this] {
-        QScopedPointer<NewDownloadDialog> newDownloadDialog(new NewDownloadDialog);
-
-        if (newDownloadDialog->exec() == QDialog::Rejected) {
-            return;
-        }
-
-        auto url = newDownloadDialog->downloadUrl().toStdString();
-        if (url.empty()) {
-            spdlog::warn("New download task, but url is empty");
-            return;
-        }
-        spdlog::info("New download task, url:{}", url);
-
-        //TODO: get user's file path and thread count
-        QString filePath;
-        if (true) {
-            filePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-        }
-
-        // add download task to DownloadManager
-        auto id = DownloadManager::instance().addTask(url, filePath.toStdString());
-        DownloadItemWidget* item = new DownloadItemWidget(id, downloadListWidget);
-        downloadListWidget->addDownloadingItem(item);
-    });
+    connect(ui->newDownloadToolButton, &QToolButton::clicked, this, &MainWindow::newDownloadTask);
 }
 
 MainWindow::~MainWindow()
@@ -108,4 +84,38 @@ void MainWindow::onToolMenuClicked()
 void MainWindow::toolButtonClicked(int index)
 {
     ui->stackedWidget->setCurrentIndex(index);
+}
+
+void MainWindow::newDownloadTask()
+{
+    QScopedPointer<NewDownloadDialog> newDownloadDialog(new NewDownloadDialog);
+
+    if (newDownloadDialog->exec() == QDialog::Rejected) {
+        return;
+    }
+
+    auto url = newDownloadDialog->downloadUrl().toStdString();
+    if (url.empty()) {
+        spdlog::warn("New download task, but url is empty");
+        return;
+    }
+    spdlog::info("New download task, url:{}", url);
+
+    //TODO: get user's file path and thread count
+    QString filePath;
+    if (true) {
+        filePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+    }
+
+    // add download task to DownloadManager
+    auto id = DownloadManager::instance().addTask(url, filePath.toStdString());
+    DownloadItemWidget* item = new DownloadItemWidget(id, downloadListWidget);
+    DownloadManager::instance().setDownloadCompleteCallback(id, [item]() {
+        emit item->completeDownloadFromTaskSignal();
+    });
+    DownloadManager::instance().setProgressCallback(id, [item](auto total, auto downloaded) {
+        emit item->progressUpdateFromTaskSignal(total, downloaded);
+    });
+    DownloadManager::instance().startTask(id);
+    downloadListWidget->addDownloadingItem(item);
 }

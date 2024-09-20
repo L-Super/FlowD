@@ -351,10 +351,10 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
 
             mergeChunkFiles();
             status_ = Status::STOP;
-        }
 
-        if (downloadCompleteCallback) {
-            downloadCompleteCallback();
+            if (downloadCompleteCallback) {
+                downloadCompleteCallback();
+            }
         }
     }
 }
@@ -399,11 +399,11 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
 
     // TODO: send speed and remaining Time
     if (progressCallback_) {
-        spdlog::info("Execute progress callback");
+        spdlog::debug("Execute progress callback");
         progressCallback_(totalSize_.load(), downloadedSize_.load());
     }
 
-    spdlog::info("Download {}/{} bytes.", downloadNow, downloadTotal);
+    spdlog::debug("Download {}/{} bytes.", downloadNow, downloadTotal);
 
     return true;
 }

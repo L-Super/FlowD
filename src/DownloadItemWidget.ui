@@ -35,13 +35,6 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>File Name:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLabel" name="fileNameLabel">
           <property name="text">
            <string/>
@@ -164,7 +157,7 @@
       <item>
        <widget class="QProgressBar" name="progressBar">
         <property name="value">
-         <number>24</number>
+         <number>0</number>
         </property>
        </widget>
       </item>

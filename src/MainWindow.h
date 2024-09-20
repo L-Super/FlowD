@@ -24,6 +24,7 @@ public:
 protected slots:
     void onToolMenuClicked();
     void toolButtonClicked(int index);
+    void newDownloadTask();
 
 private:
     void minimizeSidebar(bool minimize);
