@@ -47,7 +47,18 @@ int main(int argc, char* argv[])
 
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));
-    w.show();
+
+    //Determine whether the window needs to show
+
+#if defined(Q_OS_WIN)
+    QStringList arguments = QCoreApplication::arguments();
+    if (arguments.size() > 1) {
+        w.hide();
+    }
+    else {
+        w.show();
+    }
+#endif
 
     QObject::connect(&a, &SingleApplication::instanceStarted, &w, &MainWindow::show);
 

@@ -2,6 +2,7 @@
 #include "ui_SettingsBasicWidget.h"
 
 #include <QFileDialog>
+#include <QSettings>
 #include <QStandardPaths>
 
 #include "AppConfig.h"
@@ -45,6 +46,26 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
             AppConfig::instance().setBasic("save_path", selectedPath.toStdString());
         }
     });
+    connect(ui->autoStartupCheckBox, &QCheckBox::clicked, this, [this](const bool checked) {
+        AppConfig::instance().setBasic("auto_startup", checked);
+        if (checked) {
+#if defined(Q_OS_WIN)
+            const QString autoRegPath = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
+            QSettings settings(autoRegPath, QSettings::NativeFormat);
+            QString para = QDir::toNativeSeparators(QApplication::applicationFilePath() + " min");
+            settings.setValue(QApplication::applicationName(), para);
+#endif
+        }
+        else {
+#if defined(Q_OS_WIN)
+            const QString autoRegPath = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
+            QSettings settings(autoRegPath, QSettings::NativeFormat);
+            settings.remove(QApplication::applicationName());
+        }
+#endif
+    });
 
     //TODO: when leave this widget, check it weather be changed, if changed, save it
 }
@@ -74,6 +95,7 @@ void SettingsBasicWidget::initSettings()
     if (autoContinue.has_value()) {
         ui->autoStartupCheckBox->setChecked(autoContinue.value());
     }
+
 
     auto savePath = AppConfig::instance().getBasic<std::string>("save_path");
     if (savePath.has_value()) {

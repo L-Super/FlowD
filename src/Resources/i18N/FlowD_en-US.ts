@@ -410,7 +410,7 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Language:</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="15"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="16"/>
         <source>System Language</source>
         <translation>System Language</translation>
     </message>
@@ -489,7 +489,7 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Enable</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="42"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="43"/>
         <source>Select a folder for file saving</source>
         <translation>Select a folder for file saving</translation>
     </message>
