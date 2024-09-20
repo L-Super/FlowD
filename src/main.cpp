@@ -58,6 +58,12 @@ int main(int argc, char* argv[])
     else {
         w.show();
     }
+#elif defined(Q_OS_MAC)
+    //TODO:determine whether the window needs to show
+    w.show();
+#elif defined(Q_OS_LINUX)
+    //TODO:determine whether the window needs to show
+    w.show();
 #endif
 
     QObject::connect(&a, &SingleApplication::instanceStarted, &w, &MainWindow::show);
