@@ -33,7 +33,7 @@ namespace {
 
 DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int threadNum)
     : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
-      status_(Status::STOP), pool(threadNum)
+      status_(Status::STOP), pool_(threadNum)
 {
 #if defined(WINDOWS_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
@@ -94,11 +94,12 @@ void DownloadTask::start()
         uint64_t start = i * part_size;
         uint64_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
 
-        results.emplace_back(pool.enqueue([this, i, start, end] {
+        results.emplace_back(pool_.enqueue([this, i, start, end] {
             downloadChunk(i, start, end);
         }));
     }
     // for (auto&& result: results) { result.get(); }
+    pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
 }
 
 void DownloadTask::stop()
@@ -295,11 +296,12 @@ void DownloadTask::download()
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             }));
+    pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
     auto response = session_.Download(file);
     if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
         status_ = Status::STOP;
-        if (downloadCompleteCallback) {
-            downloadCompleteCallback();
+        if (downloadCompleteCallback_) {
+            downloadCompleteCallback_();
         }
 
         spdlog::info("Download small file finish. file path:{}", filename.string());
@@ -352,8 +354,8 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
             mergeChunkFiles();
             status_ = Status::STOP;
 
-            if (downloadCompleteCallback) {
-                downloadCompleteCallback();
+            if (downloadCompleteCallback_) {
+                downloadCompleteCallback_();
             }
         }
     }
@@ -399,8 +401,7 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
 
     // TODO: send speed and remaining Time
     if (progressCallback_) {
-        spdlog::debug("Execute progress callback");
-        progressCallback_(totalSize_.load(), downloadedSize_.load());
+        progressCallback_(totalSize_.load(), downloadedSize_.load(), speed_.load(), remainTime_.load());
     }
 
     spdlog::debug("Download {}/{} bytes.", downloadNow, downloadTotal);
@@ -415,7 +416,7 @@ void DownloadTask::setProgressCallback(const ProgressCallback& cb)
 
 void DownloadTask::setDownloadCompleteCallback(const DownloadCompleteCallback& cb)
 {
-    downloadCompleteCallback = cb;
+    downloadCompleteCallback_ = cb;
 }
 
 bool DownloadTask::isDownloadComplete()
@@ -439,4 +440,24 @@ void DownloadTask::mergeChunkFiles()
     }
 
     outputFile.close();
+}
+
+void DownloadTask::speedAndRemainingTimeCalculate()
+{
+    while (status_ != Status::STOP) {
+        auto start_time = std::chrono::steady_clock::now();
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        if (status_ == Status::PAUSE) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            continue;
+        }
+
+        auto elapsed_time = std::chrono::steady_clock::now() - start_time;
+        double elapsed_seconds = std::chrono::duration<double>(elapsed_time).count();
+
+        speed_ = static_cast<double>(downloadedSize_) / elapsed_seconds;
+        remainTime_ = static_cast<double>(totalSize_ - downloadedSize_) / speed_;
+
+        spdlog::info("Speed: {}KB/s, Remaining time: {}s", speed_ / 1024, remainTime_.load());
+    }
 }

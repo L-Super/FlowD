@@ -26,7 +26,7 @@ public:
     [[nodiscard]] std::size_t addTask(const std::string& url, const std::string& filePath,
                                       unsigned int threadNum = std::thread::hardware_concurrency());
 
-    using ProgressCallback = std::function<void(unsigned long downloadTotal, unsigned long downloadNow)>;
+    using ProgressCallback = std::function<void(unsigned long total, unsigned long downloaded, double speed, double remainTime)>;
     using DownloadCompleteCallback = std::function<void()>;
     void setProgressCallback(size_t taskID, const ProgressCallback& cb);
     void setDownloadCompleteCallback(size_t taskID, const DownloadCompleteCallback& cb);
