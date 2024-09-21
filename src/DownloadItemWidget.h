@@ -27,7 +27,7 @@ protected:
 signals:
     void removeItemSignal();
     void completeDownloadSignal();
-    void progressUpdateFromTaskSignal(unsigned long total, unsigned long downloaded);
+    void progressUpdateFromTaskSignal(unsigned long total, unsigned long downloaded, double speed, double remainTime);
     void completeDownloadFromTaskSignal();
 
 protected slots:
@@ -35,11 +35,12 @@ protected slots:
     void onDeleteButtonClicked();
     void onOpenFileButtonClicked();
     void onMoreInfoButtonClicked();
-    void onProgressUpdate(unsigned long total, unsigned long downloaded);
+    void onProgressUpdate(unsigned long total, unsigned long downloaded, double speed, double remainTime);
     void onCompleteDownload();
 
 private:
     Ui::DownloadItemWidget* ui;
     size_t taskID;
     DownloadItem fileInfo;
+    const int progressMaximum;
 };

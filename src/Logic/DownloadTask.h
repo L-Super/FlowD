@@ -30,7 +30,8 @@ public:
 
     DownloadItem downloadInfo();
 
-    using ProgressCallback = std::function<void(unsigned long total, unsigned long downloaded)>;
+    using ProgressCallback =
+            std::function<void(unsigned long total, unsigned long downloaded, double speed, double remainTime)>;
     using DownloadCompleteCallback = std::function<void()>;
     void setProgressCallback(const ProgressCallback& cb);
     void setDownloadCompleteCallback(const DownloadCompleteCallback& cb);
@@ -65,6 +66,7 @@ protected:
     bool progressCallback(long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, intptr_t userdata);
     bool isDownloadComplete();
     void mergeChunkFiles();
+    void speedAndRemainingTimeCalculate();
 
 private:
     std::string url_;
@@ -76,9 +78,11 @@ private:
     cpr::Header header_;
     std::atomic<uint64_t> totalSize_;
     std::atomic<uint64_t> downloadedSize_;
+    std::atomic<double> speed_;
+    std::atomic<double> remainTime_;
     Status status_;
     std::mutex statsMutex_;
     ProgressCallback progressCallback_;
-    DownloadCompleteCallback downloadCompleteCallback;
-    ThreadPool pool;
+    DownloadCompleteCallback downloadCompleteCallback_;
+    ThreadPool pool_;
 };

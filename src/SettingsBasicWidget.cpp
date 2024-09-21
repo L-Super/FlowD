@@ -48,10 +48,10 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
             AppConfig::instance().setBasic("save_path", selectedPath.toStdString());
         }
     });
-    connect(ui->autoStartupCheckBox, &QCheckBox::clicked, this, [this](const bool checked) {
+    connect(ui->autoStartupCheckBox, &QCheckBox::clicked, this, [this](bool checked) {
         AppConfig::instance().setBasic("auto_startup", checked);
         if (checked) {
-            if (!AutoRun::instance().setAutoRun()) {
+            if (!AutoRun::setAutoRun()) {
                 this->ui->autoStartupCheckBox->setChecked(!checked);
                 spdlog::error("Failed to add Autorun Section!");
                 QMessageBox::critical(this, tr("Error"),
@@ -60,7 +60,7 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
             }
         }
         else {
-            if (!AutoRun::instance().removeAutoRun()) {
+            if (!AutoRun::removeAutoRun()) {
                 this->ui->autoStartupCheckBox->setChecked(!checked);
                 spdlog::error("Failed to remove Autorun Section!");
                 QMessageBox::critical(
@@ -69,10 +69,9 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
                            "the system setting!"));
             }
         }
-
     });
 
-    //TODO: when leave this widget, check it weather be changed, if changed, save it
+    //TODO: when leave this widget, check it whether be changed, and if changed, save it
 }
 
 SettingsBasicWidget::~SettingsBasicWidget()

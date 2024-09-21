@@ -6,15 +6,18 @@
 
 class AutoRun : public Noncopyable {
 public:
-    static AutoRun& instance();
-
     static bool setAutoRun();
 
     static bool removeAutoRun();
 
 private:
-    AutoRun(QString appName, QString appFilePath);
+    static bool setAutoRunLinux();
+    static bool setAutoRunWindows();
+    static bool setAutoRunMac();
 
-    QString appName_;
-    QString appFilePath_;
+    static bool removeAutoRunLinux();
+    static bool removeAutoRunWindows();
+    static bool removeAutoRunMac();
+
+    static bool isDeepinSystem();
 };

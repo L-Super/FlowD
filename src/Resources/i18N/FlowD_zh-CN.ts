@@ -5,7 +5,7 @@
     <name>DownloadItemWidget</name>
     <message>
         <location filename="../../DownloadItemWidget.ui" line="66"/>
-        <location filename="../../DownloadItemWidget.cpp" line="87"/>
+        <location filename="../../DownloadItemWidget.cpp" line="135"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
@@ -67,17 +67,17 @@
         <translation type="vanished">下载速度: %1 %2/s</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="82"/>
+        <location filename="../../DownloadItemWidget.cpp" line="130"/>
         <source>Continue</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="108"/>
+        <location filename="../../DownloadItemWidget.cpp" line="156"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="109"/>
+        <location filename="../../DownloadItemWidget.cpp" line="157"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>无法打开文件 %1 ！\n请检查该文件是否存在并且该软件有权限访问。</translation>

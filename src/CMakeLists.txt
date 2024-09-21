@@ -33,6 +33,7 @@ set(SRC_FILES MainWindow.cpp MainWindow.h MainWindow.ui
     SettingsAdvancedWidget.cpp SettingsAdvancedWidget.h SettingsAdvancedWidget.ui
     NewDownloadDialog.cpp NewDownloadDialog.h NewDownloadDialog.ui
     FileInformationWidget.h FileInformationWidget.cpp FileInformationWidget.ui
+    Autorun.h Autorun.cpp
 )
 
 set(APP_DESCRIPTION "An Efficient Multi-threaded Download Manager")
@@ -88,7 +89,6 @@ add_executable(${PROJECT_NAME}
         ${QM_FILES}
         ${QRC_FILES}
         ${SRC_FILES}
-        Autorun.h Autorun.cpp
 )
 add_subdirectory(Logic)
 add_subdirectory(Utils)
