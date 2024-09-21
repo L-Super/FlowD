@@ -5,6 +5,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QTextStream>
 
 #include "version.h"
 
@@ -144,7 +145,7 @@ bool AutoRun::removeAutoRunMac()
 bool AutoRun::isDeepinSystem()
 {
     QProcess process;
-    process.start("env");
+    process.start("env", QStringList(), QIODevice::ReadOnly);
     process.waitForFinished();
     QString output = process.readAllStandardOutput();
     return output.contains("DEEPIN_SESSION_ID");
