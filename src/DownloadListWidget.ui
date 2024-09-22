@@ -50,9 +50,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="Finished">
+     <widget class="QWidget" name="Completed">
       <attribute name="title">
-       <string>Finished</string>
+       <string>Completed</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="leftMargin">
@@ -68,7 +68,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QListWidget" name="finishedListWidget"/>
+        <widget class="QListWidget" name="completedListWidget"/>
        </item>
       </layout>
      </widget>
