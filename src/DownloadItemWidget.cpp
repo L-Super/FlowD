@@ -142,7 +142,7 @@ void DownloadItemWidget::onPauseButtonClicked(bool /*checked*/)
 
 void DownloadItemWidget::onDeleteButtonClicked()
 {
-    //TODO: remove it from the download list and confirm weather to remove the file
+    //TODO: confirm weather to remove the file
     DownloadManager::instance().removeTask(taskID);
 
     // Request the ListWidget to remove this

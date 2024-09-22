@@ -98,7 +98,7 @@ Please check whether the file exists and the application can access the file.</t
     </message>
     <message>
         <location filename="../../DownloadListWidget.ui" line="55"/>
-        <source>Finished</source>
+        <source>Completed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

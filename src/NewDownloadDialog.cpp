@@ -36,7 +36,6 @@ void NewDownloadDialog::showAdvanceOption(bool maxMode)
 
 NewDownloadDialog::~NewDownloadDialog()
 {
-    qDebug() << __func__;
     delete ui;
 }
 
