@@ -46,8 +46,6 @@ DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int t
 #endif
 
     session_.SetUrl(cpr::Url(url_));
-    std::string format{R"([%Y-%m-%d %T.%e] [%^%l%$] [thread %t] %@ %v)"};
-    spdlog::set_pattern(format);
 }
 
 DownloadTask::~DownloadTask() {}
@@ -177,7 +175,7 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
     session_.SetHeader(header_);
     // disable ssl verify
     session_.SetVerifySsl(false);
-    //TODO: Maybe use GetDownloadFileLength first
+
     // Head 404 sometimes, should be get filename by Get
     //see:https://github.com/libcpr/cpr/pull/599
     cpr::Response response = session_.Head();
@@ -249,7 +247,7 @@ std::string DownloadTask::fileName(const cpr::Response& response)
     };
 
     auto getFilenameFromUrl = [&url]() -> std::string {
-        //TODO: maybe not correct
+        // TODO: maybe not correct
         size_t pos = url.find_last_of('/');
         if (pos != std::string::npos) {
             return cpr::util::urlDecode(url.substr(pos + 1));
@@ -366,8 +364,6 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
     ChunkFile* pf = reinterpret_cast<ChunkFile*>(userdata);
     pf->readLen += data.size();
     pf->data.append(data);
-    spdlog::debug("ChunkFile read_len:{} data size:{} start:{} end:{}", pf->readLen, pf->data.size(), pf->start,
-                  pf->end);
 
     if (pf->readLen == pf->end - pf->start + 1) {
         try {
@@ -379,9 +375,9 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
             downloadedSize_ += pf->data.size();
         }
         catch (const std::exception& e) {
-            spdlog::error("Write file failed. Exception:{}", e.what());
+            spdlog::error("Write chunk file failed. Exception:{}", e.what());
         }
-        spdlog::info("Write callback. start:{} read len:{} downloaded size:{}", pf->start, pf->readLen,
+        spdlog::info("Write chunk file completed. start:{} read len:{} downloaded size:{}", pf->start, pf->readLen,
                      downloadedSize_.load());
     }
 
@@ -399,7 +395,6 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
         totalSize_.store(downloadTotal);
     }
 
-    // TODO: send speed and remaining Time
     if (progressCallback_) {
         progressCallback_(totalSize_.load(), downloadedSize_.load(), speed_.load(), remainTime_.load());
     }
@@ -458,6 +453,6 @@ void DownloadTask::speedAndRemainingTimeCalculate()
         speed_ = static_cast<double>(downloadedSize_) / elapsed_seconds;
         remainTime_ = static_cast<double>(totalSize_ - downloadedSize_) / speed_;
 
-        spdlog::info("Speed: {}KB/s, Remaining time: {}s", speed_ / 1024, remainTime_.load());
+        spdlog::debug("Speed: {}KB/s, Remaining time: {}s", speed_ / 1024, remainTime_.load());
     }
 }
