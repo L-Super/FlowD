@@ -16,6 +16,8 @@ public:
     ~NewDownloadDialog() override;
 
     QString downloadUrl();
+    QString saveFilePath();
+    unsigned int threadCount();
 
 protected slots:
     void showAdvanceOption(bool minMode);
