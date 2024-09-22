@@ -66,12 +66,14 @@ namespace {
         return fmt::format("{:.2f} {}", speed, unit);
     }
 
-    std::string convertRemainingTime(double seconds) {
+    std::string convertRemainingTime(double seconds)
+    {
         if (seconds >= 60) {
             double minutes = seconds / 60;
             return fmt::format("{:.2f} min", minutes);
-        } else {
-            return fmt::format("{} s", seconds);
+        }
+        else {
+            return fmt::format("{:.2f} s", seconds);
         }
     }
 }// namespace

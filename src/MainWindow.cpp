@@ -101,14 +101,14 @@ void MainWindow::newDownloadTask()
     }
     spdlog::info("New download task, url:{}", url);
 
-    //TODO: get user's file path and thread count
-    QString filePath;
-    if (true) {
+    QString filePath = newDownloadDialog->saveFilePath();
+    if (filePath.isEmpty()) {
         filePath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
     }
+    auto threadCount = newDownloadDialog->threadCount();
 
     // add download task to DownloadManager
-    auto id = DownloadManager::instance().addTask(url, filePath.toStdString());
+    auto id = DownloadManager::instance().addTask(url, filePath.toStdString(), threadCount);
     DownloadItemWidget* item = new DownloadItemWidget(id, downloadListWidget);
     DownloadManager::instance().setDownloadCompleteCallback(id, [item]() {
         emit item->completeDownloadFromTaskSignal();
