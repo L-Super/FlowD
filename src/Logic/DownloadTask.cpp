@@ -33,7 +33,7 @@ namespace {
 
 DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int threadNum)
     : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
-      status_(Status::STOP), pool_(threadNum)
+      status_(Status::STOP), pool_(threadNum + 1)
 {
 #if defined(WINDOWS_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
@@ -97,7 +97,8 @@ void DownloadTask::start()
         }));
     }
     // for (auto&& result: results) { result.get(); }
-   std::async(std::launch::async, &DownloadTask::speedAndRemainingTimeCalculate, this);
+
+   pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
 }
 
 void DownloadTask::stop()
@@ -295,7 +296,7 @@ void DownloadTask::download()
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             }));
     // launch monitor thread
-    std::async(std::launch::async, [this] { speedAndRemainingTimeCalculate(); });
+    pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
 
     auto response = session_.Download(file);
     if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
