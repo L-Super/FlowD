@@ -97,7 +97,7 @@ void DownloadTask::start()
         }));
     }
     // for (auto&& result: results) { result.get(); }
-    pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
+   std::async(std::launch::async, &DownloadTask::speedAndRemainingTimeCalculate, this);
 }
 
 void DownloadTask::stop()
@@ -294,7 +294,9 @@ void DownloadTask::download()
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             }));
-    pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
+    // launch monitor thread
+    std::async(std::launch::async, [this] { speedAndRemainingTimeCalculate(); });
+
     auto response = session_.Download(file);
     if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
         status_ = Status::STOP;
@@ -395,7 +397,7 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
         totalSize_.store(downloadTotal);
     }
 
-    if (progressCallback_) {
+    if (progressCallback_ && status_ == Status::RUNNING) {
         progressCallback_(totalSize_.load(), downloadedSize_.load(), speed_.load(), remainTime_.load());
     }
 
