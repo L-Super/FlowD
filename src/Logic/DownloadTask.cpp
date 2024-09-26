@@ -6,6 +6,7 @@
 #include "spdlog/spdlog.h"
 
 #include <filesystem>
+#include <regex>
 
 namespace fs = std::filesystem;
 
@@ -227,12 +228,16 @@ std::string DownloadTask::fileName(const cpr::Response& response)
     auto getFilenameFromHeader = [](const cpr::Header& headers) -> std::string {
         if (auto it = headers.find("Content-Disposition"); it != headers.end()) {
             std::string header = it->second;
-            size_t filenamePos = header.find("filename=");
-            if (filenamePos != std::string::npos) {
-                size_t start = filenamePos + 9;// length of "filename="
-                size_t end = header.find('"', start + 1);
-                auto name = header.substr(start + 1, end - start - 1);
-                return cpr::util::urlDecode(name);
+            // \s*：匹配任意数量的空白字符
+            // ["']?：匹配0个或1个双引号或单引号
+            // ([^"']*)：匹配任意数量的非双引号和非单引号字符，这是文件名。这是第一个捕获组。
+            std::regex filenameRegex(R"(filename\s*=\s*["']?([^"']*)["']?)");
+            std::smatch match;
+            if (std::regex_search(header, match, filenameRegex)) {
+                if (match.size() > 1) {               // 确保匹配到文件名
+                    std::string name = match[1].str();// 第一个捕获组是文件名
+                    return cpr::util::urlDecode(name);
+                }
             }
         }
         return {};
