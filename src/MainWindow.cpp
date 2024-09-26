@@ -116,6 +116,6 @@ void MainWindow::newDownloadTask()
     DownloadManager::instance().setProgressCallback(id, [item](auto total, auto downloaded, auto speed, auto remainingTime) {
         emit item->progressUpdateFromTaskSignal(total, downloaded, speed, remainingTime);
     });
-    DownloadManager::instance().startTask(id);
     downloadListWidget->addDownloadingItem(item);
+    DownloadManager::instance().startTask(id);
 }

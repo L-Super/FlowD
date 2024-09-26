@@ -98,7 +98,7 @@ void DownloadTask::start()
     }
     // for (auto&& result: results) { result.get(); }
 
-   pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
+    pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
 }
 
 void DownloadTask::stop()
@@ -454,8 +454,12 @@ void DownloadTask::speedAndRemainingTimeCalculate()
         double elapsed_seconds = std::chrono::duration<double>(elapsed_time).count();
 
         speed_ = static_cast<double>(downloadedSize_) / elapsed_seconds;
-        remainTime_ = static_cast<double>(totalSize_ - downloadedSize_) / speed_;
-
-        spdlog::debug("Speed: {}KB/s, Remaining time: {}s", speed_ / 1024, remainTime_.load());
+        if (speed_ == 0) {
+            remainTime_ = 0;
+        }
+        else {
+            remainTime_ = static_cast<double>(totalSize_ - downloadedSize_) / speed_;
+        }
+        spdlog::debug("Speed: {}KB/s, Remaining time: {}s", speed_.load() / 1024, remainTime_.load());
     }
 }
