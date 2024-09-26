@@ -12,3 +12,10 @@ target_link_libraries(UnitTest PRIVATE Catch2::Catch2WithMain)
 add_test(NAME UnitTest
         COMMAND $<TARGET_FILE:UnitTest> --success
 )
+
+add_executable(DownloadTaskTest DownloadTaskTest.cpp)
+target_link_libraries(DownloadTaskTest PRIVATE Catch2::Catch2WithMain)
+
+add_test(NAME DownloadTaskTest
+        COMMAND $<TARGET_FILE:UnitTest> --success
+)
