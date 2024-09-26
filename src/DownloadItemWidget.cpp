@@ -136,6 +136,8 @@ void DownloadItemWidget::onPauseButtonClicked(bool /*checked*/)
     else {
         ui->pauseButton->setText(tr("Pause"));
         ui->pauseButton->setProperty("isPause", true);
+        ui->speedLabel->clear();
+        ui->remainTimeLabel->clear();
         DownloadManager::instance().pauseTask(taskID);
     }
 }
