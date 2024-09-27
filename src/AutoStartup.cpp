@@ -1,7 +1,8 @@
-#include "Autorun.h"
+#include "AutoStartup.h"
 
 #include <QApplication>
 #include <QDir>
+#include <QFile>
 #include <QProcess>
 #include <QSettings>
 #include <QStandardPaths>
@@ -9,15 +10,15 @@
 
 #include "version.h"
 
-bool AutoRun::setAutoRun()
+bool AutoStartUp::setAutoStartUp()
 {
     bool done = false;
 #if defined(Q_OS_WIN)
-    done = setAutoRunWindows();
+    done = setAutoStartUpWindows();
 #elif defined(Q_OS_MAC)
-    done = setAutoRunMac();
+    done = setAutoStartUpMac();
 #elif defined(Q_OS_LINUX)
-    done = setAutoRunLinux();
+    done = setAutoStartUpLinux();
 #else
     //有点抽象
     return 0;
@@ -25,29 +26,29 @@ bool AutoRun::setAutoRun()
     return done;
 }
 
-bool AutoRun::removeAutoRun()
+bool AutoStartUp::removeAutoStartUp()
 {
     bool done = false;
 #if defined(Q_OS_WIN)
-    done = removeAutoRunWindows();
+    done = removeAutoStartUpWindows();
 #elif defined(Q_OS_MAC)
-    done = removeAutoRunMac();
+    done = removeAutoStartUpMac();
 #elif defined(Q_OS_LINUX)
-    done = removeAutoRunLinux();
+    done = removeAutoStartUpLinux();
 #else
     return 0;
 #endif
     return done;
 }
 
-bool AutoRun::setAutoRunLinux()
+bool AutoStartUp::setAutoStartUpLinux()
 {
     QString path = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
-    QString autoRunFileName = path + "/autostart/FlowD.desktop";
-    QFile autoRunFile(autoRunFileName);
-    if (!autoRunFile.open(QIODevice::WriteOnly))
-        return 0;
-    QTextStream stream(&autoRunFile);
+    QString autoStartUpFileName = path + "/autostart/FlowD.desktop";
+    QFile autoStartUpFile(autoStartUpFileName);
+    if (!autoStartUpFile.open(QIODevice::WriteOnly))
+        return false;
+    QTextStream stream(&autoStartUpFile);
     stream.setAutoDetectUnicode(true);
 
     stream << "[Desktop Entry]" << QString("Exec=%1 min").arg(QApplication::applicationFilePath())
@@ -55,14 +56,14 @@ bool AutoRun::setAutoRunLinux()
            << "Type=Application";
 
     if (isDeepinSystem()) {
-        stream << "X-Deepin-Vendor=user-custom";
+        stream << "X-Deepin-CreatedBy=com.deepin.SessionManager";
     }
 
-    autoRunFile.close();
-    return 1;
+    autoStartUpFile.close();
+    return true;
 }
 
-bool AutoRun::setAutoRunWindows()
+bool AutoStartUp::setAutoStartUpWindows()
 {
     const QString autoRegPath = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
@@ -71,10 +72,10 @@ bool AutoRun::setAutoRunWindows()
     settings.setValue(QApplication::applicationName(), para);
 
     //TODO:determine whether the application succeeded
-    return 1;
+    return true;
 }
 
-bool AutoRun::setAutoRunMac()
+bool AutoStartUp::setAutoStartUpMac()
 {
     QString plistPath =
             QDir::cleanPath(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QDir::separator() +
@@ -111,27 +112,27 @@ bool AutoRun::setAutoRunMac()
     return false;
 }
 
-bool AutoRun::removeAutoRunLinux()
+bool AutoStartUp::removeAutoStartUpLinux()
 {
     QString path = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
-    QString autoRunFileName = path + "/autostart/FlowD.desktop";
-    QFile autoRunFile(autoRunFileName);
-    if (!autoRunFile.remove())
-        return 0;
-    return 1;
+    QString autoStartUpFileName = path + "/autostart/FlowD.desktop";
+    QFile autoStartUpFile(autoStartUpFileName);
+    if (!autoStartUpFile.remove())
+        return false;
+    return true;
 }
 
-bool AutoRun::removeAutoRunWindows()
+bool AutoStartUp::removeAutoStartUpWindows()
 {
     const QString autoRegPath = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
     QSettings settings(autoRegPath, QSettings::NativeFormat);
     settings.remove(QApplication::applicationName());
     //TODO:determine whether the application succeeded
-    return 1;
+    return true;
 }
 
-bool AutoRun::removeAutoRunMac()
+bool AutoStartUp::removeAutoStartUpMac()
 {
     QString plistPath =
             QDir::cleanPath(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QDir::separator() +
@@ -142,11 +143,17 @@ bool AutoRun::removeAutoRunMac()
     return file.remove();
 }
 
-bool AutoRun::isDeepinSystem()
+bool AutoStartUp::isDeepinSystem()
 {
-    QProcess process;
-    process.start("env", QStringList(), QIODevice::ReadOnly);
-    process.waitForFinished();
-    QString output = process.readAllStandardOutput();
-    return output.contains("DEEPIN_SESSION_ID");
+    QFile file("/etc/os-release");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            if (line.contains("Deepin", Qt::CaseInsensitive)) {
+                return true;
+            }
+        }
+    }
+    return false;
 }

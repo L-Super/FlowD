@@ -7,7 +7,7 @@
 #include <QStandardPaths>
 
 #include "AppConfig.h"
-#include "Autorun.h"
+#include "AutoStartup.h"
 #include "LanguageCode.hpp"
 #include "Logger.hpp"
 
@@ -51,7 +51,7 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
     connect(ui->autoStartupCheckBox, &QCheckBox::clicked, this, [this](bool checked) {
         AppConfig::instance().setBasic("auto_startup", checked);
         if (checked) {
-            if (!AutoRun::setAutoRun()) {
+            if (!AutoStartUp::setAutoStartUp()) {
                 this->ui->autoStartupCheckBox->setChecked(!checked);
                 spdlog::error("Failed to add Autorun Section!");
                 QMessageBox::critical(this, tr("Error"),
@@ -60,7 +60,7 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
             }
         }
         else {
-            if (!AutoRun::removeAutoRun()) {
+            if (!AutoStartUp::removeAutoStartUp()) {
                 this->ui->autoStartupCheckBox->setChecked(!checked);
                 spdlog::error("Failed to remove Autorun Section!");
                 QMessageBox::critical(

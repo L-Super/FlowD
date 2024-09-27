@@ -33,7 +33,7 @@ set(SRC_FILES MainWindow.cpp MainWindow.h MainWindow.ui
     SettingsAdvancedWidget.cpp SettingsAdvancedWidget.h SettingsAdvancedWidget.ui
     NewDownloadDialog.cpp NewDownloadDialog.h NewDownloadDialog.ui
     FileInformationWidget.h FileInformationWidget.cpp FileInformationWidget.ui
-    Autorun.h Autorun.cpp
+    AutoStartup.h AutoStartup.cpp
 )
 
 set(APP_DESCRIPTION "An Efficient Multi-threaded Download Manager")
