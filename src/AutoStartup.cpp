@@ -21,7 +21,7 @@ bool AutoStartUp::setAutoStartUp()
     done = setAutoStartUpLinux();
 #else
     //有点抽象
-    return 0;
+    return false;
 #endif
     return done;
 }
@@ -39,6 +39,19 @@ bool AutoStartUp::removeAutoStartUp()
     return 0;
 #endif
     return done;
+}
+
+bool AutoStartUp::isAutoStartUp()
+{
+    bool autoStartUp = false;
+#if defined(Q_OS_WIN)
+    autoStartUp = isAutoStartUpWindows();
+#elif defined(Q_OS_MAC)
+    autoStartUp = isAutoStartUpMac();
+#elif defined(Q_OS_LINUX)
+    autoStartUp = isAutoStartUpLinux();
+#endif
+    return autoStartUp;
 }
 
 bool AutoStartUp::setAutoStartUpLinux()
@@ -117,9 +130,7 @@ bool AutoStartUp::removeAutoStartUpLinux()
     QString path = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
     QString autoStartUpFileName = path + "/autostart/FlowD.desktop";
     QFile autoStartUpFile(autoStartUpFileName);
-    if (!autoStartUpFile.remove())
-        return false;
-    return true;
+    return autoStartUpFile.remove();
 }
 
 bool AutoStartUp::removeAutoStartUpWindows()
@@ -128,8 +139,8 @@ bool AutoStartUp::removeAutoStartUpWindows()
 
     QSettings settings(autoRegPath, QSettings::NativeFormat);
     settings.remove(QApplication::applicationName());
-    //TODO:determine whether the application succeeded
-    return true;
+
+    return !isAutoStartUpWindows();
 }
 
 bool AutoStartUp::removeAutoStartUpMac()
@@ -141,6 +152,34 @@ bool AutoStartUp::removeAutoStartUpMac()
     // delete .plist File
     QFile file(plistPath);
     return file.remove();
+}
+
+bool AutoStartUp::isAutoStartUpLinux()
+{
+    QString path = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
+    QString autoStartUpFileName = path + "/autostart/FlowD.desktop";
+    QFile autoStartUpFile(autoStartUpFileName);
+    return autoStartUpFile.exists();
+}
+
+bool AutoStartUp::isAutoStartUpWindows()
+{
+    const QString autoRegPath = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+    QSettings settings(autoRegPath, QSettings::Format::NativeFormat);
+    if (settings.contains(QApplication::applicationName()))
+        return true;
+    else
+        return false;
+}
+
+bool AutoStartUp::isAutoStartUpMac()
+{
+    QString plistPath =
+            QDir::cleanPath(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QDir::separator() +
+                            "Library" + QDir::separator() + "LaunchAgents" + QDir::separator() + "net.my.app.plist");
+
+    QFile file(plistPath);
+    return file.exists();
 }
 
 bool AutoStartUp::isDeepinSystem()

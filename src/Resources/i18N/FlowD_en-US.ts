@@ -72,12 +72,12 @@
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="158"/>
+        <location filename="../../DownloadItemWidget.cpp" line="160"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="159"/>
+        <location filename="../../DownloadItemWidget.cpp" line="161"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>Failed in opening %1 !
@@ -410,19 +410,19 @@ Please check whether the file exists and the application can access the file.</t
         <translation>System Language</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="57"/>
-        <location filename="../../SettingsBasicWidget.cpp" line="67"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="56"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="66"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="58"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="57"/>
         <source>Failed in add Autorun Section!
 Please check whether the app has access to the system setting!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="68"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="67"/>
         <source>Failed in remove Autorun Section!
 Please check whether the app has access to the system setting!</source>
         <translation type="unfinished"></translation>

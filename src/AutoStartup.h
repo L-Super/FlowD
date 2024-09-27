@@ -10,6 +10,8 @@ public:
 
     static bool removeAutoStartUp();
 
+    static bool isAutoStartUp();
+
 private:
     static bool setAutoStartUpLinux();
     static bool setAutoStartUpWindows();
@@ -18,6 +20,10 @@ private:
     static bool removeAutoStartUpLinux();
     static bool removeAutoStartUpWindows();
     static bool removeAutoStartUpMac();
+
+    static bool isAutoStartUpLinux();
+    static bool isAutoStartUpWindows();
+    static bool isAutoStartUpMac();
 
     static bool isDeepinSystem();
 };

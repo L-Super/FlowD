@@ -49,7 +49,6 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
         }
     });
     connect(ui->autoStartupCheckBox, &QCheckBox::clicked, this, [this](bool checked) {
-        AppConfig::instance().setBasic("auto_startup", checked);
         if (checked) {
             if (!AutoStartUp::setAutoStartUp()) {
                 this->ui->autoStartupCheckBox->setChecked(!checked);
@@ -90,10 +89,7 @@ void SettingsBasicWidget::initSettings()
         ui->languageComboBox->setCurrentText(QString::fromStdString(language.value()));
     }
 
-    auto autoStartup = AppConfig::instance().getBasic<bool>("auto_startup");
-    if (autoStartup.has_value()) {
-        ui->autoStartupCheckBox->setChecked(autoStartup.value());
-    }
+    ui->autoStartupCheckBox->setChecked(AutoStartUp::isAutoStartUp());
 
     auto autoContinue = AppConfig::instance().getBasic<bool>("auto_continue");
     if (autoContinue.has_value()) {
