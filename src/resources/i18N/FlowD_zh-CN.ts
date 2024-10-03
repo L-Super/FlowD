@@ -72,12 +72,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="158"/>
+        <location filename="../../DownloadItemWidget.cpp" line="160"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="159"/>
+        <location filename="../../DownloadItemWidget.cpp" line="161"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>无法打开文件 %1 ！\n请检查该文件是否存在并且该软件有权限访问。</translation>

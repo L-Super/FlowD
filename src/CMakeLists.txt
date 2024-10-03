@@ -58,22 +58,22 @@ if (WIN32)
     set(LEGAL_COPYRIGHT ${APP_COPYRIGHT})
     set(PRODUCT_NAME "FlowD")
 
-    set(WIN_RES_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Resources/win)
+    set(WIN_RES_PATH ${CMAKE_CURRENT_SOURCE_DIR}/resources/win)
     configure_file(${WIN_RES_PATH}/app.rc.in ${WIN_RES_PATH}/app.rc @ONLY)
 
     set(QRC_FILES ${QRC_FILES} ${WIN_RES_PATH}/app.rc)
 
 elseif (APPLE)
-    set(MAC_RES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Resources/mac")
+    set(MAC_RES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/resources/mac")
     # It needs to be added to add_executable to display the bundle icon on macOS
     set(QRC_FILES ${QRC_FILES} ${MAC_RES_PATH}/logo.icns)
 endif ()
 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS LinguistTools)
-set(TS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resources/i18N/FlowD_zh-CN.ts
-        ${CMAKE_CURRENT_SOURCE_DIR}/Resources/i18N/FlowD_en-US.ts
+set(TS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/i18N/FlowD_zh-CN.ts
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/i18N/FlowD_en-US.ts
 )
-set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_LIST_DIR}/Resources/i18N")
+set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_LIST_DIR}/resources/i18N")
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
@@ -91,8 +91,8 @@ add_executable(${PROJECT_NAME}
         ${QRC_FILES}
         ${SRC_FILES}
 )
-add_subdirectory(Logic)
-add_subdirectory(Utils)
+add_subdirectory(logic)
+add_subdirectory(utils)
 
 if (MINGW)
     target_compile_options(${PROJECT_NAME} PRIVATE "-Wa,-mbig-obj")

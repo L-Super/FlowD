@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Logic/DownloadItem.h"
+#include "logic/DownloadItem.h"
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE

@@ -1,30 +1,30 @@
 <RCC>
     <qresource prefix="/">
-        <file>Resources/logo.png</file>
-        <file>Resources/win/logo.ico</file>
-        <file>Resources/mac/logo.icns</file>
+        <file>resources/logo.png</file>
+        <file>resources/win/logo.ico</file>
+        <file>resources/mac/logo.icns</file>
     </qresource>
     <qresource prefix="/qss">
-        <file>Resources/style/style_black.qss</file>
-        <file>Resources/style/style_white.qss</file>
+        <file>resources/style/style_black.qss</file>
+        <file>resources/style/style_white.qss</file>
     </qresource>
     <qresource prefix="/">
-        <file>Resources/icons/black/delete.svg</file>
-        <file>Resources/icons/black/downloadlist.svg</file>
-        <file>Resources/icons/black/help.svg</file>
-        <file>Resources/icons/black/menu.svg</file>
-        <file>Resources/icons/black/new.svg</file>
-        <file>Resources/icons/black/openfolder.svg</file>
-        <file>Resources/icons/black/settings.svg</file>
-        <file>Resources/icons/black/start.svg</file>
-        <file>Resources/icons/white/downloadlist.svg</file>
-        <file>Resources/icons/white/help.svg</file>
-        <file>Resources/icons/white/menu.svg</file>
-        <file>Resources/icons/white/new.svg</file>
-        <file>Resources/icons/white/settings.svg</file>
-        <file>Resources/icons/white/start.svg</file>
-        <file>Resources/icons/white/suspend.svg</file>
-        <file>Resources/icons/drop-down.png</file>
-        <file>Resources/icons/tick.png</file>
+        <file>resources/icons/black/delete.svg</file>
+        <file>resources/icons/black/downloadlist.svg</file>
+        <file>resources/icons/black/help.svg</file>
+        <file>resources/icons/black/menu.svg</file>
+        <file>resources/icons/black/new.svg</file>
+        <file>resources/icons/black/openfolder.svg</file>
+        <file>resources/icons/black/settings.svg</file>
+        <file>resources/icons/black/start.svg</file>
+        <file>resources/icons/white/downloadlist.svg</file>
+        <file>resources/icons/white/help.svg</file>
+        <file>resources/icons/white/menu.svg</file>
+        <file>resources/icons/white/new.svg</file>
+        <file>resources/icons/white/settings.svg</file>
+        <file>resources/icons/white/start.svg</file>
+        <file>resources/icons/white/suspend.svg</file>
+        <file>resources/icons/drop-down.png</file>
+        <file>resources/icons/tick.png</file>
     </qresource>
 </RCC>

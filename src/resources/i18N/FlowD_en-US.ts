@@ -72,12 +72,12 @@
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="158"/>
+        <location filename="../../DownloadItemWidget.cpp" line="160"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="159"/>
+        <location filename="../../DownloadItemWidget.cpp" line="161"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>Failed in opening %1 !

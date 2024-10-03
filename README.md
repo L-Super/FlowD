@@ -1,4 +1,4 @@
-<p align="center"><img src="src/Resources/logo.png" width="100" height="100"></p>
+<p align="center"><img src="src/resources/logo.png" width="100" height="100"></p>
 <h1 align="center">FlowD</h1>
 <p align="center">
 <a href="https://github.com/L-Super/FlowD/stargazers" ><img src="https://img.shields.io/github/stars/L-Super/FlowD?logo=github&style=round-square" alt="GitHub stars"></a>

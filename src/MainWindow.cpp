@@ -10,11 +10,11 @@
 #include "DownloadItemWidget.h"
 #include "DownloadListWidget.h"
 #include "HelpWidget.h"
-#include "Logic/DownloadManager.h"
+#include "logic/DownloadManager.h"
 #include "NewDownloadDialog.h"
 #include "SettingsWidget.h"
-#include "Utils/Logger.hpp"
-#include "Utils/Path.h"
+#include "utils/Logger.hpp"
+#include "utils/Path.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QWidget(parent), ui(new Ui::MainWindow), buttonGroup(new QButtonGroup(this)), sidebarMinimized(false)

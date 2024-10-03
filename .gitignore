@@ -27,7 +27,7 @@ build/
 src/version.h
 
 # rc file
-src/Resources/win/app.rc
+src/resources/win/app.rc
 
 # qm file
 src/Resources/i18N/*.qm
