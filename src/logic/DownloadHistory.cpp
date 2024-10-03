@@ -5,13 +5,18 @@
 #include "DownloadHistory.h"
 
 #include <QFile>
+#include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
 
 #include "Logger.hpp"
 #include "Path.h"
 
-DownloadHistory::DownloadHistory()
+struct DownloadHistory::Impl {
+    QSqlDatabase db_;
+};
+
+DownloadHistory::DownloadHistory() : impl(std::make_unique<Impl>())
 {
     if (!QFile::exists(utils::Path::instance().sqlFilePath())) {
         createDB();
@@ -23,13 +28,13 @@ DownloadHistory::DownloadHistory()
             spdlog::error("Could not connect to database. Error:{}", db.lastError().text());
             return;
         }
-        db_ = QSqlDatabase::database();
+        impl->db_ = QSqlDatabase::database();
     }
 }
 
 DownloadHistory::~DownloadHistory()
 {
-    db_.close();
+    impl->db_.close();
 }
 
 bool DownloadHistory::createDB()
@@ -40,7 +45,7 @@ bool DownloadHistory::createDB()
         spdlog::error("Could not connect to database. Error:{}", db.lastError().text());
         return false;
     }
-    db_ = QSqlDatabase::database();
+    impl->db_ = QSqlDatabase::database();
 
     // 创建下载任务表
     QString createDownloadsTable = R"(
@@ -86,7 +91,7 @@ bool DownloadHistory::createDB()
 }
 
 bool DownloadHistory::insertDownloadTask(const QString& url, const QString& fileName, const QString& filePath,
-                                         int64_t totalSize, int threadCount)
+                                         qint64 totalSize, int threadCount)
 {
     QSqlQuery query;
     query.prepare(R"(
@@ -109,8 +114,8 @@ bool DownloadHistory::insertDownloadTask(const QString& url, const QString& file
     return true;
 }
 
-bool DownloadHistory::insertDownloadSegment(const QString& url, int64_t rangeStart, int64_t rangeEnd,
-                                            int64_t downloadedSize)
+bool DownloadHistory::insertDownloadSegment(const QString& url, qint64 rangeStart, qint64 rangeEnd,
+                                            qint64 downloadedSize)
 {
     QSqlQuery query;
     query.prepare(R"(
@@ -218,7 +223,7 @@ QList<QPair<int, int>> DownloadHistory::getDownloadSegments(const QString& url)
     return segments;
 }
 
-bool DownloadHistory::updateSegmentProgress(const QString& url, int64_t rangeStart, int64_t downloadedSize,
+bool DownloadHistory::updateSegmentProgress(const QString& url, qint64 rangeStart, qint64 downloadedSize,
                                             bool isCompleted)
 {
     QSqlQuery query;

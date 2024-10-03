@@ -3,10 +3,12 @@
 //
 
 #pragma once
-#include <QSqlDatabase>
-#include <QString>
 
 #include "DownloadItem.h"
+
+#include <QList>
+#include <QString>
+#include <QVector>
 
 class DownloadHistory {
 public:
@@ -18,7 +20,7 @@ public:
      * @param threadCount
      * @return
      */
-    bool insertDownloadTask(const QString& url, const QString& fileName, const QString& filePath, int64_t totalSize,
+    bool insertDownloadTask(const QString& url, const QString& fileName, const QString& filePath, qint64 totalSize,
                             int threadCount);
     /**
      * 插入下载分段
@@ -28,7 +30,7 @@ public:
      * @param downloadedSize
      * @return
      */
-    bool insertDownloadSegment(const QString& url, int64_t rangeStart, int64_t rangeEnd, int64_t downloadedSize);
+    bool insertDownloadSegment(const QString& url, qint64 rangeStart, qint64 rangeEnd, qint64 downloadedSize);
     /**
      * 查询未完成的下载任务
      * @return
@@ -38,7 +40,7 @@ public:
      * 查询未完成的下载任务
      * @return
      */
-    QVector<DownloadItem>  getCompleteDownloadTasks();
+    QVector<DownloadItem> getCompleteDownloadTasks();
     /**
      * 查询某个下载任务的分段信息
      * @param url
@@ -53,7 +55,7 @@ public:
      * @param isCompleted
      * @return
      */
-    bool updateSegmentProgress(const QString& url, int64_t rangeStart, int64_t downloadedSize, bool isCompleted);
+    bool updateSegmentProgress(const QString& url, qint64 rangeStart, qint64 downloadedSize, bool isCompleted);
     /**
      * 删除下载任务
      * @param url
@@ -74,6 +76,8 @@ public:
 private:
     DownloadHistory();
     ~DownloadHistory();
+
 private:
-    QSqlDatabase db_;
+    struct Impl;
+    std::unique_ptr<Impl> impl;
 };
