@@ -12,4 +12,3 @@ target_link_libraries(DownloadTaskTest PRIVATE Catch2::Catch2WithMain)
 add_test(NAME DownloadTaskTest
         COMMAND $<TARGET_FILE:DownloadTaskTest> --success
 )
-)
