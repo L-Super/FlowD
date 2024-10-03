@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget* parent)
     buttonGroup->addButton(ui->settingsToolButton, 1);
     buttonGroup->addButton(ui->helpToolButton, 2);
 
+    ui->downloadListToolButton->setChecked(true);
+
     auto isMinimizeSidebar = AppConfig::instance().getBasic<bool>("minimizeSidebar");
     if (isMinimizeSidebar.has_value()) {
         sidebarMinimized = isMinimizeSidebar.value();

@@ -2,6 +2,7 @@
 #include "ui_DownloadListWidget.h"
 
 #include <QListWidgetItem>
+#include <QTabBar>
 
 #include "DownloadItemWidget.h"
 
@@ -10,6 +11,9 @@ DownloadListWidget::DownloadListWidget(QWidget* parent) : QWidget(parent), ui(ne
     ui->setupUi(this);
 
     ui->tabWidget->setCurrentIndex(0);
+    // expand tab bar
+    ui->tabWidget->setDocumentMode(true);
+    ui->tabWidget->tabBar()->setExpanding(true);
 }
 
 DownloadListWidget::~DownloadListWidget()
