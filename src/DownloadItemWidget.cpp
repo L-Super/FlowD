@@ -9,7 +9,7 @@
 #include <QUrl>
 
 #include "Logger.hpp"
-#include "Logic/DownloadManager.h"
+#include "logic/DownloadManager.h"
 
 namespace {
     std::string convertBytesToReadable(double bytes)
