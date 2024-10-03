@@ -8,12 +8,9 @@
 
 #include <filesystem>
 
-namespace {
-    const std::string filepath = utils::Path::instance().configFilepath().toStdString();
-}// namespace
-
 AppConfig::AppConfig()
 {
+    filepath = utils::Path::instance().configFilePath().toStdString();
     load();
 }
 

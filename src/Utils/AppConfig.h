@@ -76,5 +76,6 @@ protected:
     void save();
 
 private:
+    std::string filepath;
     json data_;
 };

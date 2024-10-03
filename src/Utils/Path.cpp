@@ -27,9 +27,14 @@ namespace utils {
         return logPath_;
     }
 
-    QString Path::configFilepath()
+    QString Path::configFilePath()
     {
         return cachePath_ + "/settings.json";
+    }
+
+    QString Path::sqlFilePath()
+    {
+        return cachePath_ + "/flowd_data.db";
     }
 
     void Path::createDir(const QString& path)
