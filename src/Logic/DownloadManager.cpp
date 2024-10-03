@@ -7,7 +7,12 @@
 
 DownloadManager::DownloadManager() {}
 
-DownloadManager::~DownloadManager() {}
+DownloadManager::~DownloadManager() {
+    for (const auto& task:tasks_) {
+        task.second->stop();
+    }
+    tasks_.clear();
+}
 
 size_t DownloadManager::addTask(const std::string& url, const std::string& filePath, unsigned int threadNum)
 {

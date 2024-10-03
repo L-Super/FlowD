@@ -2,7 +2,11 @@
 #include <string>
 
 struct DownloadItem {
-    enum class DownloadStatus { Downloading, Pause, Stop };
+    enum class DownloadStatus {
+        Downloading,// 下载中
+        Pause,      // 暂停，未下载完成
+        Stop        //停止，下载完成
+    };
 
     std::string filename;
     std::string filenamePath;
