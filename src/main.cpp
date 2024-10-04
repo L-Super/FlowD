@@ -12,7 +12,7 @@
 void loadQssStyle()
 {
     // TODO:检测设置或系统颜色主题，应用对应样式表
-    QFile qssFile(":/qss/Resources/style/style_white.qss");
+    QFile qssFile(":/qss/resources/style/style_white.qss");
     if (qssFile.open(QIODevice::ReadOnly)) {
         qApp->setStyleSheet(qssFile.readAll());
     }
@@ -35,11 +35,11 @@ int main(int argc, char* argv[])
     loadQssStyle();
 
 #if defined(Q_OS_WIN)
-    a.setWindowIcon(QIcon(":/Resources/win/logo.ico"));
+    a.setWindowIcon(QIcon(":/resources/win/logo.ico"));
 #elif defined(Q_OS_MAC)
-    a.setWindowIcon(QIcon(":/Resources/mac/logo.icns"));
+    a.setWindowIcon(QIcon(":/resources/mac/logo.icns"));
 #else
-    a.setWindowIcon(QIcon(":/Resources/logo.png"));
+    a.setWindowIcon(QIcon(":/resources/logo.png"));
 #endif
 
     spdlog::info("App launched. Version:{}", VERSION_STR);
