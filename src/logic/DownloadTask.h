@@ -57,7 +57,8 @@ protected:
 
 protected:
     HeadInfo requestFileInfoFromHead();
-    HeadInfo fileSize(const cpr::Header& header);
+    unsigned long fileSize(const cpr::Header& header);
+    bool isAcceptRange(const cpr::Header& header);
     std::string fileName(const cpr::Response& response);
     void preallocateFileSize(uint64_t fileSize);
     void download();

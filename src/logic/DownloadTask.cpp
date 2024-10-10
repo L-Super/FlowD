@@ -185,7 +185,9 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
     if (response.status_code != 200) {
         spdlog::warn("Request head failed.");
     }
-    HeadInfo fileInfo = fileSize(response.header);
+    HeadInfo fileInfo;
+    fileInfo.length = fileSize(response.header);
+    fileInfo.supportRange = isAcceptRange(response.header);
     fileInfo.filename = fileName(response);
 
     spdlog::info("Request head. Accept-Ranges support:{} file name:{} file length:{}", fileInfo.supportRange,
@@ -193,7 +195,7 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
     return fileInfo;
 }
 
-DownloadTask::HeadInfo DownloadTask::fileSize(const cpr::Header& header)
+unsigned long DownloadTask::fileSize(const cpr::Header& header)
 {
     unsigned long length{};
     if (auto search = header.find("Content-Length"); search != header.end()) {
@@ -203,21 +205,20 @@ DownloadTask::HeadInfo DownloadTask::fileSize(const cpr::Header& header)
         length = session_.GetDownloadFileLength();
     }
 
-    HeadInfo info;
-    info.length = length;
+    return length;
+}
+
+bool DownloadTask::isAcceptRange(const cpr::Header& header)
+{
     if (auto search = header.find("Accept-Ranges"); search != header.end()) {
         auto acceptRange = search->second;
         // not support Accept-Ranges:
         // haven't Accept-Ranges header or value is none
         if (acceptRange == "bytes") {
-            info.supportRange = true;
-        }
-        else {
-            info.supportRange = false;
+            return true;
         }
     }
-
-    return info;
+    return false;
 }
 
 std::string DownloadTask::fileName(const cpr::Response& response)
