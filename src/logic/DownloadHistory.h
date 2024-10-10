@@ -9,6 +9,7 @@
 #include <QList>
 #include <QString>
 #include <QVector>
+#include <memory>
 
 class DownloadHistory {
 public:
