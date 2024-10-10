@@ -1,3 +1,6 @@
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Sql)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Sql REQUIRED)
+
 include(FetchContent)
 FetchContent_Declare(
         Catch2
@@ -11,4 +14,11 @@ target_link_libraries(DownloadTaskTest PRIVATE Catch2::Catch2WithMain)
 
 add_test(NAME DownloadTaskTest
         COMMAND $<TARGET_FILE:DownloadTaskTest> --success
+)
+
+add_executable(DownloadHistoryTest DownloadHistoryTest.cpp)
+target_link_libraries(DownloadHistoryTest PRIVATE Catch2::Catch2WithMain Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Sql)
+
+add_test(NAME DownloadHistoryTest
+        COMMAND $<TARGET_FILE:DownloadHistoryTest> --success
 )
