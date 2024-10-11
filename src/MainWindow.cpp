@@ -10,9 +10,9 @@
 #include "DownloadItemWidget.h"
 #include "DownloadListWidget.h"
 #include "HelpWidget.h"
-#include "logic/DownloadManager.h"
 #include "NewDownloadDialog.h"
 #include "SettingsWidget.h"
+#include "logic/DownloadManager.h"
 #include "utils/Logger.hpp"
 #include "utils/Path.h"
 
@@ -112,12 +112,13 @@ void MainWindow::newDownloadTask()
     // add download task to DownloadManager
     auto id = DownloadManager::instance().addTask(url, filePath.toStdString(), threadCount);
     DownloadItemWidget* item = new DownloadItemWidget(id, downloadListWidget);
-    DownloadManager::instance().setDownloadCompleteCallback(id, [item]() {
+    DownloadManager::instance().setDownloadCompleteCallback(id, [id, item]() {
         emit item->completeDownloadFromTaskSignal();
     });
-    DownloadManager::instance().setProgressCallback(id, [item](auto total, auto downloaded, auto speed, auto remainingTime) {
-        emit item->progressUpdateFromTaskSignal(total, downloaded, speed, remainingTime);
-    });
+    DownloadManager::instance().setProgressCallback(
+            id, [item](auto total, auto downloaded, auto speed, auto remainingTime) {
+                emit item->progressUpdateFromTaskSignal(total, downloaded, speed, remainingTime);
+            });
     downloadListWidget->addDownloadingItem(item);
     DownloadManager::instance().startTask(id);
 }

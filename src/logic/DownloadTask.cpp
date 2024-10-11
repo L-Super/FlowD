@@ -401,11 +401,12 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
     (void) userdata;
 
     if (totalSize_ == 0) {
-        totalSize_.store(downloadTotal);
+        totalSize_.store(downloadTotal, std::memory_order_release);
     }
 
     if (progressCallback_ && status_ == Status::RUNNING) {
-        progressCallback_(totalSize_.load(), downloadedSize_.load(), speed_.load(), remainTime_.load());
+        progressCallback_(totalSize_.load(std::memory_order_acquire), downloadedSize_.load(std::memory_order_acquire),
+                          speed_.load(std::memory_order_acquire), remainTime_.load(std::memory_order_acquire));
     }
 
     spdlog::debug("Download {}/{} bytes.", downloadNow, downloadTotal);
@@ -448,24 +449,20 @@ void DownloadTask::mergeChunkFiles()
 
 void DownloadTask::speedAndRemainingTimeCalculate()
 {
+    using namespace std::chrono_literals;
     while (status_ != Status::STOP) {
-        auto start_time = std::chrono::steady_clock::now();
-        std::this_thread::sleep_for(std::chrono::seconds(1));
         if (status_ == Status::PAUSE) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::this_thread::sleep_for(500ms);
             continue;
         }
 
-        auto elapsed_time = std::chrono::steady_clock::now() - start_time;
-        double elapsed_seconds = std::chrono::duration<double>(elapsed_time).count();
-
-        speed_ = static_cast<double>(downloadedSize_) / elapsed_seconds;
-        if (speed_ == 0) {
-            remainTime_ = 0;
-        }
-        else {
-            remainTime_ = static_cast<double>(totalSize_ - downloadedSize_) / speed_;
-        }
+        auto previous_size = downloadedSize_.load(std::memory_order_relaxed);
+        std::this_thread::sleep_for(1s);
+        speed_.store(downloadedSize_.load(std::memory_order_relaxed) - previous_size, std::memory_order_relaxed);// bytes per second
+        remainTime_.store((speed_ > 0) ? static_cast<double>(totalSize_ - downloadedSize_) /
+                                                 speed_.load(std::memory_order_relaxed)
+                                       : 0,
+                          std::memory_order_relaxed);
         spdlog::debug("Speed: {}KB/s, Remaining time: {}s", speed_.load() / 1024, remainTime_.load());
     }
 }

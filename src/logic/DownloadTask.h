@@ -31,7 +31,7 @@ public:
     DownloadItem downloadInfo();
 
     using ProgressCallback =
-            std::function<void(unsigned long total, unsigned long downloaded, double speed, double remainTime)>;
+            std::function<void(unsigned long total, unsigned long downloaded, unsigned long speed, double remainTime)>;
     using DownloadCompleteCallback = std::function<void()>;
     void setProgressCallback(const ProgressCallback& cb);
     void setDownloadCompleteCallback(const DownloadCompleteCallback& cb);
@@ -79,7 +79,7 @@ private:
     cpr::Header header_;
     std::atomic<uint64_t> totalSize_;
     std::atomic<uint64_t> downloadedSize_;
-    std::atomic<double> speed_;
+    std::atomic<uint64_t> speed_;
     std::atomic<double> remainTime_;
     Status status_;
     std::mutex statsMutex_;

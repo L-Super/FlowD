@@ -26,7 +26,7 @@ namespace {
         return fmt::format("{:.2f} {}", bytes, units[i]);
     }
 
-    int convertProgressValue(long long current, long long total, int maxVal = 100)
+    int convertProgressValue(unsigned long current, unsigned long total, int maxVal = 100)
     {
         if (total == 0 || maxVal == 0) {
             // 避免除以零
@@ -47,9 +47,9 @@ namespace {
         return mappedValue;
     }
 
-    std::string convertDownloadSpeed(double bytesPerSecond)
+    std::string convertDownloadSpeed(unsigned long bytesPerSecond)
     {
-        double speed = bytesPerSecond;
+        double speed = static_cast<double>(bytesPerSecond);
         std::string unit = "B/s";
 
         if (speed >= 1024 * 1024) {
@@ -170,13 +170,15 @@ void DownloadItemWidget::onMoreInfoButtonClicked() {}
 void DownloadItemWidget::onCompleteDownload()
 {
     ui->pauseButton->hide();
-    //TODO: add complete download logic and remove task
+    ui->progressBar->setValue(100);
 
-    //TODO: when download complete, remove it from downloading list, and then add it into finished list
     emit completeDownloadSignal();
+
+    // when complete download, clean the task
+    DownloadManager::instance().removeTask(taskID);
 }
 
-void DownloadItemWidget::onProgressUpdate(unsigned long total, unsigned long downloaded, double speed,
+void DownloadItemWidget::onProgressUpdate(unsigned long total, unsigned long downloaded, unsigned long speed,
                                           double remainTime)
 {
     if (downloaded == 0)
