@@ -384,7 +384,7 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
             // the destructor will invoke sync() and unmap()
             mio::mmap_sink mmap(tmpFilenamePath_, pf->start);
 
-            for (int i = 0; i < data.size(); ++i) { mmap[i] = data[i]; }
+            std::copy(data.begin(), data.end(), mmap.begin());
 
             downloadedSize_ += pf->data.size();
         }
