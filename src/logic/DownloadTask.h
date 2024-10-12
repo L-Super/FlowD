@@ -52,7 +52,6 @@ protected:
         uint64_t start{};
         uint64_t end{};
         std::string data;
-        std::string chunkFilename;
     };
 
 protected:
@@ -71,7 +70,7 @@ protected:
 
 private:
     std::string url_;
-    std::string filePath_;       // save the file path
+    std::string saveFilePath_;       // save the file path
     std::string filename_;       // file name, excluding the path.
     std::string tmpFilenamePath_;// tmp file path
     unsigned int threadNum_;

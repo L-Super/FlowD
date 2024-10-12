@@ -35,8 +35,8 @@ namespace {
 }// namespace
 
 DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int threadNum)
-    : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
-      status_(Status::STOP), pool_(threadNum + 1)
+    : url_(std::move(url)), saveFilePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
+      speed_{}, remainTime_{}, status_(Status::STOP), pool_(threadNum + 1)
 {
 #if defined(WINDOWS_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
@@ -64,9 +64,9 @@ void DownloadTask::start()
     }
     filename_ = filename;
     status_ = Status::RUNNING;
-    tmpFilenamePath_ = generateUniqueFilename(filePath_ + "/" + filename_);
+    tmpFilenamePath_ = generateUniqueFilename(saveFilePath_ + "/" + filename_) + ".part";
 
-    fs::path dirPath = fs::path(filePath_);
+    fs::path dirPath = fs::path(saveFilePath_);
     // If the directory does not exist, create it
     if (!dirPath.empty() && !fs::exists(dirPath)) {
         fs::create_directories(dirPath);
@@ -312,6 +312,10 @@ void DownloadTask::download()
 
     auto response = session_.Download(file);
     if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
+        fs::path path(tmpFilenamePath_);
+        // remove .part suffix
+        auto filenamePath = path.replace_extension("").string();
+        fs::rename(tmpFilenamePath_, filenamePath);
         if (downloadCompleteCallback_) {
             downloadCompleteCallback_();
         }
@@ -338,7 +342,6 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
     f.readLen = 0;
     f.start = start;
     f.end = end;
-    f.chunkFilename = tmpFilenamePath_ + ".part" + std::to_string(part);
 
     cpr::WriteCallback writeCallbackFunc(
             [this](const std::string_view& data, intptr_t userdata) {
@@ -385,6 +388,11 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
             mio::mmap_sink mmap(tmpFilenamePath_, pf->start);
 
             std::copy(data.begin(), data.end(), mmap.begin());
+
+            fs::path path(tmpFilenamePath_);
+            // remove .part suffix
+            auto filenamePath = path.replace_extension("").string();
+            fs::rename(tmpFilenamePath_, filenamePath);
 
             downloadedSize_ += pf->data.size();
         }
@@ -434,22 +442,6 @@ bool DownloadTask::isDownloadComplete()
     if (totalSize_ == downloadedSize_)
         return true;
     return false;
-}
-
-void DownloadTask::mergeChunkFiles()
-{
-    std::ofstream outputFile(tmpFilenamePath_, std::ios::binary);
-
-    for (int i = 0; i < threadNum_; ++i) {
-        std::string partFilename = tmpFilenamePath_ + ".part" + std::to_string(i);
-        std::ifstream partFile(partFilename, std::ios::binary);
-        outputFile << partFile.rdbuf();
-        partFile.close();
-        // delete tmp chunk file
-        fs::remove(partFilename);
-    }
-
-    outputFile.close();
 }
 
 void DownloadTask::speedAndRemainingTimeCalculate()
