@@ -47,6 +47,7 @@ DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int t
 #elif defined(LINUX_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0"}};
 #endif
+    header_["Connection"] = "Keep-Alive";
 
     session_.SetUrl(cpr::Url(url_));
 }
@@ -307,6 +308,7 @@ void DownloadTask::download()
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             }));
+    session_.UpdateHeader(header_);
     // launch monitor thread
     pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
 
