@@ -3,7 +3,9 @@
 //
 
 #include "DownloadTask.h"
-#include "spdlog/spdlog.h"
+#include "Logger.hpp"
+
+#include "mio/mio.hpp"
 
 #include <filesystem>
 #include <regex>
@@ -33,8 +35,8 @@ namespace {
 }// namespace
 
 DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int threadNum)
-    : url_(std::move(url)), filePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
-      status_(Status::STOP), pool_(threadNum + 1)
+    : url_(std::move(url)), saveFilePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
+      speed_{}, remainTime_{}, status_(Status::STOP), pool_(threadNum + 1)
 {
 #if defined(WINDOWS_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
@@ -45,6 +47,7 @@ DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int t
 #elif defined(LINUX_OS)
     header_ = {{"user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0"}};
 #endif
+    header_["Connection"] = "Keep-Alive";
 
     session_.SetUrl(cpr::Url(url_));
 }
@@ -62,30 +65,28 @@ void DownloadTask::start()
     }
     filename_ = filename;
     status_ = Status::RUNNING;
-    tmpFilenamePath_ = generateUniqueFilename(filePath_ + "/" + filename_);
+    tmpFilenamePath_ = generateUniqueFilename(saveFilePath_ + "/" + filename_) + ".part";
 
-    fs::path dirPath = fs::path(filePath_);
+    fs::path dirPath = fs::path(saveFilePath_);
     // If the directory does not exist, create it
     if (!dirPath.empty() && !fs::exists(dirPath)) {
         fs::create_directories(dirPath);
     }
 
-    // Preallocate file size.
-    //    preallocateFileSize(totalSize_);
-
     // If the file is smaller than 10MB or does not support Range, download it directly.
     if (totalSize_ < 10 * MB || !supportRange) {
         spdlog::info("Start single thread download");
-        auto future = std::async(std::launch::async, [&] {
-            download();
-        });
+        pool_.enqueue(&DownloadTask::download, this);
         return;
     }
 
-    spdlog::info("Start mutil thread download");
+    spdlog::info("Start mutil thread download.");
+    // Preallocate file size.
+    preallocateFileSize(totalSize_);
 
     // Allocate the compartment for each thread's download
     uint64_t part_size = totalSize_ / threadNum_;
+    spdlog::info("Thread count:{} part size:{}", threadNum_, part_size);
 
     // launch the thread pool
     std::vector<std::future<void>> results;
@@ -182,9 +183,10 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
     //see:https://github.com/libcpr/cpr/pull/599
     cpr::Response response = session_.Head();
 
-    if (response.status_code != 200) {
-        spdlog::warn("Request head failed.");
+    if (response.status_code >= 400) {
+        spdlog::warn("Request head failed. code:", response.status_code);
     }
+
     HeadInfo fileInfo;
     fileInfo.length = fileSize(response.header);
     fileInfo.supportRange = isAcceptRange(response.header);
@@ -198,11 +200,16 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
 unsigned long DownloadTask::fileSize(const cpr::Header& header)
 {
     unsigned long length{};
+
     if (auto search = header.find("Content-Length"); search != header.end()) {
         length = std::stoul(search->second);
+        spdlog::info("Get file size {} byte from header['Content-Length']", length);
     }
     if (length <= 0) {
-        length = session_.GetDownloadFileLength();
+        auto tmpLength = session_.GetDownloadFileLength();
+        spdlog::info("Get file size {} byte from GetDownloadFileLength()", tmpLength);
+
+        length = tmpLength < 0 ? 0 : tmpLength;
     }
 
     return length;
@@ -301,12 +308,16 @@ void DownloadTask::download()
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
                 return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
             }));
+    session_.UpdateHeader(header_);
     // launch monitor thread
     pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
 
     auto response = session_.Download(file);
     if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
-        status_ = Status::STOP;
+        fs::path path(tmpFilenamePath_);
+        // remove .part suffix
+        auto filenamePath = path.replace_extension("").string();
+        fs::rename(tmpFilenamePath_, filenamePath);
         if (downloadCompleteCallback_) {
             downloadCompleteCallback_();
         }
@@ -316,6 +327,7 @@ void DownloadTask::download()
     else {
         spdlog::error("Download small file failed. code:{} error reason: {}", response.status_code, response.reason);
     }
+    status_ = Status::STOP;
 }
 
 void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
@@ -332,7 +344,6 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
     f.readLen = 0;
     f.start = start;
     f.end = end;
-    f.chunkFilename = tmpFilenamePath_ + ".part" + std::to_string(part);
 
     cpr::WriteCallback writeCallbackFunc(
             [this](const std::string_view& data, intptr_t userdata) {
@@ -356,9 +367,8 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
         spdlog::info("Thread download range[{}:{}] file finished.", start, end);
 
         if (isDownloadComplete()) {
-            spdlog::info("All thread download complete, start merge files");
+            spdlog::info("All thread download complete");
 
-            mergeChunkFiles();
             status_ = Status::STOP;
 
             if (downloadCompleteCallback_) {
@@ -376,14 +386,19 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
 
     if (pf->readLen == pf->end - pf->start + 1) {
         try {
-            std::ofstream file(pf->chunkFilename, std::ios::binary | std::ios::out);
-            if (!file.is_open()) {
-                spdlog::error("File is not open.");
-            }
-            file.write(pf->data.c_str(), pf->data.size());
+            // the destructor will invoke sync() and unmap()
+            mio::mmap_sink mmap(tmpFilenamePath_, pf->start);
+
+            std::copy(data.begin(), data.end(), mmap.begin());
+
+            fs::path path(tmpFilenamePath_);
+            // remove .part suffix
+            auto filenamePath = path.replace_extension("").string();
+            fs::rename(tmpFilenamePath_, filenamePath);
+
             downloadedSize_ += pf->data.size();
         }
-        catch (const std::exception& e) {
+        catch (const std::system_error& e) {
             spdlog::error("Write chunk file failed. Exception:{}", e.what());
         }
         spdlog::info("Write chunk file completed. start:{} read len:{} downloaded size:{}", pf->start, pf->readLen,
@@ -431,22 +446,6 @@ bool DownloadTask::isDownloadComplete()
     return false;
 }
 
-void DownloadTask::mergeChunkFiles()
-{
-    std::ofstream outputFile(tmpFilenamePath_, std::ios::binary);
-
-    for (int i = 0; i < threadNum_; ++i) {
-        std::string partFilename = tmpFilenamePath_ + ".part" + std::to_string(i);
-        std::ifstream partFile(partFilename, std::ios::binary);
-        outputFile << partFile.rdbuf();
-        partFile.close();
-        // delete tmp chunk file
-        fs::remove(partFilename);
-    }
-
-    outputFile.close();
-}
-
 void DownloadTask::speedAndRemainingTimeCalculate()
 {
     using namespace std::chrono_literals;
@@ -458,7 +457,8 @@ void DownloadTask::speedAndRemainingTimeCalculate()
 
         auto previous_size = downloadedSize_.load(std::memory_order_relaxed);
         std::this_thread::sleep_for(1s);
-        speed_.store(downloadedSize_.load(std::memory_order_relaxed) - previous_size, std::memory_order_relaxed);// bytes per second
+        speed_.store(downloadedSize_.load(std::memory_order_relaxed) - previous_size,
+                     std::memory_order_relaxed);// bytes per second
         remainTime_.store((speed_ > 0) ? static_cast<double>(totalSize_ - downloadedSize_) /
                                                  speed_.load(std::memory_order_relaxed)
                                        : 0,
