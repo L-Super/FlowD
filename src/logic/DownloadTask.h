@@ -48,9 +48,9 @@ protected:
         PAUSE,
     };
     struct ChunkFile {
-        uint64_t readLen;// file bytes
-        uint64_t start;
-        uint64_t end;
+        uint64_t readLen{};// file bytes
+        uint64_t start{};
+        uint64_t end{};
         std::string data;
         std::string chunkFilename;
     };

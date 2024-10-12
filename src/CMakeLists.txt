@@ -146,7 +146,15 @@ FetchContent_Declare(cpr
 FetchContent_Declare(SingleApplication
         GIT_REPOSITORY https://github.com/itay-grudev/SingleApplication.git)
 
-FetchContent_MakeAvailable(spdlog json cpr SingleApplication)
+FetchContent_Declare(mio
+        GIT_REPOSITORY https://github.com/vimpunk/mio.git
+        GIT_TAG 8b6b7d878c89e81614d05edca7936de41ccdd2da
+)
+
+FetchContent_MakeAvailable(spdlog json cpr SingleApplication mio)
+
+set(MIO_INCLUDE_DIR ${mio_SOURCE_DIR}/single_include)
+include_directories(${MIO_INCLUDE_DIR})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         Qt${QT_VERSION_MAJOR}::Core
