@@ -1,21 +1,19 @@
 name: build
 
 on:
-    push:
-        branches: ["main"]
+    [push, pull_request]:
+        branches:
+          - "main"
+          - "feature/**"
+          - "bugfix/**"
         paths-ignore:
             - "README.md"
-            - "LICENSE"
-    pull_request:
-        branches: ["main"]
-        paths-ignore:
-            - "README.md"
+            - "README-zh.md"
             - "LICENSE"
 
 jobs:
     linux-build:
         runs-on: ubuntu-latest
-
         strategy:
             # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations.
             # Consider changing this to true when your workflow is stable.

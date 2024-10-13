@@ -14,6 +14,12 @@ DownloadListWidget::DownloadListWidget(QWidget* parent) : QWidget(parent), ui(ne
     // expand tab bar
     ui->tabWidget->setDocumentMode(true);
     ui->tabWidget->tabBar()->setExpanding(true);
+
+    // test code
+    for (int i = 0; i < 5; ++i) {
+        auto item = new DownloadItemWidget(i, ui->downloadingListWidget);
+        addDownloadingItem(item);
+    }
 }
 
 DownloadListWidget::~DownloadListWidget()
