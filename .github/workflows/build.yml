@@ -1,7 +1,7 @@
 name: build
 
 on:
-    push, pull_request:
+    push:
         branches:
           - "main"
           - "feature/**"
@@ -10,6 +10,15 @@ on:
             - "README.md"
             - "README-zh.md"
             - "LICENSE"
+    pull_request:
+        branches:
+          - "main"
+          - "feature/**"
+          - "bugfix/**"
+        paths-ignore:
+          - "README.md"
+          - "README-zh.md"
+          - "LICENSE"
 
 jobs:
     linux-build:
