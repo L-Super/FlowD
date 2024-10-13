@@ -165,9 +165,7 @@ void DownloadItemWidget::onOpenFileButtonClicked()
     }
 }
 
-void DownloadItemWidget::onMoreInfoButtonClicked() {
-    emit completeDownloadSignal();
-}
+void DownloadItemWidget::onMoreInfoButtonClicked() {}
 
 void DownloadItemWidget::onCompleteDownload()
 {

@@ -2,7 +2,7 @@
 #include <QDir>
 #include <QFile>
 #include <QIcon>
-//#include <SingleApplication>
+#include <SingleApplication>
 
 #include "Logger.hpp"
 #include "MainWindow.h"
@@ -28,7 +28,7 @@ void initLogger()
 
 int main(int argc, char* argv[])
 {
-    QApplication a(argc, argv);
+    SingleApplication a(argc, argv);
     a.setApplicationName("FlowD");
 
     initLogger();
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     w.setWindowTitle("FlowD " + QString(VERSION_STR));
     w.show();
 
-//    QObject::connect(&a, &SingleApplication::instanceStarted, &w, &MainWindow::show);
+    QObject::connect(&a, &SingleApplication::instanceStarted, &w, &MainWindow::show);
 
     return QApplication::exec();
 }
