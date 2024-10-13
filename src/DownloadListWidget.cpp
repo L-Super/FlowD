@@ -34,12 +34,13 @@ void DownloadListWidget::addDownloadingItem(DownloadItemWidget* item)
             return;
         }
 
+        // FIXME: 下载中列表空白行占位。takeItem和removeItemWidget移除widget，会导致widget析构
         QListWidgetItem* newItem = new QListWidgetItem(ui->completedListWidget);
         ui->completedListWidget->addItem(newItem);
-
         ui->completedListWidget->setItemWidget(newItem, downloadWidget);
     });
     connect(item, &DownloadItemWidget::removeItemSignal, this, [this, widgetItem]() {
+        // FIXME: 移除后，有空白行占位
         auto w = ui->downloadingListWidget->itemWidget(widgetItem);
         if (w != nullptr) {
             ui->downloadingListWidget->removeItemWidget(widgetItem);
