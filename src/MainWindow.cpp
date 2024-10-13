@@ -112,6 +112,7 @@ void MainWindow::newDownloadTask()
     // add download task to DownloadManager
     auto id = DownloadManager::instance().addTask(url, filePath.toStdString(), threadCount);
     DownloadItemWidget* item = new DownloadItemWidget(id, downloadListWidget);
+    downloadListWidget->addDownloadingItem(item);
     DownloadManager::instance().setDownloadCompleteCallback(id, [id, item]() {
         emit item->completeDownloadFromTaskSignal();
     });
@@ -119,6 +120,5 @@ void MainWindow::newDownloadTask()
             id, [item](auto total, auto downloaded, auto speed, auto remainingTime) {
                 emit item->progressUpdateFromTaskSignal(total, downloaded, speed, remainingTime);
             });
-    downloadListWidget->addDownloadingItem(item);
     DownloadManager::instance().startTask(id);
 }
