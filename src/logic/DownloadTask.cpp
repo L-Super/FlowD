@@ -314,6 +314,8 @@ void DownloadTask::download()
 
     auto response = session_.Download(file);
     if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
+        // TODO: parse header (ETag and Last-Modified，x-bs-meta-crc32)
+
         fs::path path(tmpFilenamePath_);
         // remove .part suffix
         auto filenamePath = path.replace_extension("").string();
