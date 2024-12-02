@@ -7,6 +7,10 @@ project(FLowD
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+endif ()
+
 option(BUILD_TEST "Build the test" OFF)
 
 message(STATUS "CMake build type is ${CMAKE_BUILD_TYPE}")
