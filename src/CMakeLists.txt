@@ -53,15 +53,20 @@ if (WIN32)
     set(FILE_VERSION_STR "${PROJECT_VERSION}")
     set(PRODUCT_VERSION ${PROJECT_VERSION_MAJOR},${PROJECT_VERSION_MINOR},${PROJECT_VERSION_PATCH},${PROJECT_VERSION_TWEAK}) # 产品版本
     set(PRODUCT_VERSION_STR "${PROJECT_VERSION}")
-    set(COMPANY_NAME "FlowD")
-    set(FILE_DESCRIPTION "FlowD") # 文件说明
+    set(COMPANY_NAME ${PROJECT_NAME})
+    set(FILE_DESCRIPTION ${PROJECT_NAME}) # 文件说明
     set(LEGAL_COPYRIGHT ${APP_COPYRIGHT})
-    set(PRODUCT_NAME "FlowD")
+    set(PRODUCT_NAME ${PROJECT_NAME})
 
     set(WIN_RES_PATH ${CMAKE_CURRENT_SOURCE_DIR}/resources/win)
     configure_file(${WIN_RES_PATH}/app.rc.in ${WIN_RES_PATH}/app.rc @ONLY)
 
-    set(QRC_FILES ${QRC_FILES} ${WIN_RES_PATH}/app.rc)
+    # add manifest to enable UTF-8 and long paths
+    # https://learn.microsoft.com/zh-cn/windows/apps/design/globalizing/use-utf8-code-page
+    # https://learn.microsoft.com/zh-cn/windows/win32/fileio/maximum-file-path-limitation?tabs=registry
+    configure_file(${WIN_RES_PATH}/app.manifest.xml.in ${WIN_RES_PATH}/${PROJECT_NAME}.manifest @ONLY)
+
+    set(QRC_FILES ${QRC_FILES} ${WIN_RES_PATH}/app.rc ${WIN_RES_PATH}/${PROJECT_NAME}.manifest)
 
 elseif (APPLE)
     set(MAC_RES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/resources/mac")

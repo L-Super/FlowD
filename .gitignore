@@ -13,9 +13,11 @@ ui_*.h
 # QtCreator CMake
 CMakeLists.txt.user*
 
+# VS
+.vs/
+out/
 
-# CLion template
-
+# CLion
 # User-specific stuff
 .idea/
 
@@ -27,7 +29,10 @@ build/
 src/version.h
 
 # rc file
-src/resources/win/app.rc
+src/resources/win/*.rc
+
+# manifest file
+src/resources/win/*.manifest
 
 # qm file
 src/Resources/i18N/*.qm
