@@ -265,12 +265,12 @@ Please check whether the file exists and the application can access the file.</s
         <translation>链接:</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="73"/>
+        <location filename="../../NewDownloadDialog.ui" line="79"/>
         <source>Rename:</source>
         <translation>重命名：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="88"/>
+        <location filename="../../NewDownloadDialog.ui" line="94"/>
         <source>Splits:</source>
         <translation>分片数:</translation>
     </message>
@@ -285,42 +285,41 @@ Please check whether the file exists and the application can access the file.</s
         <translation>选择...(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="154"/>
+        <location filename="../../NewDownloadDialog.ui" line="167"/>
         <source>User-Agent：</source>
         <translation>User-Agent：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="184"/>
+        <location filename="../../NewDownloadDialog.ui" line="210"/>
         <source>Authentication：</source>
         <translation>Authentication：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="214"/>
+        <location filename="../../NewDownloadDialog.ui" line="253"/>
         <source>Referer：</source>
         <translation>Referer：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="244"/>
+        <location filename="../../NewDownloadDialog.ui" line="296"/>
         <source>Cookie：</source>
         <translation>Cookie：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="296"/>
         <source>Jump to Download Page</source>
-        <translation>跳转至下载页面</translation>
+        <translation type="vanished">跳转至下载页面</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="315"/>
+        <location filename="../../NewDownloadDialog.ui" line="340"/>
         <source>Advanced Options</source>
         <translation>高级设置</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="335"/>
+        <location filename="../../NewDownloadDialog.ui" line="360"/>
         <source>OK(&amp;O)</source>
         <translation>确定(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="342"/>
+        <location filename="../../NewDownloadDialog.ui" line="367"/>
         <source>Cancel(&amp;C)</source>
         <translation>取消(&amp;C)</translation>
     </message>

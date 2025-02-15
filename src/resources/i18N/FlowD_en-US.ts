@@ -268,12 +268,12 @@ Please check whether the file exists and the application can access the file.</t
         <translation>URL:</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="73"/>
+        <location filename="../../NewDownloadDialog.ui" line="79"/>
         <source>Rename:</source>
         <translation>Rename:</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="88"/>
+        <location filename="../../NewDownloadDialog.ui" line="94"/>
         <source>Splits:</source>
         <translation>Splits:</translation>
     </message>
@@ -288,42 +288,41 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Select...(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="154"/>
+        <location filename="../../NewDownloadDialog.ui" line="167"/>
         <source>User-Agent：</source>
         <translation>User-Agent：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="184"/>
+        <location filename="../../NewDownloadDialog.ui" line="210"/>
         <source>Authentication：</source>
         <translation>Authentication：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="214"/>
+        <location filename="../../NewDownloadDialog.ui" line="253"/>
         <source>Referer：</source>
         <translation>Referer：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="244"/>
+        <location filename="../../NewDownloadDialog.ui" line="296"/>
         <source>Cookie：</source>
         <translation>Cookie：</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="296"/>
         <source>Jump to Download Page</source>
-        <translation>Jump to Download Page</translation>
+        <translation type="vanished">Jump to Download Page</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="315"/>
+        <location filename="../../NewDownloadDialog.ui" line="340"/>
         <source>Advanced Options</source>
         <translation>Advanced Options</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="335"/>
+        <location filename="../../NewDownloadDialog.ui" line="360"/>
         <source>OK(&amp;O)</source>
         <translation>OK(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../../NewDownloadDialog.ui" line="342"/>
+        <location filename="../../NewDownloadDialog.ui" line="367"/>
         <source>Cancel(&amp;C)</source>
         <translation>Cancel(&amp;C)</translation>
     </message>
