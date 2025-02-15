@@ -147,7 +147,7 @@ FetchContent_Declare(json
 
 FetchContent_Declare(cpr
         GIT_REPOSITORY https://github.com/libcpr/cpr.git
-        GIT_TAG 9c71db3a2b36c999ee698751a89cc6af3ee33e87)
+        GIT_TAG 9ae581816a5991a6549b6534a3906f8844348623)
 
 FetchContent_Declare(SingleApplication
         GIT_REPOSITORY https://github.com/itay-grudev/SingleApplication.git)
