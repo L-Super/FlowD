@@ -34,22 +34,27 @@ namespace {
     }
 }// namespace
 
-DownloadTask::DownloadTask(std::string url, std::string filePath, unsigned int threadNum)
-    : url_(std::move(url)), saveFilePath_(std::move(filePath)), threadNum_(threadNum), totalSize_{}, downloadedSize_{},
-      speed_{}, remainTime_{}, status_(Status::STOP), pool_(threadNum + 1)
+DownloadTask::DownloadTask(const DownloadItemInfo& item) : itemInfo_(item), pool_(item.threadNum + 1)
 {
+    if (itemInfo_.userAgent.empty()) {
 #if defined(WINDOWS_OS)
-    header_ = {{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
-                              "Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"}};
+        header_.emplace("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like "
+                                      "Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0");
 #elif defined(MAC_OS)
-    header_ = {{"user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
-                              "Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0"}};
+        header_.emplace("user-agent",
+                        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0");
 #elif defined(LINUX_OS)
-    header_ = {{"user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0"}};
+        header_.emplace("user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0");
 #endif
+    }
+    else {
+        header_.emplace("user-agent", itemInfo_.userAgent);
+    }
+
     header_["Connection"] = "Keep-Alive";
 
-    session_.SetUrl(cpr::Url(url_));
+    session_.SetUrl(cpr::Url(itemInfo_.url));
 }
 
 DownloadTask::~DownloadTask() {}
@@ -58,23 +63,25 @@ void DownloadTask::start()
 {
     // get file size
     auto [totalSize, supportRange, filename] = requestFileInfoFromHead();
-    totalSize_ = totalSize;
-    if (totalSize_ == 0) {
+    itemInfo_.totalBytes = totalSize;
+    if (totalSize == 0) {
         spdlog::error("Failed to get file size.");
         // Unable to get file size, can try downloading
     }
-    filename_ = filename;
-    status_ = Status::RUNNING;
-    tmpFilenamePath_ = generateUniqueFilename(saveFilePath_ + "/" + filename_) + ".part";
+    if (itemInfo_.filename.empty()) {
+        itemInfo_.filename = filename;
+    }
+    itemInfo_.status = DownloadItemInfo::DownloadStatus::Downloading;
+    tmpFilenamePath_ = generateUniqueFilename(itemInfo_.saveDir + "/" + itemInfo_.filename) + ".part";
 
-    fs::path dirPath = fs::path(saveFilePath_);
+    fs::path dirPath = fs::path(itemInfo_.saveDir);
     // If the directory does not exist, create it
     if (!dirPath.empty() && !fs::exists(dirPath)) {
         fs::create_directories(dirPath);
     }
 
     // If the file is smaller than 10MB or does not support Range, download it directly.
-    if (totalSize_ < 10 * MB || !supportRange) {
+    if (totalSize < 10 * MB || !supportRange) {
         spdlog::info("Start single thread download");
         pool_.enqueue(&DownloadTask::download, this);
         return;
@@ -82,17 +89,18 @@ void DownloadTask::start()
 
     spdlog::info("Start mutil thread download.");
     // Preallocate file size.
-    preallocateFileSize(totalSize_);
+    preallocateFileSize(totalSize);
 
     // Allocate the compartment for each thread's download
-    uint64_t part_size = totalSize_ / threadNum_;
-    spdlog::info("Thread count:{} part size:{}", threadNum_, part_size);
+    uint64_t part_size =
+            totalSize / (itemInfo_.threadNum > 0 ? itemInfo_.threadNum : std::thread::hardware_concurrency());
+    spdlog::info("Thread count:{} part size:{}", itemInfo_.threadNum, part_size);
 
     // launch the thread pool
     std::vector<std::future<void>> results;
-    for (int i = 0; i < threadNum_; ++i) {
+    for (int i = 0; i < itemInfo_.threadNum; ++i) {
         uint64_t start = i * part_size;
-        uint64_t end = (i == threadNum_ - 1) ? totalSize_ - 1 : start + part_size - 1;
+        uint64_t end = (i == itemInfo_.threadNum - 1) ? totalSize - 1 : start + part_size - 1;
 
         results.emplace_back(pool_.enqueue([this, i, start, end] {
             downloadChunk(i, start, end);
@@ -107,21 +115,21 @@ void DownloadTask::stop()
 {
     spdlog::info("Download stop");
     std::lock_guard<std::mutex> lg(statsMutex_);
-    status_ = Status::STOP;
+    itemInfo_.status = DownloadItemInfo::DownloadStatus::Stop;
 }
 
 void DownloadTask::pause()
 {
     spdlog::info("Download pause");
     std::lock_guard<std::mutex> lg(statsMutex_);
-    status_ = Status::PAUSE;
+    itemInfo_.status = DownloadItemInfo::DownloadStatus::Pause;
 }
 
 void DownloadTask::resume()
 {
     spdlog::info("Download resume");
     std::lock_guard<std::mutex> lg(statsMutex_);
-    status_ = Status::RUNNING;
+    itemInfo_.status = DownloadItemInfo::DownloadStatus::Downloading;
 }
 
 std::map<std::string, std::string> DownloadTask::header()
@@ -147,30 +155,9 @@ void DownloadTask::addHeader(const std::string& key, const std::string& value)
     header_[key] = value;
 }
 
-DownloadItem DownloadTask::downloadInfo()
+DownloadItemInfo DownloadTask::downloadInfo()
 {
-    DownloadItem item;
-    item.filename = filename_;
-    item.filenamePath = tmpFilenamePath_;
-    item.url = url_;
-    item.totalBytes = totalSize_;
-    item.downloadedBytes = downloadedSize_;
-
-    using ItemStatus = DownloadItem::DownloadStatus;
-    switch (status_) {
-        case Status::PAUSE:
-            item.status = ItemStatus::Pause;
-            break;
-        case Status::RUNNING:
-            item.status = ItemStatus::Downloading;
-            break;
-        case Status::STOP:
-            item.status = ItemStatus::Stop;
-            break;
-        default:
-            break;
-    }
-    return item;
+    return itemInfo_;
 }
 
 DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
@@ -299,10 +286,10 @@ void DownloadTask::preallocateFileSize(uint64_t fileSize)
 
 void DownloadTask::download()
 {
-    if (status_ != Status::RUNNING)
+    if (itemInfo_.status != DownloadItemInfo::DownloadStatus::Downloading)
         return;
 
-    fs::path filename = tmpFilenamePath_;
+    fs::path filename(tmpFilenamePath_);
     std::ofstream file(filename, std::ios::binary | std::ios::out);
     session_.SetProgressCallback(cpr::ProgressCallback(
             [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
@@ -313,13 +300,20 @@ void DownloadTask::download()
     pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
 
     auto response = session_.Download(file);
-    if (response.status_code == 200 || response.downloaded_bytes == totalSize_) {
+    // close the file handle, then could rename it
+    file.close();
+    if (response.status_code == 200 || response.downloaded_bytes == itemInfo_.totalBytes) {
         // TODO: parse header (ETag and Last-Modified，x-bs-meta-crc32)
 
-        fs::path path(tmpFilenamePath_);
         // remove .part suffix
-        auto filenamePath = path.replace_extension("").string();
-        fs::rename(tmpFilenamePath_, filenamePath);
+        auto filenamePath = filename.replace_extension("").string();
+        try {
+            fs::rename(tmpFilenamePath_, filenamePath);
+        }
+        catch (const std::exception& e) {
+            spdlog::error("Rename failed. error: {}", e.what());
+        }
+
         if (downloadCompleteCallback_) {
             downloadCompleteCallback_();
         }
@@ -329,12 +323,12 @@ void DownloadTask::download()
     else {
         spdlog::error("Download small file failed. code:{} error reason: {}", response.status_code, response.reason);
     }
-    status_ = Status::STOP;
+    itemInfo_.status = DownloadItemInfo::DownloadStatus::Stop;
 }
 
 void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
 {
-    if (status_ != Status::RUNNING)
+    if (itemInfo_.status != DownloadItemInfo::DownloadStatus::Downloading)
         return;
 
     cpr::ProgressCallback progressCallbackFunc(
@@ -350,7 +344,7 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
     cpr::WriteCallback writeCallbackFunc(
             [this](const std::string_view& data, intptr_t userdata) {
                 // Return true on success, or false to cancel the transfer.
-                if (status_ != Status::RUNNING) {
+                if (itemInfo_.status != DownloadItemInfo::DownloadStatus::Downloading) {
                     // TODO:return false will cancel download. try to pause
                     return false;
                 }
@@ -358,7 +352,7 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
             },
             reinterpret_cast<intptr_t>(&f));
 
-    cpr::Response response = cpr::Get(cpr::Url{url_}, header_, cpr::Range(start, end), cpr::VerifySsl{false},
+    cpr::Response response = cpr::Get(cpr::Url{itemInfo_.url}, header_, cpr::Range(start, end), cpr::VerifySsl{false},
                                       progressCallbackFunc, writeCallbackFunc);
 
     if (response.status_code != 206) {
@@ -371,7 +365,7 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
         if (isDownloadComplete()) {
             spdlog::info("All thread download complete");
 
-            status_ = Status::STOP;
+            itemInfo_.status = DownloadItemInfo::DownloadStatus::Stop;
 
             if (downloadCompleteCallback_) {
                 downloadCompleteCallback_();
@@ -398,13 +392,13 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
             auto filenamePath = path.replace_extension("").string();
             fs::rename(tmpFilenamePath_, filenamePath);
 
-            downloadedSize_ += pf->data.size();
+            itemInfo_.downloadedBytes += pf->data.size();
         }
         catch (const std::system_error& e) {
             spdlog::error("Write chunk file failed. Exception:{}", e.what());
         }
         spdlog::info("Write chunk file completed. start:{} read len:{} downloaded size:{}", pf->start, pf->readLen,
-                     downloadedSize_.load());
+                     itemInfo_.downloadedBytes.load());
     }
 
     return true;
@@ -417,13 +411,15 @@ bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long u
     (void) uploadNow;
     (void) userdata;
 
-    if (totalSize_ == 0) {
-        totalSize_.store(downloadTotal, std::memory_order_release);
+    if (itemInfo_.totalBytes == 0) {
+        itemInfo_.totalBytes.store(downloadTotal, std::memory_order_release);
     }
 
-    if (progressCallback_ && status_ == Status::RUNNING) {
-        progressCallback_(totalSize_.load(std::memory_order_acquire), downloadedSize_.load(std::memory_order_acquire),
-                          speed_.load(std::memory_order_acquire), remainTime_.load(std::memory_order_acquire));
+    if (progressCallback_ && itemInfo_.status == DownloadItemInfo::DownloadStatus::Downloading) {
+        progressCallback_(itemInfo_.totalBytes.load(std::memory_order_acquire),
+                          itemInfo_.downloadedBytes.load(std::memory_order_acquire),
+                          itemInfo_.downloadSpeed.load(std::memory_order_acquire),
+                          itemInfo_.remainTime.load(std::memory_order_acquire));
     }
 
     spdlog::debug("Download {}/{} bytes.", downloadNow, downloadTotal);
@@ -443,7 +439,7 @@ void DownloadTask::setDownloadCompleteCallback(const DownloadCompleteCallback& c
 
 bool DownloadTask::isDownloadComplete()
 {
-    if (totalSize_ == downloadedSize_)
+    if (itemInfo_.totalBytes == itemInfo_.downloadedBytes)
         return true;
     return false;
 }
@@ -451,20 +447,23 @@ bool DownloadTask::isDownloadComplete()
 void DownloadTask::speedAndRemainingTimeCalculate()
 {
     using namespace std::chrono_literals;
-    while (status_ != Status::STOP) {
-        if (status_ == Status::PAUSE) {
+    while (itemInfo_.status != DownloadItemInfo::DownloadStatus::Stop) {
+        if (itemInfo_.status == DownloadItemInfo::DownloadStatus::Pause) {
             std::this_thread::sleep_for(500ms);
             continue;
         }
 
-        auto previous_size = downloadedSize_.load(std::memory_order_relaxed);
+        auto previous_size = itemInfo_.downloadedBytes.load(std::memory_order_relaxed);
         std::this_thread::sleep_for(1s);
-        speed_.store(downloadedSize_.load(std::memory_order_relaxed) - previous_size,
-                     std::memory_order_relaxed);// bytes per second
-        remainTime_.store((speed_ > 0) ? static_cast<double>(totalSize_ - downloadedSize_) /
-                                                 speed_.load(std::memory_order_relaxed)
-                                       : 0,
-                          std::memory_order_relaxed);
-        spdlog::debug("Speed: {}KB/s, Remaining time: {}s", speed_.load() / 1024, remainTime_.load());
+        itemInfo_.downloadSpeed.store(itemInfo_.downloadedBytes.load(std::memory_order_relaxed) - previous_size,
+                                      std::memory_order_relaxed);// bytes per second
+        itemInfo_.remainTime.store((itemInfo_.downloadSpeed > 0)
+                                           ? static_cast<double>(itemInfo_.totalBytes - itemInfo_.downloadedBytes) /
+                                                     itemInfo_.downloadSpeed.load(std::memory_order_relaxed)
+                                           : 0.0,
+                                   std::memory_order_relaxed);
+
+        spdlog::debug("Speed: {}KB/s, remaining time: {}s", itemInfo_.downloadSpeed.load() / 1024,
+                      itemInfo_.remainTime.load());
     }
 }

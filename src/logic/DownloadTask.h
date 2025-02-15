@@ -10,14 +10,14 @@
 #include <string>
 #include <thread>
 
-#include "DownloadItem.h"
+#include "DownloadItemInfo.h"
 #include "Noncopyable.hpp"
 #include "ThreadPool.hpp"
 #include "cpr/cpr.h"
 
 class DownloadTask : private Noncopyable {
 public:
-    DownloadTask(std::string url, std::string filePath, unsigned int threadNum);
+    DownloadTask(const DownloadItemInfo& item);
     ~DownloadTask();
     void start();
     void stop();
@@ -28,7 +28,7 @@ public:
     void setHeader(const std::map<std::string, std::string>& header);
     void addHeader(const std::string& key, const std::string& value);
 
-    DownloadItem downloadInfo();
+    DownloadItemInfo downloadInfo();
 
     using ProgressCallback =
             std::function<void(unsigned long total, unsigned long downloaded, unsigned long speed, double remainTime)>;
@@ -42,11 +42,7 @@ protected:
         bool supportRange{};
         std::string filename;
     };
-    enum class Status {
-        STOP,
-        RUNNING,
-        PAUSE,
-    };
+
     struct ChunkFile {
         uint64_t readLen{};// file bytes
         uint64_t start{};
@@ -69,18 +65,11 @@ protected:
     void speedAndRemainingTimeCalculate();
 
 private:
-    std::string url_;
-    std::string saveFilePath_;       // save the file path
-    std::string filename_;       // file name, excluding the path.
+    DownloadItemInfo itemInfo_;
     std::string tmpFilenamePath_;// tmp file path
-    unsigned int threadNum_;
     cpr::Session session_;
     cpr::Header header_;
-    std::atomic<uint64_t> totalSize_;
-    std::atomic<uint64_t> downloadedSize_;
-    std::atomic<uint64_t> speed_;
-    std::atomic<double> remainTime_;
-    Status status_;
+
     std::mutex statsMutex_;
     ProgressCallback progressCallback_;
     DownloadCompleteCallback downloadCompleteCallback_;

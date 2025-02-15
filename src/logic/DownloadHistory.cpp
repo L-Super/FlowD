@@ -138,9 +138,9 @@ bool DownloadHistory::insertDownloadSegment(const QString& url, qint64 rangeStar
     return true;
 }
 
-QVector<DownloadItem> DownloadHistory::getIncompleteDownloadTasks()
+QVector<DownloadItemInfo> DownloadHistory::getIncompleteDownloadTasks()
 {
-    QVector<DownloadItem> incompleteTasks;
+    QVector<DownloadItemInfo> incompleteTasks;
     QSqlQuery query;
 
     // 查询未完成的下载任务和已下载的总字节数
@@ -156,13 +156,13 @@ QVector<DownloadItem> DownloadHistory::getIncompleteDownloadTasks()
 
     if (query.exec()) {
         while (query.next()) {
-            DownloadItem item;
+            DownloadItemInfo item;
             item.filename = query.value("file_name").toString().toStdString();
             item.filenamePath = query.value("file_path").toString().toStdString();
             item.url = query.value("url").toString().toStdString();
             item.totalBytes = query.value("total_size").toLongLong();
             item.downloadedBytes = query.value("downloadedBytes").toLongLong();
-            item.status = DownloadItem::DownloadStatus::Pause;
+            item.status = DownloadItemInfo::DownloadStatus::Pause;
             incompleteTasks.push_back(item);
         }
     }
@@ -173,9 +173,9 @@ QVector<DownloadItem> DownloadHistory::getIncompleteDownloadTasks()
     return incompleteTasks;
 }
 
-QVector<DownloadItem> DownloadHistory::getCompleteDownloadTasks()
+QVector<DownloadItemInfo> DownloadHistory::getCompleteDownloadTasks()
 {
-    QVector<DownloadItem> completeTasks;
+    QVector<DownloadItemInfo> completeTasks;
     QSqlQuery query;
     // 查询已完成的下载任务
     query.prepare(R"(
@@ -186,13 +186,13 @@ QVector<DownloadItem> DownloadHistory::getCompleteDownloadTasks()
 
     if (query.exec()) {
         while (query.next()) {
-            DownloadItem item;
+            DownloadItemInfo item;
             item.filename = query.value("file_name").toString().toStdString();
             item.filenamePath = query.value("file_path").toString().toStdString();
             item.url = query.value("url").toString().toStdString();
             item.totalBytes = query.value("total_size").toLongLong();
-            item.downloadedBytes = item.totalBytes;
-            item.status = DownloadItem::DownloadStatus::Stop;
+            item.downloadedBytes = item.totalBytes.load();
+            item.status = DownloadItemInfo::DownloadStatus::Stop;
             completeTasks.push_back(item);
         }
     }

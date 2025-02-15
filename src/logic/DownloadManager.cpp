@@ -14,10 +14,10 @@ DownloadManager::~DownloadManager() {
     tasks_.clear();
 }
 
-size_t DownloadManager::addTask(const std::string& url, const std::string& filePath, unsigned int threadNum)
+size_t DownloadManager::addTask(const DownloadItemInfo& item)
 {
-    auto urlHash = std::hash<std::string>{}(url);
-    tasks_[urlHash] = std::make_unique<DownloadTask>(url, filePath, threadNum);
+    auto urlHash = std::hash<std::string>{}(item.url);
+    tasks_[urlHash] = std::make_unique<DownloadTask>(item);
     return urlHash;
 }
 
@@ -58,7 +58,7 @@ void DownloadManager::removeTask(size_t taskID)
     }
 }
 
-std::optional<DownloadItem> DownloadManager::downloadTaskInfo(size_t taskID)
+std::optional<DownloadItemInfo> DownloadManager::downloadTaskInfo(size_t taskID)
 {
     if (tasks_.find(taskID) != tasks_.end()) {
         return tasks_[taskID]->downloadInfo();

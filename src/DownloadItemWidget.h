@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logic/DownloadItem.h"
+#include "logic/DownloadItemInfo.h"
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -40,6 +40,6 @@ protected slots:
 private:
     Ui::DownloadItemWidget* ui;
     size_t taskID;
-    DownloadItem fileInfo;
+    DownloadItemInfo fileInfo;
     const int progressMaximum;
 };

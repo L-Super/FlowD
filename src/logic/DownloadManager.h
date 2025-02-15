@@ -8,10 +8,9 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <thread>
 #include <unordered_map>
 
-#include "DownloadItem.h"
+#include "DownloadItemInfo.h"
 #include "Noncopyable.hpp"
 
 class DownloadTask;
@@ -23,8 +22,7 @@ public:
         return instance;
     }
 
-    [[nodiscard]] std::size_t addTask(const std::string& url, const std::string& filePath,
-                                      unsigned int threadNum = std::thread::hardware_concurrency());
+    [[nodiscard]] std::size_t addTask(const DownloadItemInfo& item);
 
     using ProgressCallback =
             std::function<void(unsigned long total, unsigned long downloaded, unsigned long speed, double remainTime)>;
@@ -36,7 +34,7 @@ public:
     void pauseTask(size_t taskID);
     void resumeTask(size_t taskID);
     void removeTask(size_t taskID);
-    std::optional<DownloadItem> downloadTaskInfo(size_t taskID);
+    std::optional<DownloadItemInfo> downloadTaskInfo(size_t taskID);
 
 private:
     DownloadManager();

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "DownloadItem.h"
+#include "DownloadItemInfo.h"
 
 #include <QList>
 #include <QString>
@@ -36,12 +36,12 @@ public:
      * 查询未完成的下载任务
      * @return
      */
-    QVector<DownloadItem> getIncompleteDownloadTasks();
+    QVector<DownloadItemInfo> getIncompleteDownloadTasks();
     /**
      * 查询未完成的下载任务
      * @return
      */
-    QVector<DownloadItem> getCompleteDownloadTasks();
+    QVector<DownloadItemInfo> getCompleteDownloadTasks();
     /**
      * 查询某个下载任务的分段信息
      * @param url
