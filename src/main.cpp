@@ -28,6 +28,16 @@ void initLogger()
 
 int main(int argc, char* argv[])
 {
+#if _WIN32
+    // TODO: 目前为Qt环境，启用可能会导致其他问题
+    // 设置标准库调用系统 API 所用的编码，用于 fopen，ifstream 等函数
+    // setlocale(LC_ALL, ".UTF-8");
+    // 设置控制台输出编码
+    SetConsoleOutputCP(CP_UTF8);
+    // 设置控制台输入编码，用于 std::cin
+    SetConsoleCP(CP_UTF8);
+#endif
+
     SingleApplication a(argc, argv);
     a.setApplicationName("FlowD");
 
