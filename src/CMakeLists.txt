@@ -150,7 +150,7 @@ FetchContent_Declare(cpr
         GIT_TAG 96cd60913124f2a9a17f9d814f3db11d62ef3ae0)
 
 FetchContent_Declare(SingleApplication
-        GIT_REPOSITORY https://github.com/itay-grudev/SingleApplication.git)
+        URL https://github.com/itay-grudev/SingleApplication/archive/refs/tags/v3.5.2.tar.gz)
 
 FetchContent_Declare(mio
         GIT_REPOSITORY https://github.com/vimpunk/mio.git
