@@ -8,7 +8,6 @@
 #include "MainWindow.h"
 #include "Path.h"
 #include "version.h"
-#include "utils/Utils.h"
 
 void loadQssStyle()
 {
@@ -55,10 +54,6 @@ int main(int argc, char* argv[])
 
     spdlog::info("App launched. Version:{}", VERSION_STR);
     spdlog::info("Cache path:{}", utils::Path::instance().cachePath());
-    spdlog::info("Current system theme is {}", utils::isSystemThemeDark() ? "dark" : "light");
-#ifdef Q_OS_WIN
-    spdlog::info("Current Windows system is win10 or greater: {}", utils::isWin11OrGreater());
-#endif
 
     MainWindow w;
     w.setWindowTitle("FlowD " + QString(VERSION_STR));
