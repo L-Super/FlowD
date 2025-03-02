@@ -8,9 +8,9 @@
 #include <windows.h>
 #include <QLibrary>
 #elif defined(Q_OS_LINUX)
-#include <gtk/gtk.h>
+// #include <gtk/gtk.h>
 #elif defined(Q_OS_MAC)
-#include <Cocoa/Cocoa.h>
+#include "MacSystemTheme.h"
 #endif
 
 namespace utils {
@@ -29,14 +29,13 @@ namespace utils {
                 dark = (value == 0);
         }
 #elif defined(Q_OS_LINUX)
-        GtkSettings* settings = gtk_settings_get_default();
-        gchar* theme_name;
-        g_object_get(settings, "gtk-theme-name", &theme_name, nullptr);
-        dark = QString(theme_name).endsWith("Dark", Qt::CaseInsensitive);
+        // note: it's needs gtk lib, support on the Linux in the future
+        // GtkSettings* settings = gtk_settings_get_default();
+        // gchar* theme_name;
+        // g_object_get(settings, "gtk-theme-name", &theme_name, nullptr);
+        // dark = QString(theme_name).endsWith("Dark", Qt::CaseInsensitive);
 #elif defined(Q_OS_MAC)
-        NSString* str = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppleInterfaceStyle"];
-        const char* themeName = [str cStringUsingEncoding:NSUTF8StringEncoding];
-        dark = QString(themeName).endsWith("Dark", Qt::CaseInsensitive);
+        dark = mac::isSystemThemeDark();
 #endif
         return dark;
     }
@@ -64,7 +63,7 @@ namespace utils {
         return is_win_x_or_greater;
     }
 
-    bool utils::isWin11OrGreater()
+    bool isWin11OrGreater()
     {
         bool is_win_11_or_greater = isWinXOrGreater(10, 0, 22000);
 

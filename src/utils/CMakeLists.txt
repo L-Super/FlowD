@@ -14,10 +14,8 @@ target_link_libraries(Utils Qt${QT_VERSION_MAJOR}::Core spdlog::spdlog_header_on
 if (WIN32)
 
 elseif (APPLE)
-    target_link_libraries(Utils
-            "-framework AppKit"
-            "-framework Cocoa"
-            "-framework Foundation")
+    target_sources(Utils PRIVATE MacSystemTheme.mm MacSystemTheme.h)
+    target_link_libraries(Utils "-framework Cocoa")
 elseif (UNIX AND NOT APPLE)
 
 endif ()
