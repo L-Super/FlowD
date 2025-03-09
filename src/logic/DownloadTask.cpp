@@ -114,21 +114,21 @@ void DownloadTask::start()
 
 void DownloadTask::stop()
 {
-    spdlog::info("Download stop");
+    spdlog::info("Request to stop the download. url: {}", itemInfo_.url);
     std::lock_guard<std::mutex> lg(statsMutex_);
     itemInfo_.status = DownloadItemInfo::DownloadStatus::Stop;
 }
 
 void DownloadTask::pause()
 {
-    spdlog::info("Download pause");
+    spdlog::info("Request to pause the download. url: {}", itemInfo_.url);
     std::lock_guard<std::mutex> lg(statsMutex_);
     itemInfo_.status = DownloadItemInfo::DownloadStatus::Pause;
 }
 
 void DownloadTask::resume()
 {
-    spdlog::info("Download resume");
+    spdlog::info("Request to resume the download. url: {}", itemInfo_.url);
     std::lock_guard<std::mutex> lg(statsMutex_);
     itemInfo_.status = DownloadItemInfo::DownloadStatus::Downloading;
 }
