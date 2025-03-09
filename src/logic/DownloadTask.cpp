@@ -5,6 +5,7 @@
 #include "DownloadTask.h"
 #include "Logger.hpp"
 
+#include "magic_enum/magic_enum.hpp"
 #include "mio/mio.hpp"
 
 #include <filesystem>
@@ -321,7 +322,9 @@ void DownloadTask::download()
         spdlog::info("Download small file finish. file path:{}", filename.string());
     }
     else {
-        spdlog::error("Download small file failed. code:{} error reason: {}", response.status_code, response.reason);
+        spdlog::error("Download small file failed. status code:{} error code:{} message:{} reason: {}",
+                      response.status_code, magic_enum::enum_name(response.error.code), response.error.message,
+                      response.reason);
     }
     itemInfo_.status = DownloadItemInfo::DownloadStatus::Stop;
 }
@@ -356,7 +359,9 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
                                       progressCallbackFunc, writeCallbackFunc);
 
     if (response.status_code != 206) {
-        spdlog::error("Thread failed to download part. Status code: {}", response.status_code);
+        spdlog::error("Thread failed to download part.. status code:{} error code:{} message:{} reason: {}",
+                      response.status_code, magic_enum::enum_name(response.error.code), response.error.message,
+                      response.reason);
         return;
     }
     else {

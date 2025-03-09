@@ -157,7 +157,12 @@ FetchContent_Declare(mio
         GIT_TAG 8b6b7d878c89e81614d05edca7936de41ccdd2da
 )
 
-FetchContent_MakeAvailable(spdlog json cpr SingleApplication mio)
+FetchContent_Declare(magic_enum
+        GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
+        GIT_TAG v0.9.7
+)
+
+FetchContent_MakeAvailable(spdlog json cpr SingleApplication mio magic_enum)
 
 set(MIO_INCLUDE_DIR ${mio_SOURCE_DIR}/single_include)
 include_directories(${MIO_INCLUDE_DIR})
@@ -171,6 +176,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         nlohmann_json::nlohmann_json
         cpr::cpr
         SingleApplication::SingleApplication
+        magic_enum::magic_enum
         Utils
 )
 
