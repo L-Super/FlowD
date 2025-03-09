@@ -7,6 +7,7 @@ add_library(Utils OBJECT
         AppConfig.cpp AppConfig.h
         LanguageCode.hpp
         Utils.cpp Utils.h
+        Timer.hpp
 )
 
 target_link_libraries(Utils Qt${QT_VERSION_MAJOR}::Core spdlog::spdlog_header_only nlohmann_json::nlohmann_json)
