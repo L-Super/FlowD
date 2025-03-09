@@ -14,25 +14,25 @@
 namespace fs = std::filesystem;
 
 namespace {
-    constexpr unsigned int KB = 1 * 1024;
-    constexpr unsigned int MB = 1 * 1024 * 1024;
+constexpr unsigned int KB = 1 * 1024;
+constexpr unsigned int MB = 1 * 1024 * 1024;
 
-    std::string generateUniqueFilename(const std::string& filePath)
-    {
-        std::string newFilePath = filePath;
-        std::string directory = fs::path(filePath).parent_path().string();
-        std::string base_filename = fs::path(filePath).stem().string();
-        std::string extension = fs::path(filePath).extension().string();
-        int i = 1;
+std::string generateUniqueFilename(const std::string& filePath)
+{
+    std::string newFilePath = filePath;
+    std::string directory = fs::path(filePath).parent_path().string();
+    std::string base_filename = fs::path(filePath).stem().string();
+    std::string extension = fs::path(filePath).extension().string();
+    int i = 1;
 
 
-        // 循环直到找到一个不存在的文件名
-        while (fs::exists(newFilePath)) {
-            // 构造新的文件名，格式为：xxx(i).ext
-            newFilePath = directory + "/" + base_filename + "(" + std::to_string(i++) + ")" + extension;
-        }
-        return newFilePath;
+    // 循环直到找到一个不存在的文件名
+    while (fs::exists(newFilePath)) {
+        // 构造新的文件名，格式为：xxx(i).ext
+        newFilePath = directory + "/" + base_filename + "(" + std::to_string(i++) + ")" + extension;
     }
+    return newFilePath;
+}
 }// namespace
 
 DownloadTask::DownloadTask(const DownloadItemInfo& item) : itemInfo_(item), pool_(item.threadNum + 1)
@@ -65,7 +65,8 @@ void DownloadTask::start()
     pool_.enqueue(&DownloadTask::startAsync, this);
 }
 
-void DownloadTask::startAsync() {
+void DownloadTask::startAsync()
+{
     // get file size
     auto [totalSize, supportRange, filename] = requestFileInfoFromHead();
     itemInfo_.totalBytes = totalSize;

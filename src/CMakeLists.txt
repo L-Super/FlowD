@@ -80,15 +80,15 @@ set(TS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/i18N/FlowD_zh-CN.ts
 )
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_LIST_DIR}/resources/i18N")
 
-if(QT_VERSION_MAJOR EQUAL 6)
+if (QT_VERSION_MAJOR EQUAL 6)
     qt_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
     qt_add_translation(QM_FILES ${TS_FILES})
-else()
+else ()
     qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES}
             #        OPTIONS -no-obsolete -locations none
     )
     qt5_add_translation(QM_FILES ${TS_FILES})
-endif()
+endif ()
 
 add_executable(${PROJECT_NAME}
         main.cpp
@@ -101,7 +101,7 @@ add_subdirectory(utils)
 
 if (MINGW)
     target_compile_options(${PROJECT_NAME} PRIVATE "-Wa,-mbig-obj")
-endif()
+endif ()
 
 if (WIN32)
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -131,10 +131,10 @@ endif ()
 
 message(STATUS "CMake binary dir: ${CMAKE_BINARY_DIR}")
 
-if(WIN32) # Install dlls in the same directory as the executable on Windows
+if (WIN32) # Install dlls in the same directory as the executable on Windows
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
-endif()
+endif ()
 
 
 include(FetchContent)
@@ -185,7 +185,7 @@ if (WIN32)
             POST_BUILD
             # Deploy the Qt Application
             COMMAND ${QT_DEPLOY_EXECUTABLE}
-             --no-translations
+            --no-translations
             "$<TARGET_FILE:${PROJECT_NAME}>"
     )
 elseif (APPLE)

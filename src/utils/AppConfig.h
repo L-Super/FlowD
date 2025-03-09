@@ -5,8 +5,8 @@
 #pragma once
 
 #include "nlohmann/json.hpp"
-#include <string>
 #include <optional>
+#include <string>
 
 class AppConfig {
 public:
@@ -15,6 +15,7 @@ public:
         static AppConfig a;
         return a;
     }
+
 public:
     using json = nlohmann::json;
     template<typename T>
@@ -43,8 +44,7 @@ public:
     template<typename T>
     std::optional<T> getBasic(const std::string& key)
     {
-        if (data_.contains("basic") && data_["basic"].contains(key))
-        {
+        if (data_.contains("basic") && data_["basic"].contains(key)) {
             return data_["basic"][key].get<T>();
         }
         return std::nullopt;
@@ -60,8 +60,7 @@ public:
     template<typename T>
     std::optional<T> getAdvance(const std::string& key)
     {
-        if (data_.contains("advance") && data_["advance"].contains(key))
-        {
+        if (data_.contains("advance") && data_["advance"].contains(key)) {
             return data_["advance"][key].get<T>();
         }
         return std::nullopt;

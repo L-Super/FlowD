@@ -34,7 +34,7 @@ void DownloadListWidget::addDownloadingItem(DownloadItemWidget* item)
         // 获取当前下载项的必要信息
         auto downloadInfo = item->downloadItemInfo();
         auto id = item->downloadTaskID();
-        
+
         // 从下载中列表移除并删除原项目
         int row = ui->downloadingListWidget->row(widgetItem);
         if (row >= 0) {
@@ -50,13 +50,13 @@ void DownloadListWidget::addDownloadingItem(DownloadItemWidget* item)
         DownloadItemWidget* completedWidget = new DownloadItemWidget(id, ui->completedListWidget);
         completedWidget->setDownloadItemInfo(downloadInfo);
         completedWidget->setPauseButtonVisible(false);
-        
+
         // 添加到已完成列表
         QListWidgetItem* newItem = new QListWidgetItem();
         newItem->setSizeHint(completedWidget->sizeHint());
         ui->completedListWidget->addItem(newItem);
         ui->completedListWidget->setItemWidget(newItem, completedWidget);
-        
+
         // 连接新widget的删除信号
         connect(completedWidget, &DownloadItemWidget::removeItemSignal, this, [this, completedWidget]() {
             removeCompletedItem(completedWidget);
@@ -74,9 +74,9 @@ void DownloadListWidget::removeDownloadingItem(DownloadItemWidget* widget)
 {
     for (int i = 0; i < ui->downloadingListWidget->count(); ++i) {
         QListWidgetItem* listItem = ui->downloadingListWidget->item(i);
-        DownloadItemWidget* currentWidget = 
-            qobject_cast<DownloadItemWidget*>(ui->downloadingListWidget->itemWidget(listItem));
-            
+        DownloadItemWidget* currentWidget =
+                qobject_cast<DownloadItemWidget*>(ui->downloadingListWidget->itemWidget(listItem));
+
         if (currentWidget == widget) {
             QListWidgetItem* takenItem = ui->downloadingListWidget->takeItem(i);
             if (takenItem) {
@@ -92,9 +92,9 @@ void DownloadListWidget::removeCompletedItem(DownloadItemWidget* widget)
 {
     for (int i = 0; i < ui->completedListWidget->count(); ++i) {
         QListWidgetItem* listItem = ui->completedListWidget->item(i);
-        DownloadItemWidget* currentWidget = 
-            qobject_cast<DownloadItemWidget*>(ui->completedListWidget->itemWidget(listItem));
-            
+        DownloadItemWidget* currentWidget =
+                qobject_cast<DownloadItemWidget*>(ui->completedListWidget->itemWidget(listItem));
+
         if (currentWidget == widget) {
             QListWidgetItem* takenItem = ui->completedListWidget->takeItem(i);
             if (takenItem) {

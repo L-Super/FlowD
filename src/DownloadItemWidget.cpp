@@ -12,70 +12,70 @@
 #include "logic/DownloadManager.h"
 
 namespace {
-    std::string convertBytesToReadable(double bytes)
-    {
-        const std::array<std::string, 5> units = {"Bytes", "KB", "MB", "GB", "TB"};
+std::string convertBytesToReadable(double bytes)
+{
+    const std::array<std::string, 5> units = {"Bytes", "KB", "MB", "GB", "TB"};
 
-        int i = 0;
-        // 将字节转换为更大的单位
-        while (bytes >= 1024 && i < static_cast<int>(units.size()) - 1) {
-            bytes /= 1024;
-            i++;
-        }
-
-        return fmt::format("{:.2f} {}", bytes, units[i]);
+    int i = 0;
+    // 将字节转换为更大的单位
+    while (bytes >= 1024 && i < static_cast<int>(units.size()) - 1) {
+        bytes /= 1024;
+        i++;
     }
 
-    int convertProgressValue(unsigned long current, unsigned long total, int maxVal = 100)
-    {
-        if (total == 0 || maxVal == 0) {
-            // 避免除以零
-            return 0;
-        }
+    return fmt::format("{:.2f} {}", bytes, units[i]);
+}
 
-        // 计算进度的比例
-        double ratio = static_cast<double>(current) / total;
-
-        // 将比例映射到进度条的最大值
-        int mappedValue = static_cast<int>(ratio * maxVal);
-
-        // 确保不会超出进度条的最大值
-        if (mappedValue > maxVal) {
-            return maxVal;
-        }
-
-        return mappedValue;
+int convertProgressValue(unsigned long current, unsigned long total, int maxVal = 100)
+{
+    if (total == 0 || maxVal == 0) {
+        // 避免除以零
+        return 0;
     }
 
-    std::string convertDownloadSpeed(unsigned long bytesPerSecond)
-    {
-        double speed = static_cast<double>(bytesPerSecond);
-        std::string unit = "B/s";
+    // 计算进度的比例
+    double ratio = static_cast<double>(current) / total;
 
-        if (speed >= 1024 * 1024) {
-            // 转换为MB/s
-            speed /= 1024 * 1024;
-            unit = "MB/s";
-        }
-        else if (speed >= 1024) {
-            // 转换为KB/s
-            speed /= 1024;
-            unit = "KB/s";
-        }
+    // 将比例映射到进度条的最大值
+    int mappedValue = static_cast<int>(ratio * maxVal);
 
-        return fmt::format("{:.2f} {}", speed, unit);
+    // 确保不会超出进度条的最大值
+    if (mappedValue > maxVal) {
+        return maxVal;
     }
 
-    std::string convertRemainingTime(double seconds)
-    {
-        if (seconds >= 60) {
-            double minutes = seconds / 60;
-            return fmt::format("{:.2f} min", minutes);
-        }
-        else {
-            return fmt::format("{:.2f} s", seconds);
-        }
+    return mappedValue;
+}
+
+std::string convertDownloadSpeed(unsigned long bytesPerSecond)
+{
+    double speed = static_cast<double>(bytesPerSecond);
+    std::string unit = "B/s";
+
+    if (speed >= 1024 * 1024) {
+        // 转换为MB/s
+        speed /= 1024 * 1024;
+        unit = "MB/s";
     }
+    else if (speed >= 1024) {
+        // 转换为KB/s
+        speed /= 1024;
+        unit = "KB/s";
+    }
+
+    return fmt::format("{:.2f} {}", speed, unit);
+}
+
+std::string convertRemainingTime(double seconds)
+{
+    if (seconds >= 60) {
+        double minutes = seconds / 60;
+        return fmt::format("{:.2f} min", minutes);
+    }
+    else {
+        return fmt::format("{:.2f} s", seconds);
+    }
+}
 }// namespace
 
 DownloadItemWidget::DownloadItemWidget(size_t id, QWidget* parent)
@@ -197,4 +197,3 @@ void DownloadItemWidget::onCompleteDownload()
     // when complete download, clean the task
     DownloadManager::instance().removeTask(taskID);
 }
-

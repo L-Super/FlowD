@@ -14,32 +14,33 @@
 #include <iostream>
 #include <type_traits>
 
-template <>
+template<>
 struct fmt::formatter<QString> : formatter<string_view> {
-    template <typename FormatContext>
-    auto format(QString str, FormatContext& ctx) {
+    template<typename FormatContext>
+    auto format(QString str, FormatContext& ctx)
+    {
         return formatter<string_view>::format(str.toStdString(), ctx);
     }
 };
 
-template <>
+template<>
 struct fmt::formatter<QByteArray> : formatter<string_view> {
-    template <typename FormatContext>
-    auto format(QByteArray str, FormatContext& ctx) {
+    template<typename FormatContext>
+    auto format(QByteArray str, FormatContext& ctx)
+    {
         return formatter<string_view>::format(str.toStdString(), ctx);
     }
 };
 
-template <typename T>
-std::ostream &operator<<(typename std::enable_if<std::is_enum<T>::value, std::ostream>::type &stream, const T &e)
+template<typename T>
+std::ostream& operator<<(typename std::enable_if<std::is_enum<T>::value, std::ostream>::type& stream, const T& e)
 {
     return stream << static_cast<typename std::underlying_type<T>::type>(e);
 }
 
-class Log
-{
+class Log {
 public:
-    static Log &instance(const std::string &processName, const std::string &filePath)
+    static Log& instance(const std::string& processName, const std::string& filePath)
     {
         static Log log(processName, filePath);
         return log;
@@ -47,8 +48,7 @@ public:
 
     static void setLevel(int level)
     {
-        switch (level)
-        {
+        switch (level) {
             case 0:
                 spdlog::set_level(spdlog::level::trace);
                 break;
@@ -76,9 +76,9 @@ public:
     }
 
 private:
-    explicit Log(const std::string &name, const std::string &filePath)
+    explicit Log(const std::string& name, const std::string& filePath)
     {
-        auto maxSize = 1024 * 1024 * 5; // 5MB
+        auto maxSize = 1024 * 1024 * 5;// 5MB
         auto maxFiles = 3;
 
         auto stdout_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
@@ -98,9 +98,9 @@ private:
     }
 
 public:
-    Log(const Log &) = delete;
-    Log &operator=(const Log &) = delete;
-    Log(Log &&) = delete;
-    Log &operator=(Log &&) = delete;
+    Log(const Log&) = delete;
+    Log& operator=(const Log&) = delete;
+    Log(Log&&) = delete;
+    Log& operator=(Log&&) = delete;
     ~Log() = default;
 };

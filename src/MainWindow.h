@@ -35,5 +35,5 @@ private:
     SettingsWidget* settingsWidget;
     HelpWidget* helpWidget;
     QButtonGroup* buttonGroup;
-    bool sidebarMinimized; // sidebar status
+    bool sidebarMinimized;// sidebar status
 };

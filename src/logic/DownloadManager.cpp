@@ -7,10 +7,9 @@
 
 DownloadManager::DownloadManager() {}
 
-DownloadManager::~DownloadManager() {
-    for (const auto& task:tasks_) {
-        task.second->stop();
-    }
+DownloadManager::~DownloadManager()
+{
+    for (const auto& task: tasks_) { task.second->stop(); }
     tasks_.clear();
 }
 

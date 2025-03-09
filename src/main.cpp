@@ -7,8 +7,8 @@
 #include "Logger.hpp"
 #include "MainWindow.h"
 #include "Path.h"
-#include "version.h"
 #include "utils/Utils.h"
+#include "version.h"
 
 void loadQssStyle()
 {

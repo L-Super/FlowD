@@ -19,7 +19,7 @@ struct DownloadItemInfo {
 
     std::atomic<uint64_t> downloadedBytes{};// 已下载 byte
     std::atomic<uint64_t> totalBytes{};     // 总大小
-    std::atomic<double> remainTime{};     // 剩余时间
+    std::atomic<double> remainTime{};       // 剩余时间
     std::atomic<uint64_t> downloadSpeed{};  // 下载速度
 
     unsigned int threadNum{std::thread::hardware_concurrency()};// 指定下载线程数

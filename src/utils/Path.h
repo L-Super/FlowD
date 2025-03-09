@@ -6,31 +6,31 @@
 #include <QString>
 
 namespace utils {
-    class Path {
-    public:
-        const QString& cachePath();
-        const QString& logPath();
-        QString configFilePath();
-        QString sqlFilePath();
+class Path {
+public:
+    const QString& cachePath();
+    const QString& logPath();
+    QString configFilePath();
+    QString sqlFilePath();
 
-    public:
-        static Path& instance()
-        {
-            static Path p;
-            return p;
-        }
-        Path(const Path&) = delete;
-        Path& operator=(const Path&) = delete;
-        Path(Path&&) = delete;
-        Path& operator=(Path&&) = delete;
+public:
+    static Path& instance()
+    {
+        static Path p;
+        return p;
+    }
+    Path(const Path&) = delete;
+    Path& operator=(const Path&) = delete;
+    Path(Path&&) = delete;
+    Path& operator=(Path&&) = delete;
 
-    private:
-        Path();
-        ~Path() = default;
-        void createDir(const QString& dir);
+private:
+    Path();
+    ~Path() = default;
+    void createDir(const QString& dir);
 
-    private:
-        QString cachePath_;
-        QString logPath_;
-    };
+private:
+    QString cachePath_;
+    QString logPath_;
+};
 }// namespace utils
