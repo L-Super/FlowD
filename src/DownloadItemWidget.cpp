@@ -78,23 +78,10 @@ namespace {
     }
 }// namespace
 
-
 DownloadItemWidget::DownloadItemWidget(size_t id, QWidget* parent)
     : QWidget(parent), ui(new Ui::DownloadItemWidget), taskID(id), progressMaximum(100)
 {
     ui->setupUi(this);
-
-    auto taskInfo = DownloadManager::instance().downloadTaskInfo(taskID);
-
-    if (taskInfo.has_value()) {
-        fileInfo = taskInfo.value();
-        ui->fileNameLabel->setText(QString::fromStdString(fileInfo.filename));
-        auto fileSizeStr = convertBytesToReadable(fileInfo.totalBytes);
-        ui->fileSizeLabel->setText(QString::fromStdString(fileSizeStr));
-    }
-    else {
-        spdlog::warn("Get null file info from DownloadManager");
-    }
 
     ui->progressBar->setMaximum(progressMaximum);
     ui->progressBar->setMinimum(0);
@@ -115,14 +102,32 @@ DownloadItemWidget::~DownloadItemWidget()
     delete ui;
 }
 
+void DownloadItemWidget::setDownloadTaskID(size_t id)
+{
+    taskID = id;
+}
+
 size_t DownloadItemWidget::downloadTaskID() const
 {
     return taskID;
 }
 
-void DownloadItemWidget::hidePauseButton(bool hide)
+void DownloadItemWidget::setPauseButtonVisible(bool visible)
 {
-    ui->pauseButton->setHidden(hide);
+    ui->pauseButton->setVisible(visible);
+}
+
+void DownloadItemWidget::setDownloadItemInfo(const DownloadItemInfo& info)
+{
+    fileInfo = info;
+    ui->fileNameLabel->setText(QString::fromStdString(fileInfo.filename));
+    auto fileSizeStr = convertBytesToReadable(fileInfo.totalBytes);
+    ui->fileSizeLabel->setText(QString::fromStdString(fileSizeStr));
+}
+
+const DownloadItemInfo& DownloadItemWidget::downloadItemInfo() const
+{
+    return fileInfo;
 }
 
 void DownloadItemWidget::onPauseButtonClicked(bool /*checked*/)
@@ -161,22 +166,11 @@ void DownloadItemWidget::onOpenFileButtonClicked()
                               tr("Failed in opening %1 !\nPlease check whether the file exists and the "
                                  "application can access the file.")
                                       .arg(QDir::toNativeSeparators(savedFilePathName)));
-        spdlog::error("Failed in opening {} !", savedFilePathName);
+        spdlog::error("Failed to open the file: {}", savedFilePathName);
     }
 }
 
 void DownloadItemWidget::onMoreInfoButtonClicked() {}
-
-void DownloadItemWidget::onCompleteDownload()
-{
-    ui->pauseButton->hide();
-    ui->progressBar->setValue(100);
-
-    emit completeDownloadSignal();
-
-    // when complete download, clean the task
-    DownloadManager::instance().removeTask(taskID);
-}
 
 void DownloadItemWidget::onProgressUpdate(unsigned long total, unsigned long downloaded, unsigned long speed,
                                           double remainTime)
@@ -192,3 +186,15 @@ void DownloadItemWidget::onProgressUpdate(unsigned long total, unsigned long dow
     ui->speedLabel->setText(QString::fromStdString(convertDownloadSpeed(speed)));
     ui->remainTimeLabel->setText(QString::fromStdString(convertRemainingTime(remainTime)));
 }
+
+void DownloadItemWidget::onCompleteDownload()
+{
+    ui->pauseButton->hide();
+    ui->progressBar->setValue(100);
+
+    emit completeDownloadSignal();
+
+    // when complete download, clean the task
+    DownloadManager::instance().removeTask(taskID);
+}
+

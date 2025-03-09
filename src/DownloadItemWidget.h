@@ -18,9 +18,13 @@ public:
     explicit DownloadItemWidget(size_t id, QWidget* parent = nullptr);
     ~DownloadItemWidget() override;
 
+    void setDownloadTaskID(size_t id);
     size_t downloadTaskID() const;
 
-    void hidePauseButton(bool hide);
+    void setPauseButtonVisible(bool visible);
+
+    void setDownloadItemInfo(const DownloadItemInfo& info);
+    const DownloadItemInfo& downloadItemInfo() const;
 
 signals:
     void removeItemSignal();

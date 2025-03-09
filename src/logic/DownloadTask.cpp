@@ -62,6 +62,10 @@ DownloadTask::~DownloadTask() {}
 
 void DownloadTask::start()
 {
+    pool_.enqueue(&DownloadTask::startAsync, this);
+}
+
+void DownloadTask::startAsync() {
     // get file size
     auto [totalSize, supportRange, filename] = requestFileInfoFromHead();
     itemInfo_.totalBytes = totalSize;

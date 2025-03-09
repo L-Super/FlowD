@@ -63,6 +63,7 @@ protected:
     bool isDownloadComplete();
     void mergeChunkFiles();
     void speedAndRemainingTimeCalculate();
+    void startAsync();
 
 private:
     DownloadItemInfo itemInfo_;

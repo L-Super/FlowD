@@ -5,7 +5,7 @@
     <name>DownloadItemWidget</name>
     <message>
         <location filename="../../DownloadItemWidget.ui" line="66"/>
-        <location filename="../../DownloadItemWidget.cpp" line="137"/>
+        <location filename="../../DownloadItemWidget.cpp" line="142"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
@@ -67,17 +67,17 @@
         <translation type="vanished">Speed: %1 %2/s</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="132"/>
+        <location filename="../../DownloadItemWidget.cpp" line="137"/>
         <source>Continue</source>
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="160"/>
+        <location filename="../../DownloadItemWidget.cpp" line="165"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../../DownloadItemWidget.cpp" line="161"/>
+        <location filename="../../DownloadItemWidget.cpp" line="166"/>
         <source>Failed in opening %1 !
 Please check whether the file exists and the application can access the file.</source>
         <translation>Failed in opening %1 !

@@ -20,6 +20,9 @@ public:
     void addDownloadingItem(DownloadItemWidget* item);
 
 protected:
+    void removeDownloadingItem(DownloadItemWidget* widget);
+    void removeCompletedItem(DownloadItemWidget* widget);
+
 private:
     Ui::DownloadListWidget* ui;
 };

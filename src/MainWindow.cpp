@@ -117,7 +117,19 @@ void MainWindow::newDownloadTask()
 
     auto id = DownloadManager::instance().addTask(itemInfo);
     DownloadItemWidget* item = new DownloadItemWidget(id, downloadListWidget);
+
     downloadListWidget->addDownloadingItem(item);
+
+    QMetaObject::invokeMethod(item, [item, id] {
+        if (auto taskInfo = DownloadManager::instance().downloadTaskInfo(id); taskInfo.has_value()) {
+            const auto& fileInfo = taskInfo.value();
+            item->setDownloadItemInfo(fileInfo);
+        }
+        else {
+            spdlog::warn("Get null file info from DownloadManager");
+        }
+    });
+
     DownloadManager::instance().setDownloadCompleteCallback(id, [id, item]() {
         emit item->completeDownloadFromTaskSignal();
     });
