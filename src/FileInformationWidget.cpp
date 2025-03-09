@@ -19,16 +19,16 @@ FileInformationWidget::FileInformationWidget(QString FileName, QString SavedFile
 
 void FileInformationWidget::iniUi()
 {
-    //remove frame
+    // remove frame
     this->setWindowFlags(Qt::Popup);
 
-    //make the text of label selectable
+    // make the text of label selectable
     ui->labSavePath->setTextInteractionFlags(Qt::TextSelectableByMouse);
     ui->labTaskName->setTextInteractionFlags(Qt::TextSelectableByMouse);
     ui->labUrl->setTextInteractionFlags(Qt::TextSelectableByMouse);
     ui->labFileSize->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-    //set details of the target file
+    // set details of the target file
     ui->labSavePath->setText(tr("Save to: %1").arg(savedFilePath));
     ui->labTaskName->setText(tr("Task Name: %1").arg(fileName));
     ui->labUrl->setText(tr("URL: %1").arg(url));
@@ -42,7 +42,7 @@ void FileInformationWidget::connectSlots()
             QMessageBox::critical(this, tr("Error"),
                                   tr("Failed in opening %1 !\nPlease check whether the folder exists and the "
                                      "application can access the folder.")
-                                          .arg(QDir::toNativeSeparators(savedFilePath)));
+                                      .arg(QDir::toNativeSeparators(savedFilePath)));
             spdlog::error("Failed in opening {} !", QDir::toNativeSeparators(savedFilePath));
         }
     });
@@ -54,12 +54,12 @@ void FileInformationWidget::connectSlots()
             QMessageBox::critical(this, tr("Error"),
                                   tr("Failed in opening %1 !\nPlease check whether the file exists and the "
                                      "application can access the file.")
-                                          .arg(QDir::toNativeSeparators(savedFilePathName)));
+                                      .arg(QDir::toNativeSeparators(savedFilePathName)));
             spdlog::error("Failed in opening {} !", QDir::toNativeSeparators(savedFilePathName));
         }
     });
     connect(ui->btnDelete, &QPushButton::clicked, this, [&] {
-        //TODO:Add delete logic
+        // TODO:Add delete logic
     });
     connect(ui->btnCopyLink, &QPushButton::clicked, this, [&] {
         QClipboard* systemClipboard = QApplication::clipboard();
@@ -68,7 +68,7 @@ void FileInformationWidget::connectSlots()
         spdlog::info("Url {} copied!", url);
     });
     connect(ui->btnRestart, &QPushButton::clicked, this, [&] {
-        //TODO:Add the logic of restart the task
+        // TODO:Add the logic of restart the task
     });
     connect(ui->btnOpen, &QPushButton::clicked, this, [&] {});
 }

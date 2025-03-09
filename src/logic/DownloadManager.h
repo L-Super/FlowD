@@ -25,7 +25,7 @@ public:
     [[nodiscard]] std::size_t addTask(const DownloadItemInfo& item);
 
     using ProgressCallback =
-            std::function<void(unsigned long total, unsigned long downloaded, unsigned long speed, double remainTime)>;
+        std::function<void(unsigned long total, unsigned long downloaded, unsigned long speed, double remainTime)>;
     using DownloadCompleteCallback = std::function<void()>;
     void setProgressCallback(size_t taskID, const ProgressCallback& cb);
     void setDownloadCompleteCallback(size_t taskID, const DownloadCompleteCallback& cb);

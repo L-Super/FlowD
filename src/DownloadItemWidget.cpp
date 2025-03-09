@@ -76,7 +76,7 @@ std::string convertRemainingTime(double seconds)
         return fmt::format("{:.2f} s", seconds);
     }
 }
-}// namespace
+} // namespace
 
 DownloadItemWidget::DownloadItemWidget(size_t id, QWidget* parent)
     : QWidget(parent), ui(new Ui::DownloadItemWidget), taskID(id), progressMaximum(100)
@@ -132,7 +132,7 @@ const DownloadItemInfo& DownloadItemWidget::downloadItemInfo() const
 
 void DownloadItemWidget::onPauseButtonClicked(bool /*checked*/)
 {
-    //TODO: change icon
+    // TODO: change icon
     if (ui->pauseButton->property("isPause").toBool()) {
         ui->pauseButton->setText(tr("Continue"));
         ui->pauseButton->setProperty("isPause", false);
@@ -149,7 +149,7 @@ void DownloadItemWidget::onPauseButtonClicked(bool /*checked*/)
 
 void DownloadItemWidget::onDeleteButtonClicked()
 {
-    //TODO: confirm weather to remove the file
+    // TODO: confirm weather to remove the file
     DownloadManager::instance().removeTask(taskID);
 
     // Request the ListWidget to remove this
@@ -165,7 +165,7 @@ void DownloadItemWidget::onOpenFileButtonClicked()
         QMessageBox::critical(this, tr("Error"),
                               tr("Failed in opening %1 !\nPlease check whether the file exists and the "
                                  "application can access the file.")
-                                      .arg(QDir::toNativeSeparators(savedFilePathName)));
+                                  .arg(QDir::toNativeSeparators(savedFilePathName)));
         spdlog::error("Failed to open the file: {}", savedFilePathName);
     }
 }

@@ -59,7 +59,7 @@ MainWindow::~MainWindow()
 void MainWindow::minimizeSidebar(bool minimize)
 {
     if (minimize) {
-        for (const auto& button: buttonGroup->buttons()) {
+        for (const auto& button : buttonGroup->buttons()) {
             qobject_cast<QToolButton*>(button)->setToolButtonStyle(Qt::ToolButtonIconOnly);
             qobject_cast<QToolButton*>(button)->setFixedWidth(40);
         }
@@ -67,7 +67,7 @@ void MainWindow::minimizeSidebar(bool minimize)
         ui->newDownloadToolButton->setFixedWidth(40);
     }
     else {
-        for (const auto& button: buttonGroup->buttons()) {
+        for (const auto& button : buttonGroup->buttons()) {
             qobject_cast<QToolButton*>(button)->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
             qobject_cast<QToolButton*>(button)->setFixedWidth(200);
         }
@@ -134,8 +134,8 @@ void MainWindow::newDownloadTask()
         emit item->completeDownloadFromTaskSignal();
     });
     DownloadManager::instance().setProgressCallback(
-            id, [item](auto total, auto downloaded, auto speed, auto remainingTime) {
-                emit item->progressUpdateFromTaskSignal(total, downloaded, speed, remainingTime);
-            });
+        id, [item](auto total, auto downloaded, auto speed, auto remainingTime) {
+            emit item->progressUpdateFromTaskSignal(total, downloaded, speed, remainingTime);
+        });
     DownloadManager::instance().startTask(id);
 }

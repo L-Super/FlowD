@@ -79,4 +79,4 @@ static qint64 availableDiskSpaceByGB(const QString& path)
     }
     return 0;
 }
-}// namespace utils
+} // namespace utils

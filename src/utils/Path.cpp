@@ -44,4 +44,4 @@ void Path::createDir(const QString& path)
         dir.mkpath(".");
     }
 }
-}// namespace utils
+} // namespace utils

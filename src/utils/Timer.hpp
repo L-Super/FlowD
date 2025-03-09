@@ -58,4 +58,4 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> start_;
 };
 
-}// namespace utils
+} // namespace utils

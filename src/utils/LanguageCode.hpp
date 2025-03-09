@@ -18,4 +18,4 @@ static std::string languageMap(const std::string& code)
     }
     return {};
 }
-}// namespace lan
+} // namespace lan

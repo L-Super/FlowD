@@ -18,12 +18,12 @@ DownloadItemInfo::DownloadItemInfo(DownloadItemInfo&& other) noexcept
     other.totalBytes.store(0);
     other.remainTime.store(0);
     other.downloadSpeed.store(0);
-    other.status = DownloadStatus::Stop;// 可选：将状态设置为初始状态
+    other.status = DownloadStatus::Stop; // 可选：将状态设置为初始状态
 }
 
 DownloadItemInfo& DownloadItemInfo::operator=(const DownloadItemInfo& other)
 {
-    if (this != &other) {// 防止自赋值
+    if (this != &other) { // 防止自赋值
         filename = other.filename;
         saveDir = other.saveDir;
         filenamePath = other.filenamePath;
@@ -58,7 +58,7 @@ DownloadItemInfo& DownloadItemInfo::operator=(DownloadItemInfo&& other) noexcept
         other.totalBytes.store(0);
         other.remainTime.store(0);
         other.downloadSpeed.store(0);
-        other.status = DownloadStatus::Stop;// 可选：将状态设置为初始状态
+        other.status = DownloadStatus::Stop; // 可选：将状态设置为初始状态
     }
     return *this;
 }

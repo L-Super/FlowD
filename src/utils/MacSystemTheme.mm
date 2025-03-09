@@ -10,4 +10,4 @@ bool isSystemThemeDark()
     // dark = QString(themeName).endsWith("Dark", Qt::CaseInsensitive);
     // return themeName;
 }
-}// namespace mac
+} // namespace mac

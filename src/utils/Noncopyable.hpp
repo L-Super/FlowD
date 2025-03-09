@@ -13,6 +13,6 @@ protected:
     noncopyable(const noncopyable&) = delete;
     noncopyable& operator=(const noncopyable&) = delete;
 };
-}// namespace noncopyable_
+} // namespace noncopyable_
 
 using Noncopyable = noncopyable_::noncopyable;

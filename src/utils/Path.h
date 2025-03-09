@@ -33,4 +33,4 @@ private:
     QString cachePath_;
     QString logPath_;
 };
-}// namespace utils
+} // namespace utils

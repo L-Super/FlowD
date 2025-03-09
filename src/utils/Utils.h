@@ -13,4 +13,4 @@ bool isWinXOrGreater(unsigned long major_version, unsigned long minor_version, u
 
 bool isWin11OrGreater();
 #endif
-}// namespace utils
+} // namespace utils

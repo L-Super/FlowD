@@ -13,40 +13,42 @@ SettingsBasicWidget::SettingsBasicWidget(QWidget* parent) : QWidget(parent), ui(
     ui->setupUi(this);
 
     ui->languageComboBox->addItem(tr("System Language"));
-    for (const auto& lan: lan::languageCode) { ui->languageComboBox->addItem(QString::fromStdString(lan.second)); }
+    for (const auto& lan : lan::languageCode) {
+        ui->languageComboBox->addItem(QString::fromStdString(lan.second));
+    }
     ui->savePathLineEdit->setPlaceholderText(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
 
     initSettings();
 
 #if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
     connect(ui->styleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
-        //TODO: change theme
+        // TODO: change theme
         spdlog::info("User change default theme to {}", index);
         AppConfig::instance().setBasic("style", index);
     });
 #else
     connect(ui->styleComboBox, &QComboBox::currentIndexChanged, this, [this](int index) {
-        //TODO: change theme
+        // TODO: change theme
         spdlog::info("User change default theme to {}", index);
         AppConfig::instance().setBasic("style", index);
     });
 #endif
     connect(ui->languageComboBox, &QComboBox::currentTextChanged, this, [this](const QString& index) {
-        //TODO: change language
+        // TODO: change language
         spdlog::info("User change default language to {}", index.toStdString());
         AppConfig::instance().setBasic("language", index.toStdString());
     });
     connect(ui->selectPathButton, &QPushButton::clicked, this, [this] {
         QString defaultPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
         QString selectedPath =
-                QFileDialog::getExistingDirectory(this, tr("Select a folder for file saving"), defaultPath);
+            QFileDialog::getExistingDirectory(this, tr("Select a folder for file saving"), defaultPath);
         if (!selectedPath.isEmpty() && defaultPath != selectedPath) {
             ui->savePathLineEdit->setText(QDir::toNativeSeparators(selectedPath));
             AppConfig::instance().setBasic("save_path", selectedPath.toStdString());
         }
     });
 
-    //TODO: when leave this widget, check it weather be changed, if changed, save it
+    // TODO: when leave this widget, check it weather be changed, if changed, save it
 }
 
 SettingsBasicWidget::~SettingsBasicWidget()

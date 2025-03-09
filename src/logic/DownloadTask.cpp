@@ -25,7 +25,6 @@ std::string generateUniqueFilename(const std::string& filePath)
     std::string extension = fs::path(filePath).extension().string();
     int i = 1;
 
-
     // 循环直到找到一个不存在的文件名
     while (fs::exists(newFilePath)) {
         // 构造新的文件名，格式为：xxx(i).ext
@@ -33,7 +32,7 @@ std::string generateUniqueFilename(const std::string& filePath)
     }
     return newFilePath;
 }
-}// namespace
+} // namespace
 
 DownloadTask::DownloadTask(const DownloadItemInfo& item) : itemInfo_(item), pool_(item.threadNum + 1)
 {
@@ -99,7 +98,7 @@ void DownloadTask::startAsync()
 
     // Allocate the compartment for each thread's download
     uint64_t part_size =
-            totalSize / (itemInfo_.threadNum > 0 ? itemInfo_.threadNum : std::thread::hardware_concurrency());
+        totalSize / (itemInfo_.threadNum > 0 ? itemInfo_.threadNum : std::thread::hardware_concurrency());
     spdlog::info("Thread count:{} part size:{}", itemInfo_.threadNum, part_size);
 
     // launch the thread pool
@@ -141,7 +140,7 @@ void DownloadTask::resume()
 std::map<std::string, std::string> DownloadTask::header()
 {
     std::map<std::string, std::string> m;
-    for (const auto& pair: header_) {
+    for (const auto& pair : header_) {
         auto [k, v] = pair;
         m[k] = v;
     }
@@ -150,7 +149,7 @@ std::map<std::string, std::string> DownloadTask::header()
 
 void DownloadTask::setHeader(const std::map<std::string, std::string>& header)
 {
-    for (const auto& pair: header) {
+    for (const auto& pair : header) {
         auto [k, v] = pair;
         header_[k] = v;
     }
@@ -173,7 +172,7 @@ DownloadTask::HeadInfo DownloadTask::requestFileInfoFromHead()
     session_.SetVerifySsl(false);
 
     // Head 404 sometimes, should be get filename by Get
-    //see:https://github.com/libcpr/cpr/pull/599
+    // see:https://github.com/libcpr/cpr/pull/599
     cpr::Response response = session_.Head();
 
     if (response.status_code >= 400) {
@@ -235,8 +234,8 @@ std::string DownloadTask::fileName(const cpr::Response& response)
             std::regex filenameRegex(R"(filename\s*=\s*["']?([^"']*)["']?)");
             std::smatch match;
             if (std::regex_search(header, match, filenameRegex)) {
-                if (match.size() > 1) {               // 确保匹配到文件名
-                    std::string name = match[1].str();// 第一个捕获组是文件名
+                if (match.size() > 1) {                // 确保匹配到文件名
+                    std::string name = match[1].str(); // 第一个捕获组是文件名
                     return cpr::util::urlDecode(name);
                 }
             }
@@ -298,9 +297,9 @@ void DownloadTask::download()
     fs::path filename(tmpFilenamePath_);
     std::ofstream file(filename, std::ios::binary | std::ios::out);
     session_.SetProgressCallback(cpr::ProgressCallback(
-            [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
-                return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
-            }));
+        [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
+            return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
+        }));
     session_.UpdateHeader(header_);
     // launch monitor thread
     pool_.enqueue(&DownloadTask::speedAndRemainingTimeCalculate, this);
@@ -340,9 +339,9 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
         return;
 
     cpr::ProgressCallback progressCallbackFunc(
-            [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
-                return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
-            });
+        [this](long downloadTotal, long downloadNow, long uploadTotal, long uploadNow, auto userdata) {
+            return progressCallback(downloadTotal, downloadNow, uploadTotal, uploadNow, userdata);
+        });
 
     ChunkFile f;
     f.readLen = 0;
@@ -350,15 +349,15 @@ void DownloadTask::downloadChunk(int part, uint64_t start, uint64_t end)
     f.end = end;
 
     cpr::WriteCallback writeCallbackFunc(
-            [this](const std::string_view& data, intptr_t userdata) {
-                // Return true on success, or false to cancel the transfer.
-                if (itemInfo_.status != DownloadItemInfo::DownloadStatus::Downloading) {
-                    // TODO:return false will cancel download. try to pause
-                    return false;
-                }
-                return writeCallback(data, userdata);
-            },
-            reinterpret_cast<intptr_t>(&f));
+        [this](const std::string_view& data, intptr_t userdata) {
+            // Return true on success, or false to cancel the transfer.
+            if (itemInfo_.status != DownloadItemInfo::DownloadStatus::Downloading) {
+                // TODO:return false will cancel download. try to pause
+                return false;
+            }
+            return writeCallback(data, userdata);
+        },
+        reinterpret_cast<intptr_t>(&f));
 
     cpr::Response response = cpr::Get(cpr::Url{itemInfo_.url}, header_, cpr::Range(start, end), cpr::VerifySsl{false},
                                       progressCallbackFunc, writeCallbackFunc);
@@ -417,9 +416,9 @@ bool DownloadTask::writeCallback(const std::string_view& data, intptr_t userdata
 bool DownloadTask::progressCallback(long downloadTotal, long downloadNow, long uploadTotal, long uploadNow,
                                     intptr_t userdata)
 {
-    (void) uploadTotal;
-    (void) uploadNow;
-    (void) userdata;
+    (void)uploadTotal;
+    (void)uploadNow;
+    (void)userdata;
 
     if (itemInfo_.totalBytes == 0) {
         itemInfo_.totalBytes.store(downloadTotal, std::memory_order_release);
@@ -466,11 +465,11 @@ void DownloadTask::speedAndRemainingTimeCalculate()
         auto previous_size = itemInfo_.downloadedBytes.load(std::memory_order_relaxed);
         std::this_thread::sleep_for(1s);
         itemInfo_.downloadSpeed.store(itemInfo_.downloadedBytes.load(std::memory_order_relaxed) - previous_size,
-                                      std::memory_order_relaxed);// bytes per second
+                                      std::memory_order_relaxed); // bytes per second
         itemInfo_.remainTime.store((itemInfo_.downloadSpeed > 0)
-                                           ? static_cast<double>(itemInfo_.totalBytes - itemInfo_.downloadedBytes) /
-                                                     itemInfo_.downloadSpeed.load(std::memory_order_relaxed)
-                                           : 0.0,
+                                       ? static_cast<double>(itemInfo_.totalBytes - itemInfo_.downloadedBytes) /
+                                             itemInfo_.downloadSpeed.load(std::memory_order_relaxed)
+                                       : 0.0,
                                    std::memory_order_relaxed);
 
         spdlog::debug("Speed: {}KB/s, remaining time: {}s", itemInfo_.downloadSpeed.load() / 1024,

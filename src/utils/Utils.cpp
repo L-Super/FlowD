@@ -5,12 +5,12 @@
 #include "Utils.h"
 
 #if defined(Q_OS_WIN)
-#include <QLibrary>
-#include <windows.h>
+    #include <QLibrary>
+    #include <windows.h>
 #elif defined(Q_OS_LINUX)
 // #include <gtk/gtk.h>
 #elif defined(Q_OS_MAC)
-#include "MacSystemTheme.h"
+    #include "MacSystemTheme.h"
 #endif
 
 namespace utils {
@@ -69,4 +69,4 @@ bool isWin11OrGreater()
     return is_win_11_or_greater;
 }
 #endif
-}// namespace utils
+} // namespace utils

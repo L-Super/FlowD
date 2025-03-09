@@ -8,7 +8,6 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
-
 class HelpWidget : public QWidget {
     Q_OBJECT
 

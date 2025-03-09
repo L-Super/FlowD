@@ -49,36 +49,36 @@ public:
     static void setLevel(int level)
     {
         switch (level) {
-            case 0:
-                spdlog::set_level(spdlog::level::trace);
-                break;
-            case 1:
-                spdlog::set_level(spdlog::level::debug);
-                break;
-            case 2:
-                spdlog::set_level(spdlog::level::info);
-                break;
-            case 3:
-                spdlog::set_level(spdlog::level::warn);
-                break;
-            case 4:
-                spdlog::set_level(spdlog::level::err);
-                break;
-            case 5:
-                spdlog::set_level(spdlog::level::critical);
-                break;
-            case 6:
-                spdlog::set_level(spdlog::level::off);
-                break;
-            default:
-                spdlog::set_level(spdlog::level::info);
+        case 0:
+            spdlog::set_level(spdlog::level::trace);
+            break;
+        case 1:
+            spdlog::set_level(spdlog::level::debug);
+            break;
+        case 2:
+            spdlog::set_level(spdlog::level::info);
+            break;
+        case 3:
+            spdlog::set_level(spdlog::level::warn);
+            break;
+        case 4:
+            spdlog::set_level(spdlog::level::err);
+            break;
+        case 5:
+            spdlog::set_level(spdlog::level::critical);
+            break;
+        case 6:
+            spdlog::set_level(spdlog::level::off);
+            break;
+        default:
+            spdlog::set_level(spdlog::level::info);
         }
     }
 
 private:
     explicit Log(const std::string& name, const std::string& filePath)
     {
-        auto maxSize = 1024 * 1024 * 5;// 5MB
+        auto maxSize = 1024 * 1024 * 5; // 5MB
         auto maxFiles = 3;
 
         auto stdout_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();

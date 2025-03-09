@@ -75,7 +75,7 @@ void DownloadListWidget::removeDownloadingItem(DownloadItemWidget* widget)
     for (int i = 0; i < ui->downloadingListWidget->count(); ++i) {
         QListWidgetItem* listItem = ui->downloadingListWidget->item(i);
         DownloadItemWidget* currentWidget =
-                qobject_cast<DownloadItemWidget*>(ui->downloadingListWidget->itemWidget(listItem));
+            qobject_cast<DownloadItemWidget*>(ui->downloadingListWidget->itemWidget(listItem));
 
         if (currentWidget == widget) {
             QListWidgetItem* takenItem = ui->downloadingListWidget->takeItem(i);
@@ -93,7 +93,7 @@ void DownloadListWidget::removeCompletedItem(DownloadItemWidget* widget)
     for (int i = 0; i < ui->completedListWidget->count(); ++i) {
         QListWidgetItem* listItem = ui->completedListWidget->item(i);
         DownloadItemWidget* currentWidget =
-                qobject_cast<DownloadItemWidget*>(ui->completedListWidget->itemWidget(listItem));
+            qobject_cast<DownloadItemWidget*>(ui->completedListWidget->itemWidget(listItem));
 
         if (currentWidget == widget) {
             QListWidgetItem* takenItem = ui->completedListWidget->takeItem(i);

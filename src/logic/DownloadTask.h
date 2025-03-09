@@ -31,7 +31,7 @@ public:
     DownloadItemInfo downloadInfo();
 
     using ProgressCallback =
-            std::function<void(unsigned long total, unsigned long downloaded, unsigned long speed, double remainTime)>;
+        std::function<void(unsigned long total, unsigned long downloaded, unsigned long speed, double remainTime)>;
     using DownloadCompleteCallback = std::function<void()>;
     void setProgressCallback(const ProgressCallback& cb);
     void setDownloadCompleteCallback(const DownloadCompleteCallback& cb);
@@ -44,7 +44,7 @@ protected:
     };
 
     struct ChunkFile {
-        uint64_t readLen{};// file bytes
+        uint64_t readLen{}; // file bytes
         uint64_t start{};
         uint64_t end{};
         std::string data;
@@ -67,7 +67,7 @@ protected:
 
 private:
     DownloadItemInfo itemInfo_;
-    std::string tmpFilenamePath_;// tmp file path
+    std::string tmpFilenamePath_; // tmp file path
     cpr::Session session_;
     cpr::Header header_;
 
