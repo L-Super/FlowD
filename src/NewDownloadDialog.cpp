@@ -1,6 +1,7 @@
 #include "NewDownloadDialog.h"
 #include "ui_NewDownloadDialog.h"
 
+#include <QClipboard>
 #include <QStandardPaths>
 #include <thread>
 
@@ -19,6 +20,10 @@ NewDownloadDialog::NewDownloadDialog(QWidget* parent) : QDialog(parent), ui(new 
     setFixedWidth(600);
 
     showAdvanceOption(false);
+
+    if (auto text = QApplication::clipboard()->text(); !text.isEmpty()) {
+        ui->urlTextEdit->setPlainText(text.trimmed());
+    }
 
     connect(ui->advancedCheckBox, &QCheckBox::clicked, this, &NewDownloadDialog::showAdvanceOption);
     connect(ui->okButton, &QPushButton::clicked, this, [this] {
