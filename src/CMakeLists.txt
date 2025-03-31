@@ -139,7 +139,7 @@ endif ()
 
 include(FetchContent)
 FetchContent_Declare(spdlog
-        URL https://github.com/gabime/spdlog/archive/refs/tags/v1.14.1.zip
+        URL https://github.com/gabime/spdlog/archive/refs/tags/v1.15.2.zip
 )
 
 FetchContent_Declare(json
