@@ -4,10 +4,14 @@
 
 #pragma once
 
+// clang-format off
+// spdlog.h must before fmt header
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+// clang-format on
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
+
 #include <QByteArray>
 #include <QString>
 #include <chrono>
@@ -16,8 +20,7 @@
 
 template<>
 struct fmt::formatter<QString> : formatter<string_view> {
-    template<typename FormatContext>
-    auto format(QString str, FormatContext& ctx)
+    auto format(const QString& str, format_context& ctx) const -> format_context::iterator
     {
         return formatter<string_view>::format(str.toStdString(), ctx);
     }
@@ -25,8 +28,7 @@ struct fmt::formatter<QString> : formatter<string_view> {
 
 template<>
 struct fmt::formatter<QByteArray> : formatter<string_view> {
-    template<typename FormatContext>
-    auto format(QByteArray str, FormatContext& ctx)
+    auto format(const QByteArray& str, format_context& ctx) const -> format_context::iterator
     {
         return formatter<string_view>::format(str.toStdString(), ctx);
     }

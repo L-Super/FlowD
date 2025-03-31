@@ -483,7 +483,7 @@ Please check whether the file exists and the application can access the file.</t
         <translation>Enable</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="42"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="44"/>
         <source>Select a folder for file saving</source>
         <translation>Select a folder for file saving</translation>
     </message>

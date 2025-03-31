@@ -480,7 +480,7 @@ Please check whether the file exists and the application can access the file.</s
         <translation>启用</translation>
     </message>
     <message>
-        <location filename="../../SettingsBasicWidget.cpp" line="42"/>
+        <location filename="../../SettingsBasicWidget.cpp" line="44"/>
         <source>Select a folder for file saving</source>
         <translation>选择默认保存位置</translation>
     </message>
