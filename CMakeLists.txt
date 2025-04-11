@@ -24,6 +24,12 @@ elseif(UNIX AND NOT APPLE)
     add_compile_definitions(LINUX_OS)
 endif()
 
+if (MSVC)
+    add_compile_options(/W4 /sdl /GS /analyze)
+else()
+    add_compile_options(-Wall -Wextra -Wnon-virtual-dtor -Wconversion -Wsign-conversion)
+endif()
+
 add_subdirectory(src)
 
 if (BUILD_TEST)
