@@ -136,33 +136,28 @@ if (WIN32) # Install dlls in the same directory as the executable on Windows
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
 endif ()
 
+CPMAddPackage(
+        NAME spdlog
+        GITHUB_REPOSITORY gabime/spdlog
+        VERSION 1.15.2)
 
-include(FetchContent)
-FetchContent_Declare(spdlog
-        URL https://github.com/gabime/spdlog/archive/refs/tags/v1.15.2.zip
+CPMAddPackage(
+        NAME json
+        VERSION 3.11.3
+        # The git repo is incredibly large, so we download the archived include directory
+        URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
 )
 
-FetchContent_Declare(json
-        URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
-
-FetchContent_Declare(cpr
-        GIT_REPOSITORY https://github.com/libcpr/cpr.git
-        GIT_TAG 96cd60913124f2a9a17f9d814f3db11d62ef3ae0)
-
-FetchContent_Declare(SingleApplication
-        URL https://github.com/itay-grudev/SingleApplication/archive/refs/tags/v3.5.2.tar.gz)
-
-FetchContent_Declare(mio
-        GIT_REPOSITORY https://github.com/vimpunk/mio.git
-        GIT_TAG 8b6b7d878c89e81614d05edca7936de41ccdd2da
+CPMAddPackage(
+        NAME SingleApplication
+        VERSION 3.5.2
+        URL https://github.com/itay-grudev/SingleApplication/archive/refs/tags/v3.5.2.tar.gz
 )
 
-FetchContent_Declare(magic_enum
-        GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
-        GIT_TAG v0.9.7
-)
+CPMAddPackage("gh:libcpr/cpr#96cd60913124f2a9a17f9d814f3db11d62ef3ae0")
+CPMAddPackage("gh:vimpunk/mio#8b6b7d878c89e81614d05edca7936de41ccdd2da")
+CPMAddPackage("gh:Neargye/magic_enum@0.9.7")
 
-FetchContent_MakeAvailable(spdlog json cpr SingleApplication mio magic_enum)
 
 set(MIO_INCLUDE_DIR ${mio_SOURCE_DIR}/single_include)
 include_directories(${MIO_INCLUDE_DIR})

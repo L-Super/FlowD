@@ -24,6 +24,17 @@ elseif(UNIX AND NOT APPLE)
     add_compile_definitions(LINUX_OS)
 endif()
 
+# download CPM.cmake
+set(CPM_VERSION 0.40.8)
+set(CPM_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_VERSION}.cmake")
+
+if(NOT (EXISTS ${CPM_LOCATION}))
+    message(STATUS "Downloading CPM.cmake")
+    file(DOWNLOAD https://github.com/TheLartians/CPM.cmake/releases/download/v${CPM_VERSION}/CPM.cmake ${CPM_LOCATION})
+endif()
+
+include(${CPM_LOCATION})
+
 add_subdirectory(src)
 
 if (BUILD_TEST)
