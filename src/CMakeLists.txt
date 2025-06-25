@@ -1,23 +1,6 @@
 # configure version
 configure_file(version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/version.h @ONLY)
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS
-        Core
-        Gui
-        Widgets
-        Sql
-)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
-        Core
-        Gui
-        Widgets
-        Sql
-        REQUIRED)
-
 get_target_property(QMakeExecutable Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
 get_filename_component(QtBinDir "${QMakeExecutable}" DIRECTORY)
 find_program(QT_DEPLOY_EXECUTABLE windeployqt macdeployqt HINTS "${QtBinDir}")
@@ -74,23 +57,12 @@ elseif (APPLE)
     set(QRC_FILES ${QRC_FILES} ${MAC_RES_PATH}/logo.icns)
 endif ()
 
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS LinguistTools)
 set(TS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/i18N/FlowD_zh-CN.ts
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/i18N/FlowD_en-US.ts
 )
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_LIST_DIR}/resources/i18N")
 
-if (QT_VERSION_MAJOR EQUAL 6)
-    qt_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
-    qt_add_translation(QM_FILES ${TS_FILES})
-else ()
-    qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES}
-            #        OPTIONS -no-obsolete -locations none
-    )
-    qt5_add_translation(QM_FILES ${TS_FILES})
-endif ()
-
-add_executable(${PROJECT_NAME}
+qt_add_executable(${PROJECT_NAME}
         main.cpp
         ${QM_FILES}
         ${QRC_FILES}
@@ -98,6 +70,12 @@ add_executable(${PROJECT_NAME}
 )
 add_subdirectory(logic)
 add_subdirectory(utils)
+
+qt_add_translations(${PROJECT_NAME}
+        TS_FILE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources/i18N/
+#        QM_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resources/i18N/ # require Qt6.9
+#        LUPDATE_OPTIONS -no-obsolete -locations none
+)
 
 if (MINGW)
     target_compile_options(${PROJECT_NAME} PRIVATE "-Wa,-mbig-obj")
@@ -130,12 +108,6 @@ elseif (APPLE)
 endif ()
 
 message(STATUS "CMake binary dir: ${CMAKE_BINARY_DIR}")
-
-if (WIN32) # Install dlls in the same directory as the executable on Windows
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
-endif ()
-
 
 include(FetchContent)
 FetchContent_Declare(spdlog
