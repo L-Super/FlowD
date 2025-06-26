@@ -11,12 +11,12 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS
         Widgets
         Sql
 )
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
         Core
         Gui
         Widgets
         Sql
-        REQUIRED)
+)
 
 get_target_property(QMakeExecutable Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
 get_filename_component(QtBinDir "${QMakeExecutable}" DIRECTORY)
