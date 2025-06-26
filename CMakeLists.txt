@@ -25,7 +25,7 @@ elseif(UNIX AND NOT APPLE)
 endif()
 
 # download CPM.cmake
-set(CPM_VERSION 0.40.8)
+set(CPM_VERSION 0.42.0)
 set(CPM_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_VERSION}.cmake")
 
 if(NOT (EXISTS ${CPM_LOCATION}))
