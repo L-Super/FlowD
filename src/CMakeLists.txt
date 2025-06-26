@@ -104,10 +104,7 @@ if (MINGW)
 endif ()
 
 if (WIN32)
-    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        message(STATUS "Running ${CMAKE_BUILD_TYPE} mode")
-    else ()
-        message(STATUS "Running ${CMAKE_BUILD_TYPE} mode")
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
         # Remove the terminal display
         set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
     endif ()
