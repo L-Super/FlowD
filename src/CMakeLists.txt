@@ -126,12 +126,6 @@ elseif (APPLE)
             MACOSX_BUNDLE_INFO_PLIST ${MAC_RES_PATH}/Info.plist.in)
 endif ()
 
-message(STATUS "CMake binary dir: ${CMAKE_BINARY_DIR}")
-
-if (WIN32) # Install dlls in the same directory as the executable on Windows
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
-endif ()
 
 CPMAddPackage(
         NAME spdlog
@@ -140,9 +134,9 @@ CPMAddPackage(
 
 CPMAddPackage(
         NAME json
-        VERSION 3.11.3
+        VERSION 3.12.0
         # The git repo is incredibly large, so we download the archived include directory
-        URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+        URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
 )
 
 CPMAddPackage(

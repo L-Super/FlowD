@@ -31,7 +31,7 @@ set(CPM_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_VERSION}.cmake")
 if(NOT (EXISTS ${CPM_LOCATION}))
     message(STATUS "Downloading CPM.cmake")
 
-    file(DOWNLOAD https://github.com/TheLartians/CPM.cmake/releases/download/v${CPM_VERSION}/CPM.cmake
+    file(DOWNLOAD https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_VERSION}/CPM.cmake
             ${CPM_LOCATION}
             SHOW_PROGRESS
             STATUS CPM_DOWNLOAD_STATUS
