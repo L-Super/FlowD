@@ -38,9 +38,9 @@ jobs:
             - name: Install Qt
               uses: jurplel/install-qt-action@v4
               with:
+                version: '6.8.0'
                 cache: true
                 cache-key-prefix: 'Qt'
-                version: '6.8.0'
 
             - name: Configure CMake
               # Configure CMake in a 'build' subdirectory.
@@ -65,9 +65,6 @@ jobs:
         runs-on: windows-latest
         strategy:
             fail-fast: false
-            matrix:
-                qt_version: [6.8.0]
-                build_type: [Release]
 
         steps:
             - uses: actions/checkout@v4
@@ -77,7 +74,7 @@ jobs:
             - name: Install Qt
               uses: jurplel/install-qt-action@v4
               with:
-                  version: ${{ matrix.qt_version }}
+                  version: 6.8.0
                   cache: true
                   cache-key-prefix: 'Qt'
 
@@ -85,38 +82,23 @@ jobs:
               # Configure CMake in a 'build' subdirectory.
               # `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
               # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-              run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-
+              run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
             - name: Build
               # Build your program with the given configuration.
               # Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-              run: cmake --build ${{github.workspace}}/build --config ${{ matrix.build_type }}
+              run: cmake --build ${{github.workspace}}/build --config Release
 
             - name: Test
               working-directory: ${{github.workspace}}/build
               # Execute tests defined by the CMake configuration.
               # Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
               # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-              run: ctest --build-config ${{ matrix.build_type }}
+              run: ctest --build-config Release
 
     macos-build:
-      runs-on: ${{ matrix.os }}
+      runs-on: macos-latest
       strategy:
           fail-fast: false
-          matrix:
-              # macos-latest M1 arm architecture. macos-13 intel architecture
-              os: [macos-latest, macos-13]
-              qt_version: [5.15.2, 6.8.0]
-              include:
-                  - os: macos-latest
-                    qt_version: 6.8.0
-                  - os: macos-13
-                    qt_version: 5.15.2
-              exclude:
-                  - os: macos-latest
-                    qt_version: 5.15.2
-                  - os: macos-13
-                    qt_version: 6.8.0
 
       steps:
           - uses: actions/checkout@v4
@@ -126,7 +108,7 @@ jobs:
           - name: Install Qt
             uses: jurplel/install-qt-action@v4
             with:
-                version: ${{ matrix.qt_version }}
+                version: 6.8.0
                 cache: true
                 cache-key-prefix: 'Qt'
 
