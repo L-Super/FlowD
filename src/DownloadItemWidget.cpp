@@ -85,7 +85,7 @@ DownloadItemWidget::DownloadItemWidget(size_t id, QWidget* parent)
 
     ui->progressBar->setMaximum(progressMaximum);
     ui->progressBar->setMinimum(0);
-    ui->pauseButton->setProperty("isPause", "false");
+    ui->pauseButton->setProperty("isPaused", false);
     connect(ui->pauseButton, &QPushButton::clicked, this, &DownloadItemWidget::onPauseButtonClicked);
     connect(ui->deleteButton, &QPushButton::clicked, this, &DownloadItemWidget::onDeleteButtonClicked);
     connect(ui->openFileButton, &QPushButton::clicked, this, &DownloadItemWidget::onOpenFileButtonClicked);
@@ -135,12 +135,12 @@ void DownloadItemWidget::onPauseButtonClicked(bool /*checked*/)
     // TODO: change icon
     if (ui->pauseButton->property("isPause").toBool()) {
         ui->pauseButton->setText(tr("Continue"));
-        ui->pauseButton->setProperty("isPause", false);
+        ui->pauseButton->setProperty("isPaused", false);
         DownloadManager::instance().resumeTask(taskID);
     }
     else {
         ui->pauseButton->setText(tr("Pause"));
-        ui->pauseButton->setProperty("isPause", true);
+        ui->pauseButton->setProperty("isPaused", true);
         ui->speedLabel->clear();
         ui->remainTimeLabel->clear();
         DownloadManager::instance().pauseTask(taskID);
